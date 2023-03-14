@@ -20,6 +20,8 @@ Changelog Table of Contents:
 
 [Sprint 3](#sprint-3)
 
+[Sprint 3](#sprint-4)
+
 .
 
 .
@@ -61,6 +63,22 @@ Harsh:
 .
 
 **<a name="sprint-3"></a> Sprint 3**
+
+Andrew:
+
+Cindy:
+
+Hai:
+
+Harsh:
+
+.
+
+.
+
+.
+
+**<a name="sprint-4"></a> Sprint 4**
 
 Andrew:
 
