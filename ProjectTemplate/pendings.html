@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="pendings_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script>
+        function logout() {
+            var webMethod = "ProjectServices.asmx/LogOff";
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.d) {
+                        return true;
+                    }
+                    else {
+                        alert("Log off failed!");
+                    }
+                },
+                error: function (e) {
+                    alert("Issue!");
+                }
+            });
+        }
+
+        function reject(username) {
+            var webMethod = "ProjectServices.asmx/RejectMatch";
+            var parameters = "{\"username\":\"" + encodeURI(username) + "\"}";
+
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                data: parameters,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.d) {
+                        window.location.href = 'pendings.html';
+                    }
+                    else {
+                        alert("SQL Issue!.");
+                    }
+                },
+                error: function (e) {
+                    alert("Issue!");
+                }
+            });
+        }
+
+        function accept(username) {
+            var webMethod = "ProjectServices.asmx/AcceptMatch";
+            var parameters = "{\"username\":\"" + encodeURI(username) + "\"}";
+
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                data: parameters,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.d) {
+                        window.location.href = 'pendings.html';
+                    }
+                    else {
+                        alert("SQL Issue!");
+                    }
+                },
+                error: function (e) {
+                    alert(e);
+                }
+            });
+
+        }
+
+
+        function initialize() {
+            var webMethod = "ProjectServices.asmx/ReturnPotentialMatches";
+
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    let users_table = document.getElementById('usersTable');
+
+                    if (msg.d == "Already Matched!") {
+                        $("#usersTable").hide();
+                        $("#message").text("You already have a match! Please go to the 'Your Matches' page for more details!")
+
+                    }
+                    else {
+                        let json_objs = JSON.parse(msg.d);
+                        for (let i = 0; i < json_objs.length; i++) {
+                            let row = users_table.insertRow(i + 1);
+
+                            let usernameCell = row.insertCell(0);
+                            let availabilityCell = row.insertCell(1);
+                            let styleCell = row.insertCell(2);
+                            let typeCell = row.insertCell(3);
+                            let rangeCell = row.insertCell(4);
+                            let experienceCell = row.insertCell(5);
+                            let sessionLengthCell = row.insertCell(6);
+                            let numOutfitsCell = row.insertCell(7);
+                            let buttonsCell = row.insertCell(8);
+
+
+                            usernameCell.innerHTML = json_objs[i].username;
+                            availabilityCell.innerHTML = json_objs[i].availability;
+                            styleCell.innerHTML = json_objs[i].style;
+                            typeCell.innerHTML = json_objs[i].type;
+                            rangeCell.innerHTML = json_objs[i].budget_range;
+                            experienceCell.innerHTML = json_objs[i].experience;
+                            sessionLengthCell.innerHTML = json_objs[i].session_length;
+                            numOutfitsCell.innerHTML = json_objs[i].num_outfits;
+                            buttonsCell.innerHTML = `<button value = \"${json_objs[i].username}\" onclick= \"accept(this.value)\">Accept</button> <button value = \"${json_objs[i].username}\" onclick = \"reject(this.value)\">Reject</button>`;
+                        }
+                    }
+
+
+                },
+                error: function (e) {
+                    console.log("Issue!");
+                }
+            });
+        }
+    </script>
+
+</head>
+<body onload="initialize()">
+    <div class="nav">
+        <a href="home.html"><i class="fa fa-fw fa-home"></i> Home</a>
+        <a href="matches.html"><i class="fa fa-handshake-o"></i> Your Matches</a>
+        <a href="pendings.html"><i class="fa fa-group"></i> Pending Matches</a>
+        <a id="logout" href="index.html" onclick="logout();"><i class="fa fa-sign-out"></i> Log Out</a>
+
+    </div>
+    <h1 id="modify">Pending Matches</h1>
+    <p id="message">The following table shows your possible matches:</p>
+    <table id="usersTable">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Availability</th>
+                <th>Style</th>
+                <th>Type</th>
+                <th>Budget Range</th>
+                <th>Experience</th>
+                <th>Session Length</th>
+                <th># Outfits</th>
+                <th>Accept/Deny</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</body>
+</html>

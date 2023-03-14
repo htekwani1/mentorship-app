@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        function logout() {
+            var webMethod = "ProjectServices.asmx/LogOff";
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.d) {
+                        return true;
+                    }
+                    else {
+                        alert("Log off failed!");
+                    }
+                },
+                error: function (e) {
+                    alert("Issue!");
+                }
+            });
+        }
+
+        function showContent() {
+            var webMethod = "ProjectServices.asmx/GetNotificationSummary";
+            let notificationText = document.getElementById("notification")
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    notificationText.innerHTML = msg.d;
+                    
+                },
+                error: function (e) {
+                    alert("Issue!");
+                }
+            });
+        }
+    </script>
+
+</head>
+<body onload="showContent();">
+    <div class="nav">
+        <a href="home.html"><i class="fa fa-fw fa-home"></i> Home</a>
+        <a href="matches.html"><i class="fa fa-handshake-o"></i> Your Matches</a>
+        <a href="pendings.html"><i class="fa fa-group"></i> Pending Matches</a>
+        <a id="logout" href="index.html" onclick="logout();"><i class="fa fa-sign-out"></i> Log Out</a>
+    </div>
+
+    <h1>ShutterMatch</h1>
+    <div id="calendar">
+            <p id="notification"></p>
+        <br><br>
+        <div style="text-align: center;">
+            <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&bgcolor=%234285F4&ctz=America%2FPhoenix&title=ShuttrMatch%20Shared%20Calendar&src=c_3906db4ae7204eba4ea4e1f094ff3fa03ebd2fa55c5db983a1995ba738b68ea4%40group.calendar.google.com&color=%233F51B5" style="border:solid 2px black;" width="800" height="450" frameborder="0" scrolling="no"></iframe>
+        </div>
+
+    </div>
+</body>
+</html>

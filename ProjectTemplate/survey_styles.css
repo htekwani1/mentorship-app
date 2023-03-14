@@ -1,0 +1,94 @@
+/* add a new font into font family */
+@font-face {
+    font-family: "RachelBrown_font";
+    src: url(RachelBrown.ttf);
+}
+
+/* Put background image and text align to center */
+#formDiv {
+    text-align: center;
+    background-image: url(survey_background.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding-bottom: 50px;
+}
+
+/* make all texts left align */
+#mainDiv {
+    text-align: left;
+}
+
+/* pute white background and make it blur */
+#white-background{
+    background: rgba(255, 255, 255, 0.8);
+    color: black;
+    margin-left: 200px;
+    margin-right: 200px;
+    padding: 25px 50px 25px 50px;
+}
+
+/* Title font style */
+#filloutSurvey {
+    font-family: RachelBrown_font;
+    font-size: 45px;
+    outline-style: double;
+    outline-offset: 10px;
+}
+
+/* #finalUserInfo {
+    font-family:RachelBrown_font;
+    font-size: 40px;
+    text-align:center;
+} */
+
+/* fonts for all question */
+.questions {
+    font-size: 20px;
+    font-family: RachelBrown_font;
+}
+
+/* Make all input text to same font */
+.userTypeLabels, .photoStyleLabels, .photoTypeLabels, .expLabels, .lengthLabels, .outfitLabels {
+    font-size: 16px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+/* Make all input box transparent */
+.inputBox {
+    border-width: 2px;
+    border-style: solid;
+    background-color: transparent;
+    border-color: black;
+    font-family: RachelBrown_font;
+}
+
+.nav {
+    background-color: transparent;
+    padding: 12px 0px 15px 0px;
+    overflow: hidden;
+    font-size: larger;
+    font-family: RachelBrown_font;
+    text-align: left;
+}
+
+.nav a {
+    color: black;
+    text-decoration: none;
+    padding: 12px 14px;
+}
+
+.nav a:hover {
+    color: white;
+    background-color: rgb(46, 46, 46);
+}
+
+#Signup:hover {
+    color: grey;
+    transition: all 0.5s;
+    cursor: pointer;
+}
+
+#imageInputDiv{
+    display: none
+}

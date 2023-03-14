@@ -1,0 +1,90 @@
+/* add a new font into font family */
+@font-face {
+    font-family: "RachelBrown_font";
+    src: url(RachelBrown.ttf);
+}
+body {
+    background-image: url(https://images.unsplash.com/photo-1565430973830-b12076b15215?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1974&q=80); /* The image used */
+    background-color: #cccccc; /* Used if the image is unavailable */
+    height: 100vh; /* You must set a specified height */
+    background-position: center; /* Center the image */
+    background-repeat: repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+  }
+
+table {
+  font-family: RachelBrown_font;
+  text-align: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.6);
+  width: 70%;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+table, td, th {
+  border: 1px solid;
+}
+
+/* Title font style */
+h1 {
+  font-family: RachelBrown_font;
+  font-size: 50px;
+  text-align: center;
+  margin-top: 30px;
+}
+
+p {
+  font-family: RachelBrown_font;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 30px;
+}
+
+
+#message {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-style: italic;
+  font-size: 18px;
+  margin: 0px 0px 50px 0px;
+}
+
+a {
+  font-family: RachelBrown_font;
+  color: black;
+  /* padding: 5px; */
+  margin: 5px;
+}
+
+#logout {
+  margin: 0px 20px 0px 0px;
+  float: right;
+}
+
+button:hover {
+  color: grey;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+.nav {
+  background-color: transparent;
+  padding: 12px 0px 15px 0px;
+  overflow: hidden;
+  font-size: larger;
+  font-family: RachelBrown_font;
+  margin-left: 20px;
+}
+
+.nav a {
+  color: black;
+  text-decoration: none;
+  /* padding: 12px 14px; */
+}
+
+.nav a:hover {
+  color: white;
+  background-color: rgb(46, 46, 46);
+}
