@@ -20,7 +20,7 @@ Changelog Table of Contents:
 
 [Sprint 3](#sprint-3)
 
-[Sprint 3](#sprint-4)
+[Sprint 4](#sprint-4)
 
 .
 
