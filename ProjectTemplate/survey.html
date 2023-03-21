@@ -6,12 +6,14 @@
        function CreateAccount(username, password, email, firstName, isPhotographer, availability, style, type, range, experience, sessionLength, numOutfits, imageURL) {
            var webMethod = "ProjectServices.asmx/CreateAccount";
            var parameters = "{\"username\":\"" + encodeURI(username) + "\",\"password\":\"" + encodeURI(password) +
-               "\",\"email\":\"" + encodeURI(email) + "\",\"firstName\":\"" + encodeURI(firstName) + "\",\"isPhotographer\":\""
-               + encodeURI(isPhotographer) + "\",\"availability\":\"" + encodeURI(availability) +
-               "\",\"style\":\"" + encodeURI(style) + "\",\"type\":\"" + encodeURI(type) +
-               "\",\"range\":\"" + encodeURI(range) + "\",\"experience\":\"" + encodeURI(experience) + "\",\"sessionLength\":\"" + encodeURI(sessionLength) +
-               "\",\"numOutfits\":\"" + encodeURI(numOutfits) + "\",\"imageURL\":\"" + encodeURI(imageURL) + "\"}";
+               "\",\"email\":\"" + encodeURI(email) + "\",\"firstName\":\"" + encodeURI(firstName) + "\",\"lastName\":\"" + 
+               encodeURI(lastName)  + "\"}";
 
+            //    "\",\"isPhotographer\":\""
+            //    + encodeURI(isPhotographer) + "\",\"availability\":\"" + encodeURI(availability) +
+            //    "\",\"style\":\"" + encodeURI(style) + "\",\"type\":\"" + encodeURI(type) +
+            //    "\",\"range\":\"" + encodeURI(range) + "\",\"experience\":\"" + encodeURI(experience) + "\",\"sessionLength\":\"" + encodeURI(sessionLength) +
+            //    "\",\"numOutfits\":\"" + encodeURI(numOutfits) + "\",\"imageURL\":\"" + encodeURI(imageURL)
            // if is_photographer, then concat img parameter. may need to not add the end of the string above just yet
 
            $.ajax({
@@ -36,60 +38,31 @@
        }
 
        /* Parse Survey and output User Info */
-       function parseSurvey() {
+       function calcPoints() {
            console.log('triggered')
-           var initialPrice = 50;
+           var initialPoints = 50;
            var finalPrice = 0;
 
            username = $("#usernameInput").val();
            password = $("#passwordInput").val();
            userType = $(".radioButtons1:checked").val();
            photoStyle = $(".radioButtons2:checked").val();
-           photoType = $(".radioButtons3:checked").val();
-           expPreference = $(".radioButtons4:checked").val();
-           firstName = $("#firstName").val();
-           lastName = $("#lastName").val();
-           email = $("#emailAddress").val();
-           availabilityInput = $("#freeText").val();
-           sessionLength = $(".radioButtons5:checked").val();
-           numOutfits = $(".radioButtons6:checked").val();
+           
 
-
-           var priceDict = {
-               "portrait": 200,
-               "event": 350,
-               "wedding": 1200,
-               "headshot": 100,
-               "group": 250,
-               "family": 200,
-               "baby": 200,
-               "grad": 150,
+           var surveyPointsDict = {
+               "1": 1,
+               "2": 1.25,
+               "3": 1.5,
+               "4": 1.75,
+               "5": 2,
+               "6": 2.25,
+               "7": 2.5,
+               "8": 2.75,
+               "9": 3,
+               "10": 3.5,
 
            };
 
-           var sessionDict = {
-               "30 minutes": 1,
-               "60 minutes": 2,
-               "90 minutes": 2.25,
-               "2 hours": 2.5,
-               "2.5 hours": 2.75,
-               "3 hours": 3
-           };
-        
-           var outfitDict = {
-               "1 Outfit": 1,
-               "2 Outfits": 1.10,
-               "3 Outfits": 1.20,
-               "4 Outfits": 1.30,
-               "5 Outfits": 1.50
-           };
-
-           var experienceDict = {
-               "Beginner (1-3 years)": 1,
-               "Intermediate (3-5 years)": 1.5,
-               "Advanced (5+ years)": 2
-              
-           };
 
            //calculator
            console.log('expPreference:' + expPreference);
