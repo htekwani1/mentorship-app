@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'roboRegular';
+    src: url('roboto/Roboto-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+nav {
+    font-family: 'roboRegular';
+}
