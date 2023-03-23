@@ -37,7 +37,7 @@ namespace ProjectTemplate
             //our connection string comes from our web.config file like we talked about earlier
 /*            string sqlConnectString = System.Configuration.ConfigurationManager.ConnectionStrings["myDB"].ConnectionString;
 */            //here's our query.  A basic select with nothing fancy.  Note the parameters that begin with @
-            string sqlSelect = "SELECT username, email, is_photographer FROM users WHERE username=@usernameValue and password=@passwordValue";
+            string sqlSelect = "SELECT username, email, is_mentor FROM users WHERE username=@usernameValue and password=@passwordValue";
 
             // Create connection object using connection string method
             MySqlConnection sqlConnection = new MySqlConnection(getConString());
@@ -61,9 +61,9 @@ namespace ProjectTemplate
             //a legit account
             if (sqlDt.Rows.Count > 0)
             {
-                // store photographer status
+                // store mentor status
                 Session["username"] = sqlDt.Rows[0]["username"];
-                Session["isPhotographer"] = sqlDt.Rows[0]["is_photographer"];
+                Session["isMentor"] = sqlDt.Rows[0]["is_mentor"];
                 success = true;
             }
             
