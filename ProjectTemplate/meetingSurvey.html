@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <script type="text/javascript">
+       function CreateAccount(username, password, email, firstName, isPhotographer, availability, style, type, range, experience, sessionLength, numOutfits, imageURL) {
+           var webMethod = "ProjectServices.asmx/CreateAccount";
+           var parameters = "{\"username\":\"" + encodeURI(username) + "\",\"password\":\"" + encodeURI(password) +
+               "\",\"email\":\"" + encodeURI(email) + "\",\"firstName\":\"" + encodeURI(firstName) + "\",\"lastName\":\"" + 
+               encodeURI(lastName)  + "\"}";
+
+            //    "\",\"isPhotographer\":\""
+            //    + encodeURI(isPhotographer) + "\",\"availability\":\"" + encodeURI(availability) +
+            //    "\",\"style\":\"" + encodeURI(style) + "\",\"type\":\"" + encodeURI(type) +
+            //    "\",\"range\":\"" + encodeURI(range) + "\",\"experience\":\"" + encodeURI(experience) + "\",\"sessionLength\":\"" + encodeURI(sessionLength) +
+            //    "\",\"numOutfits\":\"" + encodeURI(numOutfits) + "\",\"imageURL\":\"" + encodeURI(imageURL)
+           // if is_photographer, then concat img parameter. may need to not add the end of the string above just yet
+
+           $.ajax({
+               type: "POST",
+               url: webMethod,
+               data: parameters,
+               contentType: "application/json; charset=utf-8",
+               dataType: "json",
+               success: function (msg) {
+                   if (msg.d) {
+                       alert("Account created, logging you in.");
+                       window.location.href = 'home.html';
+                   }
+                   else {
+                       alert("A username already exists! Please try another.")
+                   }
+               },
+               error: function (e) {
+                   alert("Issue!");
+               }
+           });
+       }
+
+       /* Parse Survey and output User Info */
+       function calcPoints() {
+           console.log('triggered')
+           var initialPoints = 50;
+           var finalPrice = 0;
+
+           username = $("#usernameInput").val();
+           password = $("#passwordInput").val();
+           userType = $(".radioButtons1:checked").val();
+           photoStyle = $(".radioButtons2:checked").val();
+           
+
+           var surveyPointsDict = {
+               "1": 1,
+               "2": 1.25,
+               "3": 1.5,
+               "4": 1.75,
+               "5": 2,
+               "6": 2.25,
+               "7": 2.5,
+               "8": 2.75,
+               "9": 3,
+               "10": 3.5,
+
+           };
+
+
+           //calculator
+           console.log('expPreference:' + expPreference);
+           console.log('numOutfits:' + numOutfits);
+           console.log('photoType:' + photoType);
+           console.log('sessionLength:' + sessionLength);
+           //!(isNaN(sessionLength) && isNaN(expPreference) && isNaN(numOutfits) && isNaN(photoType))
+           if ((sessionLength !== NaN && expPreference !== NaN && numOutfits !== NaN && photoType !== NaN)) {
+               finalPrice = Math.round((priceDict[photoType] + initialPrice) * (experienceDict[expPreference] * outfitDict[numOutfits] * sessionDict[sessionLength]), 2);
+               console.log('CHANGE DETECTED');
+               if (finalPrice > 0){
+                   $("#calculator").html("<h1 id='finalUserInfo'> " + "Estimated cost of services:<br><br>" + "$" + finalPrice + "</h1>");
+               } else {
+                   $("#calculator").html("<h1 id='finalUserInfo'> " + "<br>Please select all form options to get an estimated price." + "</h1>");
+                   
+               }
+               
+               
+           }
+           else {
+               console.log('null, continuing')
+           }
+       }
+
+       function showImgInput() {
+           is_photographer = document.querySelector('.radioButtons1:checked').value;
+           imageInputDiv = document.getElementById('imageInputDiv')
+
+           if (is_photographer == "Photographer") {
+               imageInputDiv.style.display = 'block';
+           }
+           else {
+               imageInputDiv.style.display = 'none';
+           }
+
+       }
+	</script> 
+
+
+    <link rel="stylesheet" type="text/css" href="survey_styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="script.js"></script>
+</head>
+
+
+<body id="bodyID">
+
+    <!-- <div class="nav">
+        <a href="index.html"><i class="fa fa-fw fa-home"></i> Home</a>
+        <a href="survey.html"><i class="fa fa-fw fa-pencil-square-o"></i>Survey</a>
+    </div> -->
+
+ <!-- Survey questions form -->
+
+    <div id="formDiv" class="survey-container">
+        <div class="nav">
+            <a href="index.html"><i class="fa fa-fw fa-home"></i> Home</a>
+            <a href="survey.html"><i class="fa fa-fw fa-pencil-square-o"></i>Survey</a>
+        </div>
+        <div id="white-background">
+            <h1 id="filloutSurvey">POST-MEETING SURVEY</h1>
+            <div id="mainDiv" class="survey-body">
+                <div id="calculator" style="text-align: right;">
+
+                </div>
+                <form onsubmit="CreateAccount($('#.radioButtons1:checked').val(), $('#mentUser').val(), $('#firstName').val(),
+                $('#lastName').val(), $('.radioButtons2:checked').val(),
+                $('.radioButtons3:checked').val(), $('.radioButtons4:checked').val()); return false;">
+                    <br>
+
+                    <!-- <label class="questions">Are you a Mentor or Mentee?</label><br>
+                    <input onchange="showImgInput()" class="radioButtons radioButtons1" type="radio" id="userTypeChoiceOne" name="userTypeSelection" value="Mentor" required>
+                    <label class="userTypeLabels" for="userTypeChoiceOne">Mentor</label><br>
+                    <input onchange ="showImgInput()" class="radioButtons radioButtons1" type="radio" id="userTypeChoiceTwo" name="userTypeSelection" value="Mentee">
+                    <label class="userTypeLabels" for="userTypeChoiceTwo">Mentee</label><br><br> -->
+
+                    
+                    <label class="questions" for="mentUser">Username of your Mentor/Mentee:</label>
+                    <input class="inputBox" id="mentUser" type="text" placeholder="Mentor/Mentee" required><br><br>
+
+                    <label class="questions">Please input a brief summary of your meeting.</label><br>
+                    <textarea class="inputBox" id="meetingNotes" rows="10" cols="62" required></textarea><br><br>
+
+                    <label class="questions">How would you rate this meeting on a scale of 1-10?</label><br>
+                    <input onchange="calcPoints()" class="radioButtons radioButtons2" type="radio" id="ratingChoiceOne" name="ratingSelection" value="1" required>
+                    <label class="ratingLabels" for="typeChoiceOne">1</label><br>
+
+                    <input onchange="calcPoints()" class="radioButtons radioButtons2" type="radio" id="ratingChoiceTwo" name="ratingSelection" value="2" required>
+                    <label class="ratingLabels" for="typeChoiceTwo">2</label><br>
+
+                    <input onchange="calcPoints()" class="radioButtons radioButtons2" type="radio" id="ratingChoiceThree" name="ratingSelection" value="3" required>
+                    <label class="ratingLabels" for="typeChoiceThree">3</label><br>
+
+                    <input onchange="calcPoints()" class="radioButtons radioButtons2" type="radio" id="ratingChoiceFour" name="ratingSelection" value="4" required>
+                    <label class="ratingLabels" for="typeChoiceFour">4</label><br>
+
+                    <input onchange="calcPoints()" class="radioButtons radioButtons2" type="radio" id="typeChoiceFive" name="photoTypeSelection" value="5" required>
+                    <label class="ratingLabels" for="typeChoiceFive">5</label><br>
+
+                    <input onchange="calcPoints()" class="radioButtons radioButtons2" type="radio" id="ratingChoiceSix" name="ratingSelection" value="6" required>
+                    <label class="ratingLabels" for="typeChoiceSix">6</label><br>
+
+                    <input onchange="calcPoints()" class="radioButtons radioButtons2" type="radio" id="ratingChoiceSeven" name="ratingSelection" value="7" required>
+                    <label class="ratingLabels" for="typeChoiceSeven">7</label><br>
+
+                    <input onchange="calcPoints()" class="radioButtons radioButtons2" type="radio" id="ratingChoiceEight" name="ratingSelection" value="8" required>
+                    <label class="ratingLabels" for="typeChoiceEight">8</label><br>
+
+                    <input onchange="calcPoints()" class="radioButtons radioButtons2" type="radio" id="ratingChoiceNine" name="ratingSelection" value="9" required>
+                    <label class="ratingLabels" for="typeChoiceNine">9</label><br>
+
+                    <input onchange="calcPoints()" class="radioButtons radioButtons2" type="radio" id="ratingChoiceTen" name="ratingSelection" value="10" required>
+                    <label class="ratingLabels" for="typeChoiceTen">10</label><br>
+
+                    <label class="questions">Do you feel this meeting was effective for both of you?</label><br>
+                    <input onchange="calcPoints()" class="radioButtons radioButtons4" type="radio" id="guidanceTrue" name="guidanceBool" value="1" required>
+                    <label class="guidanceLabels" for="guidanceTrue">True</label><br>
+
+                    <input onchange="calcPoints()" class="radioButtons radioButtons4" type="radio" id="guidanceFalse" name="guidanceBool" value="0" required>
+                    <label class="guidanceLabels" for="guidanceFalse">False</label><br>
+
+
+                    <input id="Signup" class="inputBox" type="submit" value="Submit">
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
