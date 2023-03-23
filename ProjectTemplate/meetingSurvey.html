@@ -133,22 +133,15 @@
                 $('.radioButtons3:checked').val(), $('.radioButtons4:checked').val()); return false;">
                     <br>
 
-                    <label class="questions">Are you a Mentor or Mentee?</label><br>
+                    <!-- <label class="questions">Are you a Mentor or Mentee?</label><br>
                     <input onchange="showImgInput()" class="radioButtons radioButtons1" type="radio" id="userTypeChoiceOne" name="userTypeSelection" value="Mentor" required>
                     <label class="userTypeLabels" for="userTypeChoiceOne">Mentor</label><br>
                     <input onchange ="showImgInput()" class="radioButtons radioButtons1" type="radio" id="userTypeChoiceTwo" name="userTypeSelection" value="Mentee">
-                    <label class="userTypeLabels" for="userTypeChoiceTwo">Mentee</label><br><br>
+                    <label class="userTypeLabels" for="userTypeChoiceTwo">Mentee</label><br><br> -->
 
                     
                     <label class="questions" for="mentUser">Username of your Mentor/Mentee:</label>
-                    <input class="inputBox" id="mentUser" type="text" placeholder="Mentor/Mentee" required>
-
-
-                    <label class="questions" for="firstName">First Name:</label>
-                    <input class="inputBox" type="text" id="firstName" name="firstName" required><br><br>
-
-                    <label class="questions" for="lastName">Last Name:</label>
-                    <input class="inputBox" type="text" id="lastName" name="lastName" required><br><br>
+                    <input class="inputBox" id="mentUser" type="text" placeholder="Mentor/Mentee" required><br><br>
 
                     <label class="questions">Please input a brief summary of your meeting.</label><br>
                     <textarea class="inputBox" id="meetingNotes" rows="10" cols="62" required></textarea><br><br>
@@ -184,7 +177,7 @@
                     <input onchange="calcPoints()" class="radioButtons radioButtons2" type="radio" id="ratingChoiceTen" name="ratingSelection" value="10" required>
                     <label class="ratingLabels" for="typeChoiceTen">10</label><br>
 
-                    <label class="questions">Do you feel you received effective guidance during this meeting?</label><br>
+                    <label class="questions">Do you feel this meeting was effective for both of you?</label><br>
                     <input onchange="calcPoints()" class="radioButtons radioButtons4" type="radio" id="guidanceTrue" name="guidanceBool" value="1" required>
                     <label class="guidanceLabels" for="guidanceTrue">True</label><br>
 
