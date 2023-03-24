@@ -23,11 +23,10 @@
                dataType: "json",
                success: function (msg) {
                    if (msg.d) {
-                       alert("Account created, logging you in.");
-                       window.location.href = 'home.html';
+                       alert("success");
                    }
                    else {
-                       alert("A username already exists! Please try another.")
+                       alert("error")
                    }
                },
                error: function (e) {
