@@ -307,7 +307,7 @@ namespace ProjectTemplate
 
             if (isMentorCheck())
             {
-                sqlSelect = "SELECT u.first_name, m.date FROM meetings m INNER JOIN mentorship_users u on m.mentee_username = u.username " +
+                sqlSelect = "SELECT m.meeting_id, u.first_name, m.date FROM meetings m INNER JOIN mentorship_users u on m.mentee_username = u.username " +
                     "WHERE mentor_username = @mentorUsernameValue ORDER BY 2";
                 MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
@@ -317,7 +317,8 @@ namespace ProjectTemplate
 
                 for (int i = 0; i < sqlDt.Rows.Count; i++)
                 {
-                    output += "{" + "\"connection\":\"" + sqlDt.Rows[i]["first_name"] + "\",\"date\":\"" + Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() + "\"}";
+                    output += "{" + "\"meetingID\":" + sqlDt.Rows[i]["meeting_id"] + "\",\"connection\":\"" + sqlDt.Rows[i]["first_name"] + "\",\"date\":\"" + 
+                        Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() + "\"}";
 
                     if (i != sqlDt.Rows.Count - 1)
                     {
@@ -329,7 +330,7 @@ namespace ProjectTemplate
             }
             else
             {
-                sqlSelect = "SELECT u.first_name, m.date FROM meetings m INNER JOIN mentorship_users u on m.mentor_username = u.username " +
+                sqlSelect = "SELECT m.meeting_id, u.first_name, m.date FROM meetings m INNER JOIN mentorship_users u on m.mentor_username = u.username " +
                     "WHERE mentee_username = @menteeUsernameValue ORDER BY 2";
                 MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@menteeUsernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
@@ -339,7 +340,8 @@ namespace ProjectTemplate
 
                 for (int i = 0; i < sqlDt.Rows.Count; i++)
                 {
-                    output += "{" + "\"connection\":\"" + sqlDt.Rows[i]["first_name"] + "\",\"date\":\"" + Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() + "\"}";
+                    output += "{" + "\"meetingID\":" + sqlDt.Rows[i]["meeting_id"] + "\",\"connection\":\"" + sqlDt.Rows[i]["first_name"] + "\",\"date\":\"" +
+                        Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() + "\"}";
 
                     if (i != sqlDt.Rows.Count - 1)
                     {
