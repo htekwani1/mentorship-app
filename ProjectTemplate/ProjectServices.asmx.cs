@@ -164,7 +164,6 @@ namespace ProjectTemplate
 
             MySqlConnection sqlConnection = new MySqlConnection(getConString());
             MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
-
             sqlCommand.Parameters.AddWithValue("@usernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
 
             MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
@@ -173,7 +172,7 @@ namespace ProjectTemplate
 
             string output = "[";
 
-            for(int i = 0; i < sqlDt.Rows.Count; i++)
+            for (int i = 0; i < sqlDt.Rows.Count; i++)
             {
                 output += "{" + "\"username\":\"" + sqlDt.Rows[i]["username"] + "\", \"firstName\":\"" + sqlDt.Rows[i]["first_name"] + "\"}";
 
@@ -187,6 +186,40 @@ namespace ProjectTemplate
             return output;
         }
 
+        [WebMethod(EnableSession = true)]
+        public bool parseMeetingSurvey(string subject_username, string meetingNotes, int rating, int effectiveness)
+        {
+            string sqlSelect;
+
+            sqlSelect = "insert into survey_responses (respondent_username, subject_username, meeting_summary, overall_rating, effectiveness)" +
+                        "values (@respondentUsernameValue, @subjectUsernameValue, @meetingSummaryValue, @overallRatingValue, @effectivenessValue);";
+
+            MySqlConnection sqlConnection = new MySqlConnection(getConString());
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+            sqlCommand.Parameters.AddWithValue("@respondentUsernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
+            sqlCommand.Parameters.AddWithValue("@subjectUsernameValue", HttpUtility.UrlDecode(subject_username));
+            sqlCommand.Parameters.AddWithValue("@meetingSummaryValue", HttpUtility.UrlDecode(meetingNotes));
+            sqlCommand.Parameters.AddWithValue("@overallRatingValue", rating);
+            sqlCommand.Parameters.AddWithValue("@effectivenessValue", effectiveness);
+
+
+            sqlConnection.Open();
+
+            try
+            {
+                sqlCommand.ExecuteNonQuery();
+                sqlConnection.Close();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                sqlConnection.Close();
+                return false;
+            }
+        }
+        
         [WebMethod(EnableSession = true)]
         public bool scheduleMeeting(string otherUsername, string date)
         {
@@ -251,7 +284,6 @@ namespace ProjectTemplate
             }
 
         }
-
 
         [WebMethod(EnableSession =true)]
         public bool isMentorCheck()
