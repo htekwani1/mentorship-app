@@ -3,6 +3,25 @@
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
    <script type="text/javascript">
+       //function initialzeConnections() {
+       //    var webMethod = "ProjectServices.asmx/getMeetings";
+
+       //    $.ajax({
+       //        type: "POST",
+       //        url: webMethod,
+       //        contentType: "application/json; charset=utf-8",
+       //        dataType: "json",
+       //        success: function (msg) {
+
+       //        },
+       //        error: function (e) {
+       //            alert("Issue!");
+       //        }
+       //    });
+
+       //}
+
+
        function parseMeetingSurvey(subject_username, meetingNotes, rating, effectiveness) {
            var webMethod = "ProjectServices.asmx/parseMeetingSurvey";
            var parameters = "{\"subject_username\":\"" + encodeURI(subject_username) + "\",\"meetingNotes\":\"" + encodeURI(meetingNotes) +
@@ -129,6 +148,9 @@
                 </div>
                 <form onsubmit="parseMeetingSurvey( $('#mentUser').val(), $('#meetingNotes').val(), $('#.radioButtons1:checked').val(), $('.radioButtons2:checked').val()); return false;">
                     <br>
+                    <select id="otherUserSelectID">
+
+                    </select>
 
                     <!-- <label class="questions">Are you a Mentor or Mentee?</label><br>
                     <input onchange="showImgInput()" class="radioButtons radioButtons1" type="radio" id="userTypeChoiceOne" name="userTypeSelection" value="Mentor" required>
@@ -137,8 +159,8 @@
                     <label class="userTypeLabels" for="userTypeChoiceTwo">Mentee</label><br><br> -->
 
                     
-                    <label class="questions" for="mentUser">Username of your Mentor/Mentee:</label>
-                    <input class="inputBox" id="mentUser" type="text" placeholder="Mentor/Mentee" required><br><br>
+                    <!--<label class="questions" for="mentUser">Username of your Mentor/Mentee:</label>
+                    <input class="inputBox" id="mentUser" type="text" placeholder="Mentor/Mentee" required><br><br>-->
 
                     <label class="questions">Please input a brief summary of your meeting.</label><br>
                     <textarea class="inputBox" id="meetingNotes" rows="10" cols="62" required></textarea><br><br>

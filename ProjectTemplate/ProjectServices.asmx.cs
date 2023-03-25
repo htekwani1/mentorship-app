@@ -297,5 +297,60 @@ namespace ProjectTemplate
                 return false;
             }
         }
+
+        [WebMethod(EnableSession =true)]
+        public string getMeetings()
+        {
+            string output = "[";
+            string sqlSelect;
+            MySqlConnection sqlConnection = new MySqlConnection(getConString());
+
+            if (isMentorCheck())
+            {
+                sqlSelect = "SELECT u.first_name, m.date FROM meetings m INNER JOIN mentorship_users u on m.mentee_username = u.username " +
+                    "WHERE mentor_username = @mentorUsernameValue ORDER BY 2";
+                MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+                sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
+                MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+                DataTable sqlDt = new DataTable("meetingsWithMentees");
+                sqlDa.Fill(sqlDt);
+
+                for (int i = 0; i < sqlDt.Rows.Count; i++)
+                {
+                    output += "{" + "\"connection\":\"" + sqlDt.Rows[i]["first_name"] + "\",\"date\":\"" + Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() + "\"}";
+
+                    if (i != sqlDt.Rows.Count - 1)
+                    {
+                        output += ",";
+                    }
+
+                }
+
+            }
+            else
+            {
+                sqlSelect = "SELECT u.first_name, m.date FROM meetings m INNER JOIN mentorship_users u on m.mentor_username = u.username " +
+                    "WHERE mentee_username = @menteeUsernameValue ORDER BY 2";
+                MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+                sqlCommand.Parameters.AddWithValue("@menteeUsernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
+                MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+                DataTable sqlDt = new DataTable("meetingsWithMentors");
+                sqlDa.Fill(sqlDt);
+
+                for (int i = 0; i < sqlDt.Rows.Count; i++)
+                {
+                    output += "{" + "\"connection\":\"" + sqlDt.Rows[i]["first_name"] + "\",\"date\":\"" + Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() + "\"}";
+
+                    if (i != sqlDt.Rows.Count - 1)
+                    {
+                        output += ",";
+                    }
+                }
+
+            }
+
+            return output;
+
+        }
     }
 }
