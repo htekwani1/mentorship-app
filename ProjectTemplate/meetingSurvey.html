@@ -3,28 +3,34 @@
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
    <script type="text/javascript">
-       //function initialzeConnections() {
-       //    var webMethod = "ProjectServices.asmx/getMeetings";
+       function initialzeConnections() {
+           var webMethod = "ProjectServices.asmx/getMeetingsNoResponse";
+           var meetingSelector = document.getElementById('meetingSelectID');
 
-       //    $.ajax({
-       //        type: "POST",
-       //        url: webMethod,
-       //        contentType: "application/json; charset=utf-8",
-       //        dataType: "json",
-       //        success: function (msg) {
+           $.ajax({
+               type: "POST",
+               url: webMethod,
+               contentType: "application/json; charset=utf-8",
+               dataType: "json",
+               success: function (msg) {
+                   let jsonObjs = JSON.parse(msg.d);
+                   for (let i = 0; i < jsonObjs.length; i++) {
+                       optionElement = document.createElement('option');
+                       optionElement.value = jsonObjs[i].meetingID;
+                       optionElement.innerText = `Meeting with ${jsonObjs[i].connection} on ${jsonObjs[i].date}`;
+                       meetingSelector.appendChild(optionElement);
+                   }
+               },
+               error: function (e) {
+                   alert("Issue!");
+               }
+           });
 
-       //        },
-       //        error: function (e) {
-       //            alert("Issue!");
-       //        }
-       //    });
+       }
 
-       //}
-
-
-       function parseMeetingSurvey(subject_username, meetingNotes, rating, effectiveness) {
+       function parseMeetingSurvey(meeting_id, meetingNotes, rating, effectiveness) {
            var webMethod = "ProjectServices.asmx/parseMeetingSurvey";
-           var parameters = "{\"subject_username\":\"" + encodeURI(subject_username) + "\",\"meetingNotes\":\"" + encodeURI(meetingNotes) +
+           var parameters = "{\"meetingID\":\"" + encodeURI(meeting_id) + "\",\"meetingNotes\":\"" + encodeURI(meetingNotes) +
                "\",\"rating\":\"" + encodeURI(rating) + "\",\"effectiveness\":\"" + encodeURI(effectiveness) + "\"}";
 
             //    "\",\"isPhotographer\":\""
@@ -42,7 +48,8 @@
                dataType: "json",
                success: function (msg) {
                    if (msg.d) {
-                       alert("success");
+                       alert("Your responses have been recorded. Thank you for your feedback.");
+                       window.location.reload();
                    }
                    else {
                        alert("error")
@@ -126,7 +133,7 @@
 </head>
 
 
-<body id="bodyID">
+<body onload="initialzeConnections()" id="bodyID">
 
     <!-- <div class="nav">
         <a href="index.html"><i class="fa fa-fw fa-home"></i> Home</a>
@@ -146,11 +153,13 @@
                 <div id="calculator" style="text-align: right;">
 
                 </div>
-                <form onsubmit="parseMeetingSurvey( $('#mentUser').val(), $('#meetingNotes').val(), $('#.radioButtons1:checked').val(), $('.radioButtons2:checked').val()); return false;">
+                <form onsubmit="parseMeetingSurvey($('#meetingSelectID').val(), $('#meetingNotes').val(), $('.radioButtons1:checked').val(), $('.radioButtons2:checked').val()); return false;">
                     <br>
-                    <select id="otherUserSelectID">
+                    <label for="meetingSelectID" class="questions">Select the meeting you are filling out the survey for.</label>
+                    <select id="meetingSelectID" required>
+                        <option value="" disabled selected>Select a Meeting</option>
+                    </select><br><br>
 
-                    </select>
 
                     <!-- <label class="questions">Are you a Mentor or Mentee?</label><br>
                     <input onchange="showImgInput()" class="radioButtons radioButtons1" type="radio" id="userTypeChoiceOne" name="userTypeSelection" value="Mentor" required>
@@ -169,31 +178,31 @@
                     <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceOne" name="ratingSelection" value="1" required>
                     <label class="ratingLabels" for="typeChoiceOne">1</label><br>
 
-                    <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceTwo" name="ratingSelection" value="2" required>
+                    <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceTwo" name="ratingSelection" value="2" >
                     <label class="ratingLabels" for="typeChoiceTwo">2</label><br>
 
-                    <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceThree" name="ratingSelection" value="3" required>
+                    <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceThree" name="ratingSelection" value="3" >
                     <label class="ratingLabels" for="typeChoiceThree">3</label><br>
 
-                    <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceFour" name="ratingSelection" value="4" required>
+                    <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceFour" name="ratingSelection" value="4" >
                     <label class="ratingLabels" for="typeChoiceFour">4</label><br>
 
-                    <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="typeChoiceFive" name="photoTypeSelection" value="5" required>
+                    <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratinfChoiceFive" name="ratingSelection" value="5" >
                     <label class="ratingLabels" for="typeChoiceFive">5</label><br>
 
-                    <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceSix" name="ratingSelection" value="6" required>
+                    <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceSix" name="ratingSelection" value="6" >
                     <label class="ratingLabels" for="typeChoiceSix">6</label><br>
 
-                    <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceSeven" name="ratingSelection" value="7" required>
+                    <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceSeven" name="ratingSelection" value="7" >
                     <label class="ratingLabels" for="typeChoiceSeven">7</label><br>
 
-                    <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceEight" name="ratingSelection" value="8" required>
+                    <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceEight" name="ratingSelection" value="8" >
                     <label class="ratingLabels" for="typeChoiceEight">8</label><br>
 
-                    <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceNine" name="ratingSelection" value="9" required>
+                    <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceNine" name="ratingSelection" value="9">
                     <label class="ratingLabels" for="typeChoiceNine">9</label><br>
 
-                    <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceTen" name="ratingSelection" value="10" required>
+                    <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceTen" name="ratingSelection" value="10">
                     <label class="ratingLabels" for="typeChoiceTen">10</label><br>
 
                     <label class="questions">Do you feel this meeting was effective for both of you?</label><br>
