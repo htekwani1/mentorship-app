@@ -31,9 +31,9 @@ Changelog Table of Contents:
 **<a name="sprint-1"></a> Sprint 1**
 
 Andrew: 
-3/23 - Set up tables for connections & meetings
-3/24 - Set up function for users to add meetings + front-end display. Set up table to track meeting responses and began function for returning meetings specific to the user.
-3/26 - Altered survey page & parsing function so users can provide feedback on specific meetings for which they have not responded on yet.
+3/23 - Set up tables for connections & meetings<br>
+3/24 - Set up function for users to add meetings + front-end display. Set up table to track meeting responses and began function for returning meetings specific to the user.<br>
+3/26 - Altered survey page & parsing function so users can provide feedback on specific meetings for which they have not responded on yet.<br>
 
 Cindy: 
 
