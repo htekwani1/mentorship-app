@@ -12,7 +12,7 @@
 <body>
     <nav class="navbar navbar-expand-sm bg-light">
         <a class="navbar-brand" href="#">
-          <img src="logoSquare.png" alt="Logo" style="width:40px;">
+          <img class="rounded" src="logoSquare.png" alt="Logo" style="width:40px;">
         </a>
         <ul class="navbar-nav">
           <li class="nav-item">
@@ -26,11 +26,14 @@
           </li>
         </ul>
         <ul class="navbar-nav ml-auto">
+            <a class="navbar-brand" href="#">
+                <img class="rounded" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Logo" style="width:40px;">
+            </a>
             <li class="nav-item">
-                <a class="nav-link" href="#">Points: </a>
+                <a class="nav-link" href="#">Points: 1050</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">Logout</a>
+                <a class="nav-link" href="#">Logout</a>
             </li>
         </ul>
     </nav>
@@ -43,7 +46,7 @@
                         <h4 class="card-title">Backpack</h4>
                         <p class="card-text">Padded 15" laptop sleeve to protect your devices. </p>
                         <p class="card-text">1500 Points</p>
-                        <a href="#" class="btn btn-primary">Redeem</a>
+                        <button type="modal" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Redeem</button>
                     </div>
                 </div>
             </div>
@@ -54,10 +57,36 @@
                         <h4 class="card-title">Water Bottle</h4>
                         <p class="card-text">Stainless steel, insulated, refillable 32 oz bottle. </p>
                         <p class="card-text">750 Points</p>
-                        <a href="#" class="btn btn-primary">Redeem</a>
+                        <button type="modal" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Redeem</button>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h4 class="modal-title">Redeem</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+            Would you like to redeem this item?
+            </div>
+            
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Redeem</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+            
+        </div>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
