@@ -93,9 +93,7 @@ namespace ProjectTemplate
                 sqlSelect = "insert into mentorship_users (username, password, email, first_name, points, points_goal, is_mentor) " +
                 "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, 0, pointsGoalValue, 1);" +
                 "insert into mentors " +
-                "values(@usernameValue, 0);" +
-                "insert into connections (mentor_username)" +
-                "values(@usernameValue)";
+                "values(@usernameValue, 0)";
             }
             else
             {
