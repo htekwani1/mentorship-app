@@ -79,27 +79,32 @@ namespace ProjectTemplate
         }
 
         [WebMethod(EnableSession = true)]
-        public bool CreateAccount(string username, string password, string email, string firstName, string isPhotographer, 
-            string availability, string style, string type, string range, string experience, string sessionLength, string numOutfits, string imageURL)
+        public bool CreateAccount(string username, string password, string email, string firstName, string lastName, 
+            string isMentor, string pointsGoal, string mentorUsername)
         {
             string sqlSelect;
 
-            //Insert statements depend on whether or not user is is_photographer
-            if (isPhotographer == "Photographer")
+            //Insert statements depend on whether or not user is is_mentor
+            //An initial point value of 0 is inserted into points column of mentorship_users table because new users will not have any points right after making an account
+            //An initial point value of 0 is inserted into relationship_count column of mentors table because they do not need to enter a mentee's username to make an account while mentees table's relationship_count column will begin with a value of 1 because mentees need to enter a mentor username to create a mentee account, meaning they have a connection
+            if (isMentor == "Mentor")
             {
 
-                sqlSelect = "insert into users (username, password, email, first_name, is_photographer) " +
-                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, 1);" +
-                "insert into photographers " +
-                "values(@usernameValue, @availabilityValue, @styleValue, @typeValue, @rangeValue, " +
-                "@experienceValue, @sessionLengthValue, @numOutfitsValue, @imageURLValue);";
+                sqlSelect = "insert into mentorship_users (username, password, email, first_name, points, points_goal, is_mentor) " +
+                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, 0, pointsGoalValue, 1);" +
+                "insert into mentors " +
+                "values(@usernameValue, 0);" +
+                "insert into connections (mentor_username)" +
+                "values(@usernameValue)";
             }
             else
             {
-                sqlSelect = "insert into users (username, password, email, first_name, is_photographer) " +
-                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, 0);" +
-                "insert into clients (username, availability, style, type, budget_range, experience, session_length, num_outfits)" +
-                "values(@usernameValue, @availabilityValue, @styleValue, @typeValue, @rangeValue, @experienceValue, @sessionLengthValue, @numOutfitsValue);";
+                sqlSelect = "insert into mentorship_users (username, password, email, first_name, points, points_goal, is_mentor) " +
+                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, 0, pointsGoalValue, 0);" +
+                "insert into mentees " +
+                "values(@usernameValue, 1);" +
+                "insert into connections " +
+                "values(@usernameValue, @mentorUsernameValue)";
             }
 
             MySqlConnection sqlConnection = new MySqlConnection(getConString());
@@ -109,15 +114,19 @@ namespace ProjectTemplate
             sqlCommand.Parameters.AddWithValue("@passwordValue", HttpUtility.UrlDecode(password));
             sqlCommand.Parameters.AddWithValue("@emailValue", HttpUtility.UrlDecode(email));
             sqlCommand.Parameters.AddWithValue("@firstNameValue", HttpUtility.UrlDecode(firstName));
+            sqlCommand.Parameters.AddWithValue("@lastNameValue", HttpUtility.UrlDecode(lastName));
 
-            sqlCommand.Parameters.AddWithValue("@availabilityValue", HttpUtility.UrlDecode(availability));
-            sqlCommand.Parameters.AddWithValue("@styleValue", HttpUtility.UrlDecode(style));
-            sqlCommand.Parameters.AddWithValue("@typeValue", HttpUtility.UrlDecode(type));
-            sqlCommand.Parameters.AddWithValue("@rangeValue", HttpUtility.UrlDecode(range));
-            sqlCommand.Parameters.AddWithValue("@experienceValue", HttpUtility.UrlDecode(experience));
-            sqlCommand.Parameters.AddWithValue("@sessionLengthValue", HttpUtility.UrlDecode(sessionLength));
-            sqlCommand.Parameters.AddWithValue("@numOutfitsValue", HttpUtility.UrlDecode(numOutfits));
-            sqlCommand.Parameters.AddWithValue("@imageURLValue", HttpUtility.UrlDecode(imageURL));
+            sqlCommand.Parameters.AddWithValue("@pointsGoalValue", HttpUtility.UrlDecode(pointsGoal));
+            sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(mentorUsername));
+
+            // sqlCommand.Parameters.AddWithValue("@availabilityValue", HttpUtility.UrlDecode(availability));
+            // sqlCommand.Parameters.AddWithValue("@styleValue", HttpUtility.UrlDecode(style));
+            // sqlCommand.Parameters.AddWithValue("@typeValue", HttpUtility.UrlDecode(type));
+            // sqlCommand.Parameters.AddWithValue("@rangeValue", HttpUtility.UrlDecode(range));
+            // sqlCommand.Parameters.AddWithValue("@experienceValue", HttpUtility.UrlDecode(experience));
+            // sqlCommand.Parameters.AddWithValue("@sessionLengthValue", HttpUtility.UrlDecode(sessionLength));
+            // sqlCommand.Parameters.AddWithValue("@numOutfitsValue", HttpUtility.UrlDecode(numOutfits));
+            // sqlCommand.Parameters.AddWithValue("@imageURLValue", HttpUtility.UrlDecode(imageURL));
 
 
             sqlConnection.Open();
@@ -127,13 +136,13 @@ namespace ProjectTemplate
                 sqlConnection.Close();
                 //Set session variables 
                 Session["username"] = username;
-                if (isPhotographer == "Photographer")
+                if (isMentor == "Mentor")
                 {
-                    Session["isPhotographer"] = 1;
+                    Session["isMentor"] = 1;
                 }
                 else
                 {
-                    Session["isPhotographer"] = 0;
+                    Session["isMentor"] = 0;
                 }
                 return true;
             }

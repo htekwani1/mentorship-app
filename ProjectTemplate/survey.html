@@ -3,11 +3,14 @@
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
    <script type="text/javascript">
-       function CreateAccount(username, password, email, firstName, isPhotographer, availability, style, type, range, experience, sessionLength, numOutfits, imageURL) {
+       function CreateAccount(username, password, email, firstName, lastName, isMentor, pointsGoal, mentorUsername) {
            var webMethod = "ProjectServices.asmx/CreateAccount";
            var parameters = "{\"username\":\"" + encodeURI(username) + "\",\"password\":\"" + encodeURI(password) +
                "\",\"email\":\"" + encodeURI(email) + "\",\"firstName\":\"" + encodeURI(firstName) + "\",\"lastName\":\"" + 
-               encodeURI(lastName)  + "\"}";
+               encodeURI(lastName)  + "\",\"isMentor\":\"" + 
+               encodeURI(isMentor)  + "\",\"pointsGoal\":\"" + 
+               encodeURI(pointsGoal)  + "\",\"mentorUsername\":\"" + 
+               encodeURI(mentorUsername)  + "\"}";
 
             //    "\",\"isPhotographer\":\""
             //    + encodeURI(isPhotographer) + "\",\"availability\":\"" + encodeURI(availability) +
@@ -88,10 +91,10 @@
        }
 
        function showImgInput() {
-           is_photographer = document.querySelector('.radioButtons1:checked').value;
+           is_mentee = document.querySelector('.radioButtons1:checked').value;
            imageInputDiv = document.getElementById('imageInputDiv')
 
-           if (is_photographer == "Photographer") {
+           if (is_mentee == "Mentee") {
                imageInputDiv.style.display = 'block';
            }
            else {
@@ -129,16 +132,14 @@
 
                 </div>
                 <form onsubmit="CreateAccount($('#usernameInput').val(), $('#passwordInput').val(), $('#emailAddress').val(),
-                $('#firstName').val(), $('.radioButtons1:checked').val(), $('#availabilityInput').val(), $('.radioButtons2:checked').val(),
-                $('.radioButtons3:checked').val(), $('#budgetOrRates').val(), $('.radioButtons4:checked').val(), $('.radioButtons5:checked').val(),
-                $('.radioButtons6:checked').val(), $('#imageURLId').val()); return false;">
+                $('#firstName').val(), $('#lastName').val(), $('.radioButtons1:checked').val(), $('#pointGoal').val(), $('#mentorUsernameInput').val()); return false;">
                     <br>
 
-                    <label class="questions">Are you a photographer or a client?</label><br>
-                    <input onchange="showImgInput()" class="radioButtons radioButtons1" type="radio" id="userTypeChoiceOne" name="userTypeSelection" value="Photographer" required>
-                    <label class="userTypeLabels" for="userTypeChoiceOne">Photographer</label><br>
-                    <input onchange ="showImgInput()" class="radioButtons radioButtons1" type="radio" id="userTypeChoiceTwo" name="userTypeSelection" value="Client">
-                    <label class="userTypeLabels" for="userTypeChoiceTwo">Client</label><br><br>
+                    <label class="questions">Are you a mentee or a mentor?</label><br>
+                    <input onchange="showImgInput()" class="radioButtons radioButtons1" type="radio" id="userTypeChoiceOne" name="userTypeSelection" value="Mentee" required>
+                    <label class="userTypeLabels" for="userTypeChoiceOne">Mentee</label><br>
+                    <input onchange ="showImgInput()" class="radioButtons radioButtons1" type="radio" id="userTypeChoiceTwo" name="userTypeSelection" value="Mentor">
+                    <label class="userTypeLabels" for="userTypeChoiceTwo">Mentor</label><br><br>
 
                     <input class="inputBox" id="usernameInput" type="text" placeholder="Username" required>
                     <input class="inputBox" id="passwordInput" type="password" placeholder="Password" required><br><br>
@@ -146,10 +147,13 @@
                     <label class="questions" for="firstName">First Name:</label>
                     <input class="inputBox" type="text" id="firstName" name="firstName" required><br><br>
 
+                    <label class="questions" for="lastName">Last Name:</label>
+                    <input class="inputBox" type="text" id="lastName" name="lastName" required><br><br>
+
                     <label class="questions" for="emailAddress">Email Address:</label>
                     <input class="inputBox" type="email" id="emailAddress" name="emailAddress" required><br><br>
 
-                    <label class="questions">When is your desired photo session? Please include month, day, and year.</label><br>
+                    <!-- <label class="questions">When is your desired photo session? Please include month, day, and year.</label><br>
                     <textarea class="inputBox" id="availabilityInput" rows="10" cols="62" required></textarea><br><br>
                     <label class="questions">Preferred photograph style?</label><br>
 
@@ -224,11 +228,19 @@
                     <input onchange="parseSurvey()" class="radioButtons radioButtons6" type="radio" id="numOutfits4" name="numOutfits" value="4 Outfits">
                     <label class="outfitLabels" for="numOutfits4">4 Outfits</label><br>
                     <input onchange="parseSurvey()" class="radioButtons radioButtons6" type="radio" id="numOutfits5" name="numOutfits" value="5 Outfits">
-                    <label class="outfitLabels" for="numOutfits5">5 Outfits</label><br><br>
+                    <label class="outfitLabels" for="numOutfits5">5 Outfits</label><br><br> -->
 
-                    <div id="imageInputDiv">
+                    <!-- <div id="imageInputDiv">
                         <label class="questions">Please provide a URL to one of your images:</label>
                         <input id="imageURLId" class="inputBox" type="text" value=""><br><br>
+                    </div> -->
+
+                    <label class="questions" for="pointGoal">Point Goal:</label>
+                    <input class="numberInput" type="number" id="pointGoal" name="pointGoal" min="0" max="100" required><br><br>
+
+                    <div id="imageInputDiv">
+                        <label class="questions">Please provide the name of your mentor:</label>
+                        <input id="mentorUsernameInput" class="inputBox" type="text" value=""><br><br>
                     </div>
 
                     <input id="Signup" class="inputBox" type="submit" value="Sign Up">
