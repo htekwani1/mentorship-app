@@ -90,14 +90,14 @@ namespace ProjectTemplate
             if (isMentor == "Mentor")
             {
 
-                sqlSelect = "insert into mentorship_users (username, password, email, first_name, points, points_goal, is_mentor) " +
+                sqlSelect = "insert into mentorship_users (username, password, email, first_name, last_name, points, points_goal, is_mentor) " +
                 "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, 0, pointsGoalValue, 1);" +
                 "insert into mentors " +
                 "values(@usernameValue, 0)";
             }
             else
             {
-                sqlSelect = "insert into mentorship_users (username, password, email, first_name, points, points_goal, is_mentor) " +
+                sqlSelect = "insert into mentorship_users (username, password, email, first_name, last_name, points, points_goal, is_mentor) " +
                 "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, 0, pointsGoalValue, 0);" +
                 "insert into mentees " +
                 "values(@usernameValue, 1);" +
