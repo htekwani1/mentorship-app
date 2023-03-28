@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="universal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
 </head>
     
 <body>
@@ -33,42 +32,35 @@
     <div id="pageTitle">
         Account Sign Up
     </div>
-    
-    <!-- Mentor checked radio -->
+
+    <!-- Sign up for Mentor or Mentee -->
     <form class="was-validated">
         <div id="radio_mentor" class="form-check">
             <input type="radio" class="form-check-input userTypeInputClass" id="validationFormCheck2" name="radio-stacked" required>
             <label class="form-check-label" for="validationFormCheck2">Sign up for Mentor</label>
         </div>
         <div id="radio_mentee" class="form-check mb-3">
-            <input type="radio" class="form-check-input userTypeInputClass" id="validationFormCheck3" name="radio-stacked" >
+            <input type="radio" class="form-check-input userTypeInputClass" id="validationFormCheck3" name="radio-stacked">
             <label class="form-check-label" for="validationFormCheck3">Sign up for Mentee</label>
             <div class="invalid-feedback">Please select one</div>
         </div>
-    </form>
-
-    <!-- User name inputBox -->
-    <form id="nameinput" action="/action_page.php" class="was-validated">
+        <!-- User name inputBox -->
         <div class="col-md-4">
-          <label for="validationServer01" class="form-label">First name</label>
-          <input type="text" class="form-control" id="validationServer01" required>
-          <div class="valid-feedback">Valid.</div>
-          <div class="invalid-feedback">Please fill out this field.</div>
+            <label for="validationServer01" class="form-label">First name</label>
+            <input type="text" class="form-control" id="validationServer01" required>
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
         </div>
         <div class="col-md-4">
-          <label for="validationServer02" class="form-label">Last name</label>
-          <input type="text" class="form-control" id="validationServer02" required>
-          <div class="valid-feedback">Valid.</div>
-          <div class="invalid-feedback">Please fill out this field.</div>
+            <label for="validationServer02" class="form-label">Last name</label>
+            <input type="text" class="form-control" id="validationServer02" required>
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
         </div>
-    </form>
-
-    <!-- email, username, password inputbox -->
-
-    <form action="/action_page.php" class="was-validated" id="inputboxes">
+        <!-- email, username, password inputbox -->
         <div class="form-group">
             <label for="email">Email Address:</label>
-            <input type="text" class="form-control" id="email" placeholder="Enter username" name="email" required>
+            <input type="text" class="form-control" id="email" placeholder="Enter email address" name="email" required>
             <div class="valid-feedback">Valid.</div>
             <div class="invalid-feedback">Please fill out this field.</div>
         </div>
@@ -84,22 +76,18 @@
             <div class="valid-feedback">Valid.</div>
             <div class="invalid-feedback">Please fill out this field.</div>
         </div>
-    </form>
-
-    <!-- point goal slide bar -->
-    <label id="pointgoal" for="customRange1" class="form-label">Point Goal</label>
-    <div id="slidebar">
-        <input type="range" class="form-range" min="100" max="1000" step="100" id="customRange1">
-    </div>
-
-    <!-- submit button -->
-    <form id="submitbutton">
+    
+        <!-- point goal slide bar -->
+        <label id="pointgoal" for="customRange1" class="form-label">Point Goal</label>
+        <div id="slidebar">
+            <input type="range" class="form-range" min="100" max="1000" step="100" id="customRange1">
+        </div>    
+        <!-- submit button -->
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
 </body>
 </html>
+
