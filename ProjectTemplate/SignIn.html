@@ -17,7 +17,7 @@
         </a>
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="relationships.html">Dashboard</a>
+            <a class="nav-link" href="#">Dashboard</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="SignIn.html">Survey</a>
@@ -81,10 +81,12 @@
         <label id="pointgoal" for="customRange1" class="form-label">Point Goal</label>
         <div id="slidebar">
             <input type="range" class="form-range slider" min="1" max="100" value="50" id="myRange">
+            <p>Value: <span id="demo"></span></p>
         </div>    
         <!-- submit button -->
         <button id="slidebar" type="submit" class="btn btn-primary">Submit</button>
     </form>
+
     <script>
         var slider = document.getElementById("myRange");
         var output = document.getElementById("demo");
