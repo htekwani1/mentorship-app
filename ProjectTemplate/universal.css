@@ -5,6 +5,11 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'roboBold';
+    src: url('roboto/Roboto-Bold.ttf');
+}
+
 :root {
     --lightBlue: #8ecae6;
     --greenBlue: #219ebc;
@@ -15,4 +20,52 @@
 
 nav {
     font-family: 'roboRegular';
+}
+
+/* SignIn.html */
+
+#pageTitle {
+    font-family: 'roboBold';
+    font-size: 30px;
+    margin: 10px 20px 20px 20px;
+}
+
+#radio_mentor {
+    font-family: 'roboRegular';
+    font-size: 18px;
+    margin: 5px 5px 10px 50px;
+}
+
+#radio_mentee {
+    font-family: 'roboRegular';
+    font-size: 18px;
+    margin: 10px 5px 5px 50px;
+}
+
+#nameinput {
+    font-family: 'roboRegular';
+    font-size: 18px;
+    margin: 30px 400px 20px 37px;
+}
+
+#inputboxes {
+    font-family: 'roboRegular';
+    font-size: 18px;
+    margin: 30px 400px 20px 50px;
+}
+
+#submitbutton {
+    font-family: 'roboRegular';
+    font-size: 18px;
+    margin: 30px 400px 20px 50px;
+}
+
+#pointgoal {
+    font-family: 'roboRegular';
+    font-size: 18px;
+    margin: 30px 400px 20px 50px;
+}
+
+#slidebar {
+    margin: 10px 100px 20px 50px;
 }
