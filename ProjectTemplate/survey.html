@@ -26,12 +26,12 @@
                contentType: "application/json; charset=utf-8",
                dataType: "json",
                success: function (msg) {
-                   if (msg.d) {
+                   if (msg.d == "Success") {
                        alert("Account created, logging you in.");
                        window.location.href = 'home.html';
                    }
                    else {
-                       alert("A username already exists! Please try another.")
+                       alert(msg.d);
                    }
                },
                error: function (e) {

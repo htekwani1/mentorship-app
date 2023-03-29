@@ -9,6 +9,7 @@ using System.Data;
 using System.Linq.Expressions;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
+using Xceed.Wpf.Toolkit;
 
 namespace ProjectTemplate
 {
@@ -79,7 +80,7 @@ namespace ProjectTemplate
         }
 
         [WebMethod(EnableSession = true)]
-        public bool CreateAccount(string username, string password, string email, string firstName, string lastName, 
+        public string CreateAccount(string username, string password, string email, string firstName, string lastName, 
             string isMentor, string pointsGoal, string mentorUsername)
         {
             string sqlSelect;
@@ -99,9 +100,7 @@ namespace ProjectTemplate
                 sqlSelect = "insert into mentorship_users (username, password, email, first_name, last_name, points, points_goal, is_mentor) " +
                 "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, 0, @pointsGoalValue, 0);" +
                 "insert into mentees " +
-                "values(@usernameValue, 1);" +
-                "insert into connections " +
-                "values(@usernameValue, @mentorUsernameValue)";
+                "values(@usernameValue, 0);";
             }
 
             MySqlConnection sqlConnection = new MySqlConnection(getConString());
@@ -140,16 +139,122 @@ namespace ProjectTemplate
                 else
                 {
                     Session["isMentor"] = 0;
+                    addConnection(username, mentorUsername);
                 }
-                return true;
+
+                return "Success";
             }
             catch(Exception e)
             {
                 // Query will fail if username user submit already exists (primary key field)
                 sqlConnection.Close();
-                return false;
+                return e.Message;
             }
 
+        }
+
+        // handle all the different operations that comes with inserting a new connection
+        [WebMethod(EnableSession = true)]
+        public bool addConnection(string menteeUsername, string mentorUsername)
+        {
+            // first check if the mentor username provided actually exists
+            if (!checkValidMentor(mentorUsername))
+            {
+                throw new Exception("Invalid mentor username!");
+            }
+            else
+            {
+                // then check if the connection already exists in the connections table
+                if(checkConnection(menteeUsername, mentorUsername)){
+                    throw new Exception("Connection already exists.");
+                }
+                else
+                {
+                    // finally insert our connections if we pass other conditions
+                    string sqlSelect = "INSERT INTO connections VALUES(@menteeUsernameValue, @mentorUsernameValue); " +
+                        "UPDATE mentees SET relationship_count = relationship_count + 1 WHERE username = @menteeUsernameValue; " +
+                        "UPDATE mentors SET relationship_count = relationship_count + 1 WHERE username = @mentorUsernameValue;";
+
+                    MySqlConnection sqlConnection = new MySqlConnection(getConString());
+                    MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("@menteeUsernameValue", HttpUtility.UrlDecode(menteeUsername));
+                    sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(mentorUsername));
+
+
+                    try
+                    {
+                        sqlConnection.Open();
+                        sqlCommand.ExecuteNonQuery();
+                        sqlConnection.Close();
+
+                        return true;
+                    }
+                    catch (Exception e)
+                    {
+                        sqlConnection.Close();
+                        return false;
+                    }
+                }
+            }
+        }
+
+        // check to see if the mentor username provided actually exists
+        [WebMethod(EnableSession = true)]
+        public bool checkValidMentor(string mentorUsername)
+        {
+            string sqlSelect = "SELECT COUNT(*) from mentors WHERE username = @mentorUsernameValue";
+
+            MySqlConnection sqlConnection = new MySqlConnection(getConString());
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(mentorUsername));
+
+            try
+            {
+                sqlConnection.Open();
+                if (Convert.ToInt32(sqlCommand.ExecuteScalar()) == 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            
+            }
+        }
+
+        //check if connection exists
+        [WebMethod(EnableSession = true)]
+        public bool checkConnection(string menteeUsername, string mentorUsername)
+        {
+            string sqlSelect = "SELECT COUNT(*) FROM connections WHERE mentee_username = @menteeUsernameValue AND mentor_username = @mentorUsernameValue";
+            MySqlConnection sqlConnection = new MySqlConnection(getConString());
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@menteeUsernameValue", HttpUtility.UrlDecode(menteeUsername));
+            sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(mentorUsername));
+
+
+            try
+            {
+                sqlConnection.Open();
+                if (Convert.ToInt32(sqlCommand.ExecuteScalar()) == 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+
+            }
         }
 
         [WebMethod(EnableSession =true)]
@@ -291,18 +396,6 @@ namespace ProjectTemplate
 
         }
 
-        [WebMethod(EnableSession =true)]
-        public bool isMentorCheck()
-        {
-            if (Convert.ToInt32(Session["isMentor"]) == 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
 
         [WebMethod(EnableSession =true)]
         public string getMeetingsNoResponse()
@@ -363,6 +456,19 @@ namespace ProjectTemplate
             output += "]";
             return output;
 
+        }
+
+        [WebMethod(EnableSession = true)]
+        public bool isMentorCheck()
+        {
+            if (Convert.ToInt32(Session["isMentor"]) == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
