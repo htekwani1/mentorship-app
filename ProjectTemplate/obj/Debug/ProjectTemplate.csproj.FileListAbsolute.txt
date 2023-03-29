@@ -19,4 +19,3 @@ C:\Users\avaz5\OneDrive\Documents\GitHub\mentorship-app\ProjectTemplate\obj\Debu
 C:\Users\avaz5\OneDrive\Documents\GitHub\mentorship-app\ProjectTemplate\obj\Debug\ProjectTemplate.csproj.CopyComplete
 C:\Users\avaz5\OneDrive\Documents\GitHub\mentorship-app\ProjectTemplate\obj\Debug\ProjectTemplate.dll
 C:\Users\avaz5\OneDrive\Documents\GitHub\mentorship-app\ProjectTemplate\obj\Debug\ProjectTemplate.pdb
-

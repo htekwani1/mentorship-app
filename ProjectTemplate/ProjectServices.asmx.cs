@@ -79,7 +79,7 @@ namespace ProjectTemplate
         }
 
         [WebMethod(EnableSession = true)]
-        public bool CreateAccount(string username, string password, string email, string firstName, string lastName, 
+        public string CreateAccount(string username, string password, string email, string firstName, string lastName, 
             string isMentor, string pointsGoal, string mentorUsername)
         {
             string sqlSelect;
@@ -89,16 +89,15 @@ namespace ProjectTemplate
             //An initial point value of 0 is inserted into relationship_count column of mentors table because they do not need to enter a mentee's username to make an account while mentees table's relationship_count column will begin with a value of 1 because mentees need to enter a mentor username to create a mentee account, meaning they have a connection
             if (isMentor == "Mentor")
             {
-
                 sqlSelect = "insert into mentorship_users (username, password, email, first_name, last_name, points, points_goal, is_mentor) " +
-                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, 0, pointsGoalValue, 1);" +
+                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, 0, @pointsGoalValue, 1);" +
                 "insert into mentors " +
                 "values(@usernameValue, 0)";
             }
             else
             {
                 sqlSelect = "insert into mentorship_users (username, password, email, first_name, last_name, points, points_goal, is_mentor) " +
-                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, 0, pointsGoalValue, 0);" +
+                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, 0, @pointsGoalValue, 0);" +
                 "insert into mentees " +
                 "values(@usernameValue, 1);" +
                 "insert into connections " +
@@ -142,13 +141,13 @@ namespace ProjectTemplate
                 {
                     Session["isMentor"] = 0;
                 }
-                return true;
+                return "success";
             }
-            catch
+            catch(Exception e)
             {
                 // Query will fail if username user submit already exists (primary key field)
                 sqlConnection.Close();
-                return false;
+                return Convert.ToString(e) ;
             }
 
         }
