@@ -79,7 +79,7 @@ namespace ProjectTemplate
         }
 
         [WebMethod(EnableSession = true)]
-        public string CreateAccount(string username, string password, string email, string firstName, string lastName, 
+        public bool CreateAccount(string username, string password, string email, string firstName, string lastName, 
             string isMentor, string pointsGoal, string mentorUsername)
         {
             string sqlSelect;
@@ -141,13 +141,13 @@ namespace ProjectTemplate
                 {
                     Session["isMentor"] = 0;
                 }
-                return "success";
+                return true;
             }
             catch(Exception e)
             {
                 // Query will fail if username user submit already exists (primary key field)
                 sqlConnection.Close();
-                return Convert.ToString(e) ;
+                return false;
             }
 
         }
