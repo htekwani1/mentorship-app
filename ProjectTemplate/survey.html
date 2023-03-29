@@ -12,13 +12,6 @@
                encodeURI(pointsGoal)  + "\",\"mentorUsername\":\"" + 
                encodeURI(mentorUsername)  + "\"}";
 
-            //    "\",\"isPhotographer\":\""
-            //    + encodeURI(isPhotographer) + "\",\"availability\":\"" + encodeURI(availability) +
-            //    "\",\"style\":\"" + encodeURI(style) + "\",\"type\":\"" + encodeURI(type) +
-            //    "\",\"range\":\"" + encodeURI(range) + "\",\"experience\":\"" + encodeURI(experience) + "\",\"sessionLength\":\"" + encodeURI(sessionLength) +
-            //    "\",\"numOutfits\":\"" + encodeURI(numOutfits) + "\",\"imageURL\":\"" + encodeURI(imageURL)
-           // if is_photographer, then concat img parameter. may need to not add the end of the string above just yet
-
            $.ajax({
                type: "POST",
                url: webMethod,
