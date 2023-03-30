@@ -50,7 +50,7 @@
                     let json_objs = JSON.parse(msg.d);
 
                     for (let i = 0; i < json_objs.length; i++) {
-                        content.innerHTML += `<div id=${json_objs[i].username}><p>${json_objs[i].firstName}<p>` +
+                        content.innerHTML += `<div id=${json_objs[i].username}><p>${json_objs[i].firstName} ${json_objs[i].lastName}<p>` +
                             `<label for="dateInputID">Add meeting date</label><br>` +
                             `<input type = "date" id="dateInputID">` +
                             `<button type="button" onclick = "scheduleMeeting($(this).closest('div').attr('id'), $(this).siblings('#dateInputID')[0].value)">Schedule</button></div><br><br>`;

@@ -264,12 +264,12 @@ namespace ProjectTemplate
 
             if (isMentorCheck())
             {
-                sqlSelect = "SELECT u.username, u.first_name from connections c inner join mentorship_users u on c.mentee_username = u.username " +
+                sqlSelect = "SELECT u.username, u.first_name, u.last_name from connections c inner join mentorship_users u on c.mentee_username = u.username " +
                     "WHERE c.mentor_username = @usernameValue";
             }
             else
             {
-                sqlSelect = "SELECT u.username, u.first_name from connections c inner join mentorship_users u on c.mentor_username = u.username " +
+                sqlSelect = "SELECT u.username, u.first_name, u.last_name from connections c inner join mentorship_users u on c.mentor_username = u.username " +
                     "WHERE c.mentee_username = @usernameValue";
             }
 
@@ -285,7 +285,8 @@ namespace ProjectTemplate
 
             for (int i = 0; i < sqlDt.Rows.Count; i++)
             {
-                output += "{" + "\"username\":\"" + sqlDt.Rows[i]["username"] + "\", \"firstName\":\"" + sqlDt.Rows[i]["first_name"] + "\"}";
+                output += "{" + "\"username\":\"" + sqlDt.Rows[i]["username"] + "\", \"firstName\":\"" + sqlDt.Rows[i]["first_name"] + 
+                    "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] + "\"}";
 
                 if (i != sqlDt.Rows.Count - 1)
                 {
@@ -406,7 +407,7 @@ namespace ProjectTemplate
 
             if (isMentorCheck())
             {
-                sqlSelect = "SELECT m.meeting_id, u.first_name, m.date " +
+                sqlSelect = "SELECT m.meeting_id, u.first_name, u.last_name, m.date " +
                     "FROM meetings m INNER JOIN mentorship_users u on m.mentee_username = u.username " +
                     "WHERE mentor_username = @mentorUsernameValue " +
                     "AND m.meeting_id NOT IN (SELECT meeting_id FROM survey_responses WHERE respondent_username = @mentorUsernameValue) " +
@@ -419,7 +420,8 @@ namespace ProjectTemplate
 
                 for (int i = 0; i < sqlDt.Rows.Count; i++)
                 {
-                    output += "{" + "\"meetingID\":\"" + sqlDt.Rows[i]["meeting_id"] + "\",\"connection\":\"" + sqlDt.Rows[i]["first_name"] + "\",\"date\":\"" + 
+                    output += "{" + "\"meetingID\":\"" + sqlDt.Rows[i]["meeting_id"] + "\",\"firstName\":\"" + sqlDt.Rows[i]["first_name"] +
+                        "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] + "\",\"date\":\"" + 
                         Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() + "\"}";
 
                     if (i != sqlDt.Rows.Count - 1)
@@ -430,7 +432,7 @@ namespace ProjectTemplate
             }
             else
             {
-                sqlSelect = "SELECT m.meeting_id, u.first_name, m.date " +
+                sqlSelect = "SELECT m.meeting_id, u.first_name, u.last_name, m.date " +
                     "FROM meetings m INNER JOIN mentorship_users u on m.mentor_username = u.username " +
                     "WHERE mentee_username = @mentorUsernameValue " +
                     "AND m.meeting_id NOT IN (SELECT meeting_id FROM survey_responses WHERE respondent_username = @menteeUsernameValue) " +
@@ -443,7 +445,8 @@ namespace ProjectTemplate
 
                 for (int i = 0; i < sqlDt.Rows.Count; i++)
                 {
-                    output += "{" + "\"meetingID\":\"" + sqlDt.Rows[i]["meeting_id"] + "\",\"connection\":\"" + sqlDt.Rows[i]["first_name"] + "\",\"date\":\"" +
+                    output += "{" + "\"meetingID\":\"" + sqlDt.Rows[i]["meeting_id"] + "\",\"firstName\":\"" + sqlDt.Rows[i]["first_name"] +
+                        "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] + "\",\"date\":\"" +
                         Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() + "\"}";
 
                     if (i != sqlDt.Rows.Count - 1)
