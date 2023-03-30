@@ -17,7 +17,7 @@
                    for (let i = 0; i < jsonObjs.length; i++) {
                        optionElement = document.createElement('option');
                        optionElement.value = jsonObjs[i].meetingID;
-                       optionElement.innerText = `Meeting with ${jsonObjs[i].connection} on ${jsonObjs[i].date}`;
+                       optionElement.innerText = `Meeting with ${jsonObjs[i].firstName} ${jsonObjs[i].lastName} on ${ jsonObjs[i].date }`;
                        meetingSelector.appendChild(optionElement);
                    }
                },
