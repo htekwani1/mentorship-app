@@ -473,5 +473,19 @@ namespace ProjectTemplate
                 return false;
             }
         }
+
+        [WebMethod(EnableSession = true)]
+        public int getPoints()
+        {
+            string sqlSelect = "SELECT points FROM mentorship_users WHERE username = @usernameValue";
+
+            MySqlConnection sqlConnection = new MySqlConnection(getConString());
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@usernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
+
+            sqlConnection.Open();
+
+            return Convert.ToInt32(sqlCommand.ExecuteScalar());
+        }
     }
 }
