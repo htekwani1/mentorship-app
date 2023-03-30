@@ -9,6 +9,7 @@ using System.Data;
 using System.Linq.Expressions;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
+using Xceed.Wpf.Toolkit;
 
 namespace ProjectTemplate
 {
@@ -79,7 +80,7 @@ namespace ProjectTemplate
         }
 
         [WebMethod(EnableSession = true)]
-        public bool CreateAccount(string username, string password, string email, string firstName, string lastName, 
+        public string CreateAccount(string username, string password, string email, string firstName, string lastName, 
             string isMentor, string pointsGoal, string mentorUsername)
         {
             string sqlSelect;
@@ -89,20 +90,17 @@ namespace ProjectTemplate
             //An initial point value of 0 is inserted into relationship_count column of mentors table because they do not need to enter a mentee's username to make an account while mentees table's relationship_count column will begin with a value of 1 because mentees need to enter a mentor username to create a mentee account, meaning they have a connection
             if (isMentor == "Mentor")
             {
-
                 sqlSelect = "insert into mentorship_users (username, password, email, first_name, last_name, points, points_goal, is_mentor) " +
-                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, 0, pointsGoalValue, 1);" +
+                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, 0, @pointsGoalValue, 1);" +
                 "insert into mentors " +
                 "values(@usernameValue, 0)";
             }
             else
             {
                 sqlSelect = "insert into mentorship_users (username, password, email, first_name, last_name, points, points_goal, is_mentor) " +
-                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, 0, pointsGoalValue, 0);" +
+                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, 0, @pointsGoalValue, 0);" +
                 "insert into mentees " +
-                "values(@usernameValue, 1);" +
-                "insert into connections " +
-                "values(@usernameValue, @mentorUsernameValue)";
+                "values(@usernameValue, 0);";
             }
 
             MySqlConnection sqlConnection = new MySqlConnection(getConString());
@@ -141,16 +139,122 @@ namespace ProjectTemplate
                 else
                 {
                     Session["isMentor"] = 0;
+                    addConnection(username, mentorUsername);
                 }
-                return true;
+
+                return "Success";
             }
-            catch
+            catch(Exception e)
             {
                 // Query will fail if username user submit already exists (primary key field)
                 sqlConnection.Close();
-                return false;
+                return e.Message;
             }
 
+        }
+
+        // handle all the different operations that comes with inserting a new connection
+        [WebMethod(EnableSession = true)]
+        public bool addConnection(string menteeUsername, string mentorUsername)
+        {
+            // first check if the mentor username provided actually exists
+            if (!checkValidMentor(mentorUsername))
+            {
+                throw new Exception("Invalid mentor username!");
+            }
+            else
+            {
+                // then check if the connection already exists in the connections table
+                if(checkConnection(menteeUsername, mentorUsername)){
+                    throw new Exception("Connection already exists.");
+                }
+                else
+                {
+                    // finally insert our connections if we pass other conditions
+                    string sqlSelect = "INSERT INTO connections VALUES(@menteeUsernameValue, @mentorUsernameValue); " +
+                        "UPDATE mentees SET relationship_count = relationship_count + 1 WHERE username = @menteeUsernameValue; " +
+                        "UPDATE mentors SET relationship_count = relationship_count + 1 WHERE username = @mentorUsernameValue;";
+
+                    MySqlConnection sqlConnection = new MySqlConnection(getConString());
+                    MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("@menteeUsernameValue", HttpUtility.UrlDecode(menteeUsername));
+                    sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(mentorUsername));
+
+
+                    try
+                    {
+                        sqlConnection.Open();
+                        sqlCommand.ExecuteNonQuery();
+                        sqlConnection.Close();
+
+                        return true;
+                    }
+                    catch (Exception e)
+                    {
+                        sqlConnection.Close();
+                        return false;
+                    }
+                }
+            }
+        }
+
+        // check to see if the mentor username provided actually exists
+        [WebMethod(EnableSession = true)]
+        public bool checkValidMentor(string mentorUsername)
+        {
+            string sqlSelect = "SELECT COUNT(*) from mentors WHERE username = @mentorUsernameValue";
+
+            MySqlConnection sqlConnection = new MySqlConnection(getConString());
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(mentorUsername));
+
+            try
+            {
+                sqlConnection.Open();
+                if (Convert.ToInt32(sqlCommand.ExecuteScalar()) == 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            
+            }
+        }
+
+        //check if connection exists
+        [WebMethod(EnableSession = true)]
+        public bool checkConnection(string menteeUsername, string mentorUsername)
+        {
+            string sqlSelect = "SELECT COUNT(*) FROM connections WHERE mentee_username = @menteeUsernameValue AND mentor_username = @mentorUsernameValue";
+            MySqlConnection sqlConnection = new MySqlConnection(getConString());
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@menteeUsernameValue", HttpUtility.UrlDecode(menteeUsername));
+            sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(mentorUsername));
+
+
+            try
+            {
+                sqlConnection.Open();
+                if (Convert.ToInt32(sqlCommand.ExecuteScalar()) == 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+
+            }
         }
 
         [WebMethod(EnableSession =true)]
@@ -160,12 +264,12 @@ namespace ProjectTemplate
 
             if (isMentorCheck())
             {
-                sqlSelect = "SELECT u.username, u.first_name from connections c inner join mentorship_users u on c.mentee_username = u.username " +
+                sqlSelect = "SELECT u.username, u.first_name, u.last_name from connections c inner join mentorship_users u on c.mentee_username = u.username " +
                     "WHERE c.mentor_username = @usernameValue";
             }
             else
             {
-                sqlSelect = "SELECT u.username, u.first_name from connections c inner join mentorship_users u on c.mentor_username = u.username " +
+                sqlSelect = "SELECT u.username, u.first_name, u.last_name from connections c inner join mentorship_users u on c.mentor_username = u.username " +
                     "WHERE c.mentee_username = @usernameValue";
             }
 
@@ -181,7 +285,8 @@ namespace ProjectTemplate
 
             for (int i = 0; i < sqlDt.Rows.Count; i++)
             {
-                output += "{" + "\"username\":\"" + sqlDt.Rows[i]["username"] + "\", \"firstName\":\"" + sqlDt.Rows[i]["first_name"] + "\"}";
+                output += "{" + "\"username\":\"" + sqlDt.Rows[i]["username"] + "\", \"firstName\":\"" + sqlDt.Rows[i]["first_name"] + 
+                    "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] + "\"}";
 
                 if (i != sqlDt.Rows.Count - 1)
                 {
@@ -292,18 +397,6 @@ namespace ProjectTemplate
 
         }
 
-        [WebMethod(EnableSession =true)]
-        public bool isMentorCheck()
-        {
-            if (Convert.ToInt32(Session["isMentor"]) == 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
 
         [WebMethod(EnableSession =true)]
         public string getMeetingsNoResponse()
@@ -314,7 +407,7 @@ namespace ProjectTemplate
 
             if (isMentorCheck())
             {
-                sqlSelect = "SELECT m.meeting_id, u.first_name, m.date " +
+                sqlSelect = "SELECT m.meeting_id, u.first_name, u.last_name, m.date " +
                     "FROM meetings m INNER JOIN mentorship_users u on m.mentee_username = u.username " +
                     "WHERE mentor_username = @mentorUsernameValue " +
                     "AND m.meeting_id NOT IN (SELECT meeting_id FROM survey_responses WHERE respondent_username = @mentorUsernameValue) " +
@@ -327,7 +420,8 @@ namespace ProjectTemplate
 
                 for (int i = 0; i < sqlDt.Rows.Count; i++)
                 {
-                    output += "{" + "\"meetingID\":\"" + sqlDt.Rows[i]["meeting_id"] + "\",\"connection\":\"" + sqlDt.Rows[i]["first_name"] + "\",\"date\":\"" + 
+                    output += "{" + "\"meetingID\":\"" + sqlDt.Rows[i]["meeting_id"] + "\",\"firstName\":\"" + sqlDt.Rows[i]["first_name"] +
+                        "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] + "\",\"date\":\"" + 
                         Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() + "\"}";
 
                     if (i != sqlDt.Rows.Count - 1)
@@ -338,7 +432,7 @@ namespace ProjectTemplate
             }
             else
             {
-                sqlSelect = "SELECT m.meeting_id, u.first_name, m.date " +
+                sqlSelect = "SELECT m.meeting_id, u.first_name, u.last_name, m.date " +
                     "FROM meetings m INNER JOIN mentorship_users u on m.mentor_username = u.username " +
                     "WHERE mentee_username = @mentorUsernameValue " +
                     "AND m.meeting_id NOT IN (SELECT meeting_id FROM survey_responses WHERE respondent_username = @menteeUsernameValue) " +
@@ -351,7 +445,8 @@ namespace ProjectTemplate
 
                 for (int i = 0; i < sqlDt.Rows.Count; i++)
                 {
-                    output += "{" + "\"meetingID\":\"" + sqlDt.Rows[i]["meeting_id"] + "\",\"connection\":\"" + sqlDt.Rows[i]["first_name"] + "\",\"date\":\"" +
+                    output += "{" + "\"meetingID\":\"" + sqlDt.Rows[i]["meeting_id"] + "\",\"firstName\":\"" + sqlDt.Rows[i]["first_name"] +
+                        "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] + "\",\"date\":\"" +
                         Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() + "\"}";
 
                     if (i != sqlDt.Rows.Count - 1)
@@ -364,6 +459,19 @@ namespace ProjectTemplate
             output += "]";
             return output;
 
+        }
+
+        [WebMethod(EnableSession = true)]
+        public bool isMentorCheck()
+        {
+            if (Convert.ToInt32(Session["isMentor"]) == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
