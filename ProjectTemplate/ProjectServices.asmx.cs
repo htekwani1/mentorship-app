@@ -153,6 +153,35 @@ namespace ProjectTemplate
 
         }
 
+        // check to see if the mentor username provided actually exists
+        [WebMethod(EnableSession = true)]
+        public bool checkValidMentor(string mentorUsername)
+        {
+            string sqlSelect = "SELECT COUNT(*) from mentors WHERE username = @mentorUsernameValue";
+
+            MySqlConnection sqlConnection = new MySqlConnection(getConString());
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(mentorUsername));
+
+            try
+            {
+                sqlConnection.Open();
+                if (Convert.ToInt32(sqlCommand.ExecuteScalar()) == 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+
+            }
+        }
+
         // handle all the different operations that comes with inserting a new connection
         [WebMethod(EnableSession = true)]
         public bool addConnection(string menteeUsername, string mentorUsername)
@@ -198,34 +227,6 @@ namespace ProjectTemplate
             }
         }
 
-        // check to see if the mentor username provided actually exists
-        [WebMethod(EnableSession = true)]
-        public bool checkValidMentor(string mentorUsername)
-        {
-            string sqlSelect = "SELECT COUNT(*) from mentors WHERE username = @mentorUsernameValue";
-
-            MySqlConnection sqlConnection = new MySqlConnection(getConString());
-            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
-            sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(mentorUsername));
-
-            try
-            {
-                sqlConnection.Open();
-                if (Convert.ToInt32(sqlCommand.ExecuteScalar()) == 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {
-                return false;
-            
-            }
-        }
 
         //check if connection exists
         [WebMethod(EnableSession = true)]
@@ -299,6 +300,48 @@ namespace ProjectTemplate
         }
 
         [WebMethod(EnableSession = true)]
+        public bool scheduleMeeting(string otherUsername, string date)
+        {
+            string sqlInsert = "INSERT INTO meetings (mentor_username, mentee_username, date) VALUES(@mentorUsernameValue, @menteeUsernameValue, @dateValue)";
+            string mentorUsername;
+            string menteeUsername;
+
+            MySqlConnection sqlConnection = new MySqlConnection(getConString());
+            MySqlCommand sqlCommand = new MySqlCommand(sqlInsert, sqlConnection);
+
+            if (isMentorCheck())
+            {
+                sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
+                sqlCommand.Parameters.AddWithValue("@menteeUsernameValue", HttpUtility.UrlDecode(otherUsername));
+
+                mentorUsername = Convert.ToString(Session["username"]);
+                menteeUsername = otherUsername;
+            }
+            else
+            {
+                sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(otherUsername));
+                sqlCommand.Parameters.AddWithValue("@menteeUsernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
+
+                mentorUsername = otherUsername;
+                menteeUsername = Convert.ToString(Session["username"]);
+            }
+
+            sqlCommand.Parameters.AddWithValue("@dateValue", HttpUtility.UrlDecode(date));
+
+            if (checkExistingMeeting(mentorUsername, menteeUsername, date))
+            {
+                return false;
+            }
+            else
+            {
+                sqlConnection.Open();
+                sqlCommand.ExecuteNonQuery();
+                sqlConnection.Close();
+                return true;
+            }
+        }
+
+        [WebMethod(EnableSession = true)]
         public bool parseMeetingSurvey(int meetingID, string meetingNotes, int rating, int effectiveness)
         {
             string sqlSelect;
@@ -329,47 +372,6 @@ namespace ProjectTemplate
             {
                 sqlConnection.Close();
                 return false;
-            }
-        }
-        
-        [WebMethod(EnableSession = true)]
-        public bool scheduleMeeting(string otherUsername, string date)
-        {
-            string sqlInsert = "INSERT INTO meetings (mentor_username, mentee_username, date) VALUES(@mentorUsernameValue, @menteeUsernameValue, @dateValue)";
-            string mentorUsername;
-            string menteeUsername;
-
-            MySqlConnection sqlConnection = new MySqlConnection(getConString());
-            MySqlCommand sqlCommand = new MySqlCommand(sqlInsert, sqlConnection);
-
-            if (isMentorCheck()){
-                sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
-                sqlCommand.Parameters.AddWithValue("@menteeUsernameValue", HttpUtility.UrlDecode(otherUsername));
-
-                mentorUsername = Convert.ToString(Session["username"]);
-                menteeUsername = otherUsername;
-            }
-            else
-            {
-                sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(otherUsername));
-                sqlCommand.Parameters.AddWithValue("@menteeUsernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
-
-                mentorUsername = otherUsername;  
-                menteeUsername = Convert.ToString(Session["username"]);
-            }
-
-            sqlCommand.Parameters.AddWithValue("@dateValue", HttpUtility.UrlDecode(date));
-
-            if (checkExistingMeeting(mentorUsername, menteeUsername, date))
-            {
-                return false;
-            }
-            else
-            {
-                sqlConnection.Open();
-                sqlCommand.ExecuteNonQuery();
-                sqlConnection.Close();
-                return true;
             }
         }
 
