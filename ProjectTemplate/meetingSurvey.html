@@ -127,6 +127,51 @@
        }
 	</script> 
 
+    <style>
+        .slidecontainer {
+        width: 80%;
+        margin-left: 0px;
+        }
+        
+        .slider {
+        -webkit-appearance: none;
+        width: 60%;
+        height: 10px;
+        border-radius: 5px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+        }
+        
+        .slider:hover {
+        opacity: 1;
+        }
+        
+        .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #219ebc;
+        cursor: pointer;
+        }
+        
+        .slider::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #04AA6D;
+        cursor: pointer;
+        }
+
+        .mentorUsernameDiv {
+        display: none;
+        }
+    </style>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript" src="script.js"></script>
 </head>
@@ -162,21 +207,19 @@
     <div id="formDiv" class="survey-container">
         <div id="white-background">
             <h1 id="filloutSurvey">POST-MEETING SURVEY</h1>
+            <hr class="new1">
             <div id="mainDiv" class="survey-body">
                 <div id="calculator" style="text-align: right;">
 
                 </div>
                 <form onsubmit="parseMeetingSurvey($('#meetingSelectID').find('option:selected').attr('id'), $('#meetingSelectID').val(), $('#meetingNotes').val(), $('.radioButtons1:checked').val(), $('.radioButtons2:checked').val(), $('.radioButtons3:checked').val(), $('.radioButtons4:checked').val(), $('.radioButtons5:checked').val()); return false;">
-                    <br>
                         <label for="meetingSelectID" class="questions">Select the meeting you are filling out the survey for.</label><br>
-                        <button id="meetingSelectID" class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" required>
-                            Dropdown Button
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
+                        <select id="meetingSelectID" class="form-select" type="button" data-toggle="dropdown" aria-label="Default select example" required>
+                            <option id="Dropdown" selected>Dropdown Button</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
                     <br><br>
 
 
@@ -184,7 +227,12 @@
                     <textarea class="inputBox" id="meetingNotes" rows="10" cols="62" required></textarea><br><br>
 
                     <label class="questions">How would you rate this meeting on a scale of 1-10?</label><br>
-                    <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceOne" name="ratingSelection" value="1" required>
+                    <div class="slidecontainer">
+                        <input onchange="calcPoints()" type="range" min="1" max="10" step="1" value="1" class="slider" id="myRange">
+                        <p>Value: <span id="demo"></span></p>
+                    </div> 
+
+                    <!-- <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceOne" name="ratingSelection" value="1" required>
                     <label class="ratingLabels" for="typeChoiceOne">1</label><br>
 
                     <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceTwo" name="ratingSelection" value="2">
@@ -212,7 +260,7 @@
                     <label class="ratingLabels" for="typeChoiceNine">9</label><br>
 
                     <input onchange="calcPoints()" class="radioButtons radioButtons1" type="radio" id="ratingChoiceTen" name="ratingSelection" value="10">
-                    <label class="ratingLabels" for="typeChoiceTen">10</label><br>
+                    <label class="ratingLabels" for="typeChoiceTen">10</label><br> -->
 
                     <label class="questions">Do you feel this meeting was effective for both of you?</label><br>
                     <input onchange="calcPoints()" class="radioButtons radioButtons2" type="radio" id="effectivenessTrue" name="effectivenessBool" value="1" required>
@@ -251,6 +299,15 @@
             </div>
         </div>
     </div>
+
+    <script>
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+            output.innerHTML = slider.value;
+            slider.oninput = function() {
+                output.innerHTML = this.value;
+            }
+    </script>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

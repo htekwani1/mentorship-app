@@ -10,6 +10,11 @@
     src: url('roboto/Roboto-Bold.ttf');
 }
 
+@font-face {
+    font-family: 'roboBlack';
+    src: url('roboto/Roboto-Black.ttf')
+}
+
 :root {
     --lightBlue: #8ecae6;
     --greenBlue: #219ebc;
@@ -74,4 +79,37 @@ nav {
     font-family: 'roboRegular';
     font-size: 15px;
     margin: 0px 400px 20px 50px;
+}
+
+/* meetingSuvey css */
+#filloutSurvey {
+    margin: 20px 0px 10px 30px;
+    font-family: 'roboBlack';
+}
+
+hr.new1 {
+    border-top: 2px solid #219ebc;
+}
+
+select {
+    padding: 5px 70px 5px 5px;
+}
+
+form {
+    margin: 0px 0px 30px 30px;
+}
+
+#Signup {
+    margin-top: 20px;
+}
+
+.questions {
+    font-family: 'roboBold';
+    font-size: 18px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+body {
+    accent-color: #219ebc;
 }
