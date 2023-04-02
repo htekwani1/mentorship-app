@@ -90,17 +90,17 @@ namespace ProjectTemplate
             //An initial point value of 0 is inserted into relationship_count column of mentors table because they do not need to enter a mentee's username to make an account while mentees table's relationship_count column will begin with a value of 1 because mentees need to enter a mentor username to create a mentee account, meaning they have a connection
             if (isMentor == "Mentor")
             {
-                sqlSelect = "insert into mentorship_users (username, password, email, first_name, last_name, points, points_goal, is_mentor) " +
-                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, 0, @pointsGoalValue, 1);" +
+                sqlSelect = "insert into mentorship_users (username, password, email, first_name, last_name, points_goal, is_mentor) " +
+                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, @pointsGoalValue, 1);" +
                 "insert into mentors " +
-                "values(@usernameValue, 0)";
+                "values(@usernameValue)";
             }
             else
             {
-                sqlSelect = "insert into mentorship_users (username, password, email, first_name, last_name, points, points_goal, is_mentor) " +
-                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, 0, @pointsGoalValue, 0);" +
+                sqlSelect = "insert into mentorship_users (username, password, email, first_name, last_name, points_goal, is_mentor) " +
+                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, @pointsGoalValue, 0);" +
                 "insert into mentees " +
-                "values(@usernameValue, 0);";
+                "values(@usernameValue);";
             }
 
             MySqlConnection sqlConnection = new MySqlConnection(getConString());
@@ -201,8 +201,7 @@ namespace ProjectTemplate
                 {
                     // finally insert our connections if we pass other conditions
                     string sqlSelect = "INSERT INTO connections VALUES(@menteeUsernameValue, @mentorUsernameValue); " +
-                        "UPDATE mentees SET relationship_count = relationship_count + 1 WHERE username = @menteeUsernameValue; " +
-                        "UPDATE mentors SET relationship_count = relationship_count + 1 WHERE username = @mentorUsernameValue;";
+                        "UPDATE mentorship_users SET connections_count = connections_count + 1 WHERE username IN (@menteeUsernameValue, @mentorUsernameValue);";
 
                     MySqlConnection sqlConnection = new MySqlConnection(getConString());
                     MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
@@ -227,6 +226,12 @@ namespace ProjectTemplate
             }
         }
 
+        //// check if either the mentor or mentee already has 5 connections
+        //[WebMethod(EnableSession = true)]
+        //public string checkConnectionsLimit(string menteeUsername, string mentorUsername)
+        //{
+        //    string sqlSelect = "SELECT relationship_count FROM "
+        //}
 
         //check if connection exists
         [WebMethod(EnableSession = true)]
