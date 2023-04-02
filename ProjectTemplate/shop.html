@@ -4,12 +4,48 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="UniversalCSS.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="universal.css">
-    <title>Document</title>
+    <title>Shop</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        var price = 0
+        var item = "None"
+        function getPrice(itemName, itemPrice) {
+            price = 0;
+            item = "None";
+            price = itemPrice;
+            item = itemName;
+            console.log(itemName, itemPrice);
+        }
+
+        function redeemItem() {
+            // deduct user points from database
+            document.getElementById("confirmation").innerHTML = "You have redeemed " + item + " for " + price + " points.";
+            console.log(price)
+        }
+
+        function getPoints() {
+            var webMethod = "ProjectServices.asmx/getPoints";
+            var points = document.getElementById('pointsTotal');
+
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    points.textContent += msg.d;
+                },
+                error: function (e) {
+                    alert("Issue!...");
+                }
+            });
+        }
+
+    </script>
 </head>
-<body>
+<body onload="getPoints()">
     <nav class="navbar navbar-expand-sm bg-light">
         <a class="navbar-brand" href="#">
           <img class="rounded" src="logoSquare.png" alt="Logo" style="width:40px;">
@@ -19,7 +55,7 @@
             <a class="nav-link" href="#">Dashboard</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="SignIn.html">Survey</a>
+            <a class="nav-link" href="meetingSurvey.html">Survey</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="shop.html">Shop</a>
@@ -29,8 +65,9 @@
             <a class="navbar-brand" href="#">
                 <img class="rounded" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Logo" style="width:40px;">
             </a>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Points: 1050</a>
+            <!--INSERT POINTS COUNT-->
+            <li class="nav-item" id="pointsDisplay">
+                <a id="pointsTotal" class="nav-link" href="#">Points: </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Logout</a>
@@ -46,7 +83,7 @@
                         <h4 class="card-title">Backpack</h4>
                         <p class="card-text">Padded 15" laptop sleeve to protect your devices. </p>
                         <p class="card-text">1500 Points</p>
-                        <button type="modal" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Redeem</button>
+                        <button type="modal" onclick="getPrice('Patagonia Backpack',1500)" class="btn btn-primary" data-toggle="modal" data-target="#redeemModal">Redeem</button>
                     </div>
                 </div>
             </div>
@@ -57,39 +94,61 @@
                         <h4 class="card-title">Water Bottle</h4>
                         <p class="card-text">Stainless steel, insulated, refillable 32 oz bottle. </p>
                         <p class="card-text">750 Points</p>
-                        <button type="modal" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Redeem</button>
+                        <button type="modal" onclick="getPrice('32 oz Hydroflask',750)" class="btn btn-primary" data-toggle="modal" data-target="#redeemModal">Redeem</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- The Modal -->
-    <div class="modal fade" id="myModal">
+    <!-- First Modal Header -->
+    <div class="modal fade" id="redeemModal">
         <div class="modal-dialog modal-lg">
         <div class="modal-content">
         
             <!-- Modal Header -->
             <div class="modal-header">
-            <h4 class="modal-title">Redeem</h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Redeem</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             
             <!-- Modal body -->
             <div class="modal-body">
-            Would you like to redeem this item?
+                Would you like to redeem this item?
             </div>
             
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal">Redeem</button>
+                <button onclick="redeemItem()" type="modal" class="btn btn-success" data-toggle="modal" data-target="#confirmationModal" data-dismiss="modal">Redeem</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
             </div>
-            
         </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+    <!-- Second Modal Header -->
+    <div class="modal fade" id="confirmationModal">
+        <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Confirmation</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body" id="confirmation">
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Okay</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>

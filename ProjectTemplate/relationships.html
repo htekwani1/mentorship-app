@@ -27,7 +27,8 @@
                     else {
                         content.innerHTML = "<h2>Here are your mentors:</h2>"
                     }
-
+                    
+                    getPoints();
                     returnPairings();
                 },
                 error: function (e) {
@@ -56,6 +57,24 @@
                             `<button type="button" onclick = "scheduleMeeting($(this).closest('div').attr('id'), $(this).siblings('#dateInputID')[0].value)">Schedule</button></div><br><br>`;
                     }
 
+                },
+                error: function (e) {
+                    alert("Issue!...");
+                }
+            });
+        }
+
+        function getPoints() {
+            var webMethod = "ProjectServices.asmx/getPoints";
+            var points = document.getElementById('pointsTotal');
+
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    points.textContent += msg.d;
                 },
                 error: function (e) {
                     alert("Issue!...");
@@ -109,7 +128,7 @@
         </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">Points: </a>
+                <a class="nav-link" id="pointsTotal" href="#">Points: </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Logout</a>

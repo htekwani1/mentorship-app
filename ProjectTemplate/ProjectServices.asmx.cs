@@ -153,6 +153,35 @@ namespace ProjectTemplate
 
         }
 
+        // check to see if the mentor username provided actually exists
+        [WebMethod(EnableSession = true)]
+        public bool checkValidMentor(string mentorUsername)
+        {
+            string sqlSelect = "SELECT COUNT(*) from mentors WHERE username = @mentorUsernameValue";
+
+            MySqlConnection sqlConnection = new MySqlConnection(getConString());
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(mentorUsername));
+
+            try
+            {
+                sqlConnection.Open();
+                if (Convert.ToInt32(sqlCommand.ExecuteScalar()) == 1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+
+            }
+        }
+
         // handle all the different operations that comes with inserting a new connection
         [WebMethod(EnableSession = true)]
         public bool addConnection(string menteeUsername, string mentorUsername)
@@ -198,34 +227,6 @@ namespace ProjectTemplate
             }
         }
 
-        // check to see if the mentor username provided actually exists
-        [WebMethod(EnableSession = true)]
-        public bool checkValidMentor(string mentorUsername)
-        {
-            string sqlSelect = "SELECT COUNT(*) from mentors WHERE username = @mentorUsernameValue";
-
-            MySqlConnection sqlConnection = new MySqlConnection(getConString());
-            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
-            sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(mentorUsername));
-
-            try
-            {
-                sqlConnection.Open();
-                if (Convert.ToInt32(sqlCommand.ExecuteScalar()) == 1)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {
-                return false;
-            
-            }
-        }
 
         //check if connection exists
         [WebMethod(EnableSession = true)]
@@ -299,40 +300,6 @@ namespace ProjectTemplate
         }
 
         [WebMethod(EnableSession = true)]
-        public bool parseMeetingSurvey(int meetingID, string meetingNotes, int rating, int effectiveness)
-        {
-            string sqlSelect;
-
-            sqlSelect = "insert into survey_responses (meeting_id, respondent_username, meeting_summary, overall_rating, effectiveness)" +
-                        "values (@meetingIDValue, @respondentUsernameValue, @meetingSummaryValue, @overallRatingValue, @effectivenessValue);";
-
-            MySqlConnection sqlConnection = new MySqlConnection(getConString());
-            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
-
-            sqlCommand.Parameters.AddWithValue("@meetingIDValue", meetingID);
-            sqlCommand.Parameters.AddWithValue("@respondentUsernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
-            sqlCommand.Parameters.AddWithValue("@meetingSummaryValue", HttpUtility.UrlDecode(meetingNotes));
-            sqlCommand.Parameters.AddWithValue("@overallRatingValue", rating);
-            sqlCommand.Parameters.AddWithValue("@effectivenessValue", effectiveness);
-
-
-            sqlConnection.Open();
-
-            try
-            {
-                sqlCommand.ExecuteNonQuery();
-                sqlConnection.Close();
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                sqlConnection.Close();
-                return false;
-            }
-        }
-        
-        [WebMethod(EnableSession = true)]
         public bool scheduleMeeting(string otherUsername, string date)
         {
             string sqlInsert = "INSERT INTO meetings (mentor_username, mentee_username, date) VALUES(@mentorUsernameValue, @menteeUsernameValue, @dateValue)";
@@ -342,7 +309,8 @@ namespace ProjectTemplate
             MySqlConnection sqlConnection = new MySqlConnection(getConString());
             MySqlCommand sqlCommand = new MySqlCommand(sqlInsert, sqlConnection);
 
-            if (isMentorCheck()){
+            if (isMentorCheck())
+            {
                 sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
                 sqlCommand.Parameters.AddWithValue("@menteeUsernameValue", HttpUtility.UrlDecode(otherUsername));
 
@@ -354,7 +322,7 @@ namespace ProjectTemplate
                 sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(otherUsername));
                 sqlCommand.Parameters.AddWithValue("@menteeUsernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
 
-                mentorUsername = otherUsername;  
+                mentorUsername = otherUsername;
                 menteeUsername = Convert.ToString(Session["username"]);
             }
 
@@ -370,6 +338,47 @@ namespace ProjectTemplate
                 sqlCommand.ExecuteNonQuery();
                 sqlConnection.Close();
                 return true;
+            }
+        }
+
+        [WebMethod(EnableSession = true)]
+        public bool parseMeetingSurvey(int meetingID, string subjectUsername, string meetingNotes, int rating, int effectiveness, int didLearn, int didBenefit, int meetingLength, int finalPoints)
+        {
+            string sqlSelect;
+
+            sqlSelect = "insert into survey_responses (meeting_id, respondent_username, meeting_summary, overall_rating, effectiveness, didLearn, didBenefit, meetingLength)" +
+                        "values (@meetingIDValue, @respondentUsernameValue, @meetingSummaryValue, @overallRatingValue, @effectivenessValue, @didLearnValue, @didBenefitValue, @meetingLengthValue);" +
+                        "update mentorship_users set points = (points + @finalPointsValue), redeemable_points= (redeemable_points + @finalPointsValue) where username= @subjectUsernameValue;";
+
+            MySqlConnection sqlConnection = new MySqlConnection(getConString());
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+
+            sqlCommand.Parameters.AddWithValue("@meetingIDValue", meetingID);
+            sqlCommand.Parameters.AddWithValue("@respondentUsernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
+            sqlCommand.Parameters.AddWithValue("@meetingSummaryValue", HttpUtility.UrlDecode(meetingNotes));
+            sqlCommand.Parameters.AddWithValue("@overallRatingValue", rating);
+            sqlCommand.Parameters.AddWithValue("@effectivenessValue", effectiveness);
+            sqlCommand.Parameters.AddWithValue("@didLearnValue", didLearn);
+            sqlCommand.Parameters.AddWithValue("@didBenefitValue", didBenefit);
+            sqlCommand.Parameters.AddWithValue("@meetingLengthValue", meetingLength);
+            sqlCommand.Parameters.AddWithValue("@subjectUsernameValue", subjectUsername);
+            sqlCommand.Parameters.AddWithValue("@finalPointsValue", finalPoints);
+
+
+
+            sqlConnection.Open();
+
+            try
+            {
+                sqlCommand.ExecuteNonQuery();
+                sqlConnection.Close();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                sqlConnection.Close();
+                return false;
             }
         }
 
@@ -407,7 +416,7 @@ namespace ProjectTemplate
 
             if (isMentorCheck())
             {
-                sqlSelect = "SELECT m.meeting_id, u.first_name, u.last_name, m.date " +
+                sqlSelect = "SELECT m.meeting_id, u.first_name, u.last_name, u.username, m.date " +
                     "FROM meetings m INNER JOIN mentorship_users u on m.mentee_username = u.username " +
                     "WHERE mentor_username = @mentorUsernameValue " +
                     "AND m.meeting_id NOT IN (SELECT meeting_id FROM survey_responses WHERE respondent_username = @mentorUsernameValue) " +
@@ -421,8 +430,8 @@ namespace ProjectTemplate
                 for (int i = 0; i < sqlDt.Rows.Count; i++)
                 {
                     output += "{" + "\"meetingID\":\"" + sqlDt.Rows[i]["meeting_id"] + "\",\"firstName\":\"" + sqlDt.Rows[i]["first_name"] +
-                        "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] + "\",\"date\":\"" + 
-                        Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() + "\"}";
+                        "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] + "\", \"username\":\"" + sqlDt.Rows[i]["username"] + 
+                        "\",\"date\":\"" + Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() + "\"}";
 
                     if (i != sqlDt.Rows.Count - 1)
                     {
@@ -432,9 +441,9 @@ namespace ProjectTemplate
             }
             else
             {
-                sqlSelect = "SELECT m.meeting_id, u.first_name, u.last_name, m.date " +
+                sqlSelect = "SELECT m.meeting_id, u.first_name, u.last_name, u.username, m.date " +
                     "FROM meetings m INNER JOIN mentorship_users u on m.mentor_username = u.username " +
-                    "WHERE mentee_username = @mentorUsernameValue " +
+                    "WHERE mentee_username = @menteeUsernameValue " +
                     "AND m.meeting_id NOT IN (SELECT meeting_id FROM survey_responses WHERE respondent_username = @menteeUsernameValue) " +
                     "ORDER BY 2";
                 MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
@@ -446,8 +455,8 @@ namespace ProjectTemplate
                 for (int i = 0; i < sqlDt.Rows.Count; i++)
                 {
                     output += "{" + "\"meetingID\":\"" + sqlDt.Rows[i]["meeting_id"] + "\",\"firstName\":\"" + sqlDt.Rows[i]["first_name"] +
-                        "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] + "\",\"date\":\"" +
-                        Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() + "\"}";
+                        "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] + "\", \"username\":\"" + sqlDt.Rows[i]["username"] +
+                        "\",\"date\":\"" + Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() + "\"}";
 
                     if (i != sqlDt.Rows.Count - 1)
                     {
@@ -472,6 +481,20 @@ namespace ProjectTemplate
             {
                 return false;
             }
+        }
+
+        [WebMethod(EnableSession = true)]
+        public int getPoints()
+        {
+            string sqlSelect = "SELECT points FROM mentorship_users WHERE username = @usernameValue";
+
+            MySqlConnection sqlConnection = new MySqlConnection(getConString());
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@usernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
+
+            sqlConnection.Open();
+
+            return Convert.ToInt32(sqlCommand.ExecuteScalar());
         }
     }
 }
