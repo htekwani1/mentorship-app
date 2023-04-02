@@ -342,13 +342,13 @@ namespace ProjectTemplate
         }
 
         [WebMethod(EnableSession = true)]
-        public bool parseMeetingSurvey(int meetingID, string meetingNotes, int rating, int effectiveness, int didLearn, int didBenefit, int meetingLength, int finalPoints)
+        public bool parseMeetingSurvey(int meetingID, string subjectUsername, string meetingNotes, int rating, int effectiveness, int didLearn, int didBenefit, int meetingLength, int finalPoints)
         {
             string sqlSelect;
 
             sqlSelect = "insert into survey_responses (meeting_id, respondent_username, meeting_summary, overall_rating, effectiveness, didLearn, didBenefit, meetingLength)" +
-                        "values (@meetingIDValue, @respondentUsernameValue, @meetingSummaryValue, @overallRatingValue, @effectivenessValue, @didLearnValue, @didBenefitValue, @meetingLengthValue);";
-                        //"update mentorship_users set points=points + @finalPointsValue and redeemable_points=redeemable_points + @finalPointsValue where username="
+                        "values (@meetingIDValue, @respondentUsernameValue, @meetingSummaryValue, @overallRatingValue, @effectivenessValue, @didLearnValue, @didBenefitValue, @meetingLengthValue);" +
+                        "update mentorship_users set points = (points + @finalPointsValue), redeemable_points= (redeemable_points + @finalPointsValue) where username= @subjectUsernameValue;";
 
             MySqlConnection sqlConnection = new MySqlConnection(getConString());
             MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
@@ -361,7 +361,8 @@ namespace ProjectTemplate
             sqlCommand.Parameters.AddWithValue("@didLearnValue", didLearn);
             sqlCommand.Parameters.AddWithValue("@didBenefitValue", didBenefit);
             sqlCommand.Parameters.AddWithValue("@meetingLengthValue", meetingLength);
-            //sqlCommand.Parameters.AddWithValue("@finalValue", meetingLength);
+            sqlCommand.Parameters.AddWithValue("@subjectUsernameValue", subjectUsername);
+            sqlCommand.Parameters.AddWithValue("@finalPointsValue", finalPoints);
 
 
 
@@ -415,7 +416,7 @@ namespace ProjectTemplate
 
             if (isMentorCheck())
             {
-                sqlSelect = "SELECT m.meeting_id, u.first_name, u.last_name, m.date " +
+                sqlSelect = "SELECT m.meeting_id, u.first_name, u.last_name, u.username, m.date " +
                     "FROM meetings m INNER JOIN mentorship_users u on m.mentee_username = u.username " +
                     "WHERE mentor_username = @mentorUsernameValue " +
                     "AND m.meeting_id NOT IN (SELECT meeting_id FROM survey_responses WHERE respondent_username = @mentorUsernameValue) " +
@@ -429,8 +430,8 @@ namespace ProjectTemplate
                 for (int i = 0; i < sqlDt.Rows.Count; i++)
                 {
                     output += "{" + "\"meetingID\":\"" + sqlDt.Rows[i]["meeting_id"] + "\",\"firstName\":\"" + sqlDt.Rows[i]["first_name"] +
-                        "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] + "\",\"date\":\"" + 
-                        Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() + "\"}";
+                        "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] + "\", \"username\":\"" + sqlDt.Rows[i]["username"] + 
+                        "\",\"date\":\"" + Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() + "\"}";
 
                     if (i != sqlDt.Rows.Count - 1)
                     {
@@ -440,7 +441,7 @@ namespace ProjectTemplate
             }
             else
             {
-                sqlSelect = "SELECT m.meeting_id, u.first_name, u.last_name, m.date " +
+                sqlSelect = "SELECT m.meeting_id, u.first_name, u.last_name, u.username, m.date " +
                     "FROM meetings m INNER JOIN mentorship_users u on m.mentor_username = u.username " +
                     "WHERE mentee_username = @menteeUsernameValue " +
                     "AND m.meeting_id NOT IN (SELECT meeting_id FROM survey_responses WHERE respondent_username = @menteeUsernameValue) " +
@@ -454,8 +455,8 @@ namespace ProjectTemplate
                 for (int i = 0; i < sqlDt.Rows.Count; i++)
                 {
                     output += "{" + "\"meetingID\":\"" + sqlDt.Rows[i]["meeting_id"] + "\",\"firstName\":\"" + sqlDt.Rows[i]["first_name"] +
-                        "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] + "\",\"date\":\"" +
-                        Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() + "\"}";
+                        "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] + "\", \"username\":\"" + sqlDt.Rows[i]["username"] +
+                        "\",\"date\":\"" + Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() + "\"}";
 
                     if (i != sqlDt.Rows.Count - 1)
                     {

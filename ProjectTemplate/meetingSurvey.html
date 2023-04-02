@@ -19,7 +19,8 @@
                    let jsonObjs = JSON.parse(msg.d);
                    for (let i = 0; i < jsonObjs.length; i++) {
                        optionElement = document.createElement('option');
-                       optionElement.value = jsonObjs[i].meetingID;
+                       optionElement.value = jsonObjs[i].username;
+                       optionElement.id = jsonObjs[i].meetingID;
                        optionElement.innerText = `Meeting with ${jsonObjs[i].firstName} ${jsonObjs[i].lastName} on ${ jsonObjs[i].date }`;
                        meetingSelector.appendChild(optionElement);
                    }
@@ -31,11 +32,12 @@
 
        }
 
-       function parseMeetingSurvey(meeting_id, meetingNotes, rating, effectiveness, learn, didBenefit, time) {
+       function parseMeetingSurvey(meeting_id, subject_username, meetingNotes, rating, effectiveness, learn, didBenefit, time) {
            var webMethod = "ProjectServices.asmx/parseMeetingSurvey";
-           var parameters = "{\"meetingID\":\"" + encodeURI(meeting_id) + "\",\"meetingNotes\":\"" + encodeURI(meetingNotes) +
-               "\",\"rating\":\"" + encodeURI(rating) + "\",\"effectiveness\":\"" + encodeURI(effectiveness) + "\",\"didLearn\":\"" + encodeURI(learn)
-               + "\",\"didBenefit\":\"" + encodeURI(didBenefit) + "\",\"meetingLength\":\"" + encodeURI(time) + "\",\"finalPoints\":\"" + encodeURI(finalPoints) + "\"}";
+           var parameters = "{\"meetingID\":\"" + encodeURI(meeting_id) + "\",\"subjectUsername\":\"" + encodeURI(subject_username) +
+               "\",\"meetingNotes\":\"" + encodeURI(meetingNotes) + "\",\"rating\":\"" + encodeURI(rating) +
+               "\",\"effectiveness\":\"" + encodeURI(effectiveness) + "\",\"didLearn\":\"" + encodeURI(learn) +
+               "\",\"didBenefit\":\"" + encodeURI(didBenefit) + "\",\"meetingLength\":\"" + encodeURI(time) + "\",\"finalPoints\":\"" + encodeURI(finalPoints) + "\"}";
 
            
            $.ajax({
@@ -101,6 +103,7 @@
            };
 
            var timeDict = {
+               "15": 1,
                "30": 2.5,
                "45": 3,
                "60": 5,
@@ -146,7 +149,7 @@
                 <div id="calculator" style="text-align: right;">
 
                 </div>
-                <form onsubmit="parseMeetingSurvey($('#meetingSelectID').val(), $('#meetingNotes').val(), $('.radioButtons1:checked').val(), $('.radioButtons2:checked').val(), $('.radioButtons3:checked').val(), $('.radioButtons4:checked').val(), $('.radioButtons5:checked').val()); return false;">
+                <form onsubmit="parseMeetingSurvey($('#meetingSelectID').find('option:selected').attr('id'), $('#meetingSelectID').val(), $('#meetingNotes').val(), $('.radioButtons1:checked').val(), $('.radioButtons2:checked').val(), $('.radioButtons3:checked').val(), $('.radioButtons4:checked').val(), $('.radioButtons5:checked').val()); return false;">
                     <br>
                     <label for="meetingSelectID" class="questions">Select the meeting you are filling out the survey for.</label>
                     <select id="meetingSelectID" required>
