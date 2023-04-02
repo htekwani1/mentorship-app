@@ -26,7 +26,7 @@
                        optionElement = document.createElement('option');
                        optionElement.value = jsonObjs[i].username;
                        optionElement.id = jsonObjs[i].meetingID;
-                       optionElement.innerText = `Meeting with ${jsonObjs[i].firstName} ${jsonObjs[i].lastName} on ${ jsonObjs[i].date }`;
+                       optionElement.innerText = `Meeting with ${jsonObjs[i].firstName} ${jsonObjs[i].lastName} on ${jsonObjs[i].date}`;
                        meetingSelector.appendChild(optionElement);
                    }
                },
@@ -72,7 +72,7 @@
            console.log('triggered')
            var initialPoints = 10;
 
-           ratingSelection = $(".radioButtons1:checked").val();
+           ratingSelection = $("#myRange").val();
            effectiveness = $(".radioButtons2:checked").val();
            learn = $(".radioButtons3:checked").val();
            benefit = $(".radioButtons4:checked").val();
@@ -189,7 +189,7 @@
             <a class="nav-link" href="#">Dashboard</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="SignIn.html">Survey</a>
+            <a class="nav-link" href="meetingSurvey.html">Survey</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="shop.html">Shop</a>
@@ -212,13 +212,10 @@
                 <div id="calculator" style="text-align: right;">
 
                 </div>
-                <form onsubmit="parseMeetingSurvey($('#meetingSelectID').find('option:selected').attr('id'), $('#meetingSelectID').val(), $('#meetingNotes').val(), $('.radioButtons1:checked').val(), $('.radioButtons2:checked').val(), $('.radioButtons3:checked').val(), $('.radioButtons4:checked').val(), $('.radioButtons5:checked').val()); return false;">
+                <form onsubmit="parseMeetingSurvey($('#meetingSelectID').find('option:selected').attr('id'), $('#meetingSelectID').val(), $('#meetingNotes').val(), $('#myRange').val(), $('.radioButtons2:checked').val(), $('.radioButtons3:checked').val(), $('.radioButtons4:checked').val(), $('.radioButtons5:checked').val()); return false;">
                         <label for="meetingSelectID" class="questions">Select the meeting you are filling out the survey for.</label><br>
                         <select id="meetingSelectID" class="form-select" type="button" data-toggle="dropdown" aria-label="Default select example" required>
-                            <option id="Dropdown" selected>Dropdown Button</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                        <option value="" disabled selected>Select a Meeting</option>
                         </select>
                     <br><br>
 
@@ -309,7 +306,7 @@
             }
     </script>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
