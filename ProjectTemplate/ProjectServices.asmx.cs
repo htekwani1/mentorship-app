@@ -199,39 +199,75 @@ namespace ProjectTemplate
                 }
                 else
                 {
-                    // finally insert our connections if we pass other conditions
-                    string sqlSelect = "INSERT INTO connections VALUES(@menteeUsernameValue, @mentorUsernameValue); " +
-                        "UPDATE mentorship_users SET connections_count = connections_count + 1 WHERE username IN (@menteeUsernameValue, @mentorUsernameValue);";
-
-                    MySqlConnection sqlConnection = new MySqlConnection(getConString());
-                    MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("@menteeUsernameValue", HttpUtility.UrlDecode(menteeUsername));
-                    sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(mentorUsername));
-
-
-                    try
+                    if(checkConnectionsLimit(menteeUsername, mentorUsername) == "Mentor")
                     {
-                        sqlConnection.Open();
-                        sqlCommand.ExecuteNonQuery();
-                        sqlConnection.Close();
-
-                        return true;
+                        throw new Exception("Mentor has exceeded connections limit.");
                     }
-                    catch (Exception e)
+                    else if (checkConnectionsLimit(menteeUsername, mentorUsername) == "Mentee")
                     {
-                        sqlConnection.Close();
-                        return false;
+                        throw new Exception("You have exceeded the connections limit.");
                     }
+                    else
+                    {
+                        // finally insert our connections if we pass other conditions
+                        string sqlSelect = "INSERT INTO connections VALUES(@menteeUsernameValue, @mentorUsernameValue); " +
+                            "UPDATE mentorship_users SET connections_count = connections_count + 1 WHERE username IN (@menteeUsernameValue, @mentorUsernameValue);";
+
+                        MySqlConnection sqlConnection = new MySqlConnection(getConString());
+                        MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+                        sqlCommand.Parameters.AddWithValue("@menteeUsernameValue", HttpUtility.UrlDecode(menteeUsername));
+                        sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(mentorUsername));
+
+
+                        try
+                        {
+                            sqlConnection.Open();
+                            sqlCommand.ExecuteNonQuery();
+                            sqlConnection.Close();
+
+                            return true;
+                        }
+                        catch (Exception e)
+                        {
+                            sqlConnection.Close();
+                            return false;
+                        }
+                    }
+
                 }
             }
         }
 
-        //// check if either the mentor or mentee already has 5 connections
-        //[WebMethod(EnableSession = true)]
-        //public string checkConnectionsLimit(string menteeUsername, string mentorUsername)
-        //{
-        //    string sqlSelect = "SELECT relationship_count FROM "
-        //}
+        // check if either the mentor or mentee already has 5 connections
+        [WebMethod(EnableSession = true)]
+        public string checkConnectionsLimit(string menteeUsername, string mentorUsername)
+        {
+            if(getConnectionsCount(mentorUsername) == 5)
+            {
+                return "Mentor";
+            }
+            else if(getConnectionsCount(menteeUsername) == 5)
+            {
+                return "Mentee";
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        [WebMethod(EnableSession = true)]
+        public int getConnectionsCount(string username)
+        {
+            string sqlSelect = "SELECT connections_count FROM mentorship_users WHERE username = @usernameValue";
+            MySqlConnection sqlConnection = new MySqlConnection(getConString());
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@usernameValue", HttpUtility.UrlDecode(username));
+
+            sqlConnection.Open();
+            return Convert.ToInt32(sqlCommand.ExecuteScalar());
+
+        }
 
         //check if connection exists
         [WebMethod(EnableSession = true)]
