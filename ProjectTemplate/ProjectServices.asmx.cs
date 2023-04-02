@@ -342,12 +342,13 @@ namespace ProjectTemplate
         }
 
         [WebMethod(EnableSession = true)]
-        public bool parseMeetingSurvey(int meetingID, string meetingNotes, int rating, int effectiveness)
+        public bool parseMeetingSurvey(int meetingID, string meetingNotes, int rating, int effectiveness, int didLearn, int didBenefit, int meetingLength, int finalPoints)
         {
             string sqlSelect;
 
-            sqlSelect = "insert into survey_responses (meeting_id, respondent_username, meeting_summary, overall_rating, effectiveness)" +
-                        "values (@meetingIDValue, @respondentUsernameValue, @meetingSummaryValue, @overallRatingValue, @effectivenessValue);";
+            sqlSelect = "insert into survey_responses (meeting_id, respondent_username, meeting_summary, overall_rating, effectiveness, didLearn, didBenefit, meetingLength)" +
+                        "values (@meetingIDValue, @respondentUsernameValue, @meetingSummaryValue, @overallRatingValue, @effectivenessValue, @didLearnValue, @didBenefitValue, @meetingLengthValue);";
+                        //"update mentorship_users set points=points + @finalPointsValue and redeemable_points=redeemable_points + @finalPointsValue where username="
 
             MySqlConnection sqlConnection = new MySqlConnection(getConString());
             MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
@@ -357,6 +358,11 @@ namespace ProjectTemplate
             sqlCommand.Parameters.AddWithValue("@meetingSummaryValue", HttpUtility.UrlDecode(meetingNotes));
             sqlCommand.Parameters.AddWithValue("@overallRatingValue", rating);
             sqlCommand.Parameters.AddWithValue("@effectivenessValue", effectiveness);
+            sqlCommand.Parameters.AddWithValue("@didLearnValue", didLearn);
+            sqlCommand.Parameters.AddWithValue("@didBenefitValue", didBenefit);
+            sqlCommand.Parameters.AddWithValue("@meetingLengthValue", meetingLength);
+            //sqlCommand.Parameters.AddWithValue("@finalValue", meetingLength);
+
 
 
             sqlConnection.Open();
@@ -436,7 +442,7 @@ namespace ProjectTemplate
             {
                 sqlSelect = "SELECT m.meeting_id, u.first_name, u.last_name, m.date " +
                     "FROM meetings m INNER JOIN mentorship_users u on m.mentor_username = u.username " +
-                    "WHERE mentee_username = @mentorUsernameValue " +
+                    "WHERE mentee_username = @menteeUsernameValue " +
                     "AND m.meeting_id NOT IN (SELECT meeting_id FROM survey_responses WHERE respondent_username = @menteeUsernameValue) " +
                     "ORDER BY 2";
                 MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
