@@ -27,12 +27,16 @@ nav {
     font-family: 'roboRegular';
 }
 
-/* SignUP.html */
+/* SignUp.html */
 
 #pageTitle {
-    font-family: 'roboBold';
-    font-size: 30px;
-    margin: 10px 20px 20px 20px;
+    font-family: 'roboBlack';
+    font-size: 42px;
+    margin: 10px 20px 0px 70px;
+}
+
+hr.new2 {
+    border-top: 2px solid #219ebc;
 }
 
 #radio_mentor {
@@ -118,14 +122,4 @@ form {
 
 body {
     accent-color: #219ebc;
-}
-
-.navbar-nav .dropdown-menu {
-    position: absolute;
-    right: 0;
-}
-
-.custom-dropdown {
-    right: 0;
-    left: auto;
 }
