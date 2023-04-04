@@ -61,16 +61,16 @@
             <a class="nav-link" href="shop.html">Shop</a>
           </li>
         </ul>
+
         <ul class="navbar-nav ml-auto">
-            <a class="navbar-brand" href="#">
-                <img class="rounded" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Logo" style="width:40px;">
-            </a>
-            <!--INSERT POINTS COUNT-->
-            <li class="nav-item" id="pointsDisplay">
-                <a id="pointsTotal" class="nav-link" href="#">Points: </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Logout</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img class="rounded" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Logo" style="width:40px;">
+                </a>
+                <div class="dropdown-menu" aria-labelledby="profileDropdown">
+                        <a class="dropdown-item" id="pointsTotal" href="#">Points: </a>
+                        <a class="dropdown-item" href="#">Logout</a>
+                </div>
             </li>
         </ul>
     </nav>
