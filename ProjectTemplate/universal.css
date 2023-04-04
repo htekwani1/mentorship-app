@@ -123,3 +123,9 @@ body {
     right: 0;
     left: auto;
 }
+
+.navbar-nav {
+    font-family: 'roboRegular';
+    font-size: 18px;
+}
+
