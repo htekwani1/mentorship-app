@@ -537,5 +537,18 @@ namespace ProjectTemplate
 
             return Convert.ToInt32(sqlCommand.ExecuteScalar());
         }
+
+        [WebMethod(EnableSession = true)]
+        public string addMentor(string mentorUsername)
+        {
+            try {
+                addConnection(Convert.ToString(Session["username"]), mentorUsername);
+                return "Success";
+            }
+            catch (Exception e) {
+                return e.Message;
+            }
+            
+        }
     }
 }

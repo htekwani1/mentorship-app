@@ -25,7 +25,10 @@
                         content.innerHTML = "<h2>Here are your mentees:</h2>";
                     }
                     else {
-                        content.innerHTML = "<h2>Here are your mentors:</h2>"
+                        content.innerHTML = "<h2>Here are your mentors:</h2>" +
+                        `<br><label>Enter mentor username</label><br>` +
+                        `<input type = "text" id="mentorInputID">` +
+                        `<button type="button" onclick = "addMentor($('#mentorInputID').val());">Add mentor</button><br><br>`;
                     }
                     
                     getPoints();
@@ -64,6 +67,7 @@
             });
         }
 
+        // retrieves and displays the total number of points a user has available
         function getPoints() {
             var webMethod = "ProjectServices.asmx/getPoints";
             var points = document.getElementById('pointsTotal');
@@ -98,6 +102,31 @@
                     }
                     else {
                         alert("Meeting exists");
+                    }
+                },
+                error: function (e) {
+                    alert("Error!");
+                }
+                })
+        }
+
+        // takes mentor username and adds it to the mentee's list of mentors upon a button being clicked
+        function addMentor(mentorUsername) {
+            var webMethod = "ProjectServices.asmx/addMentor";
+            var parameters = "{\"mentorUsername\":\"" + encodeURI(mentorUsername) + "\"}";
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                data: parameters,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.d == "Success") {
+                        alert("Mentor added");
+                        window.location.reload();
+                    }
+                    else {
+                        alert(msg.d);
                     }
                 },
                 error: function (e) {
