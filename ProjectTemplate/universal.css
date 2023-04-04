@@ -122,4 +122,24 @@ form {
 
 body {
     accent-color: #219ebc;
+<<<<<<< HEAD
 }
+
+.navbar-nav .dropdown-menu {
+    position: absolute;
+    right: 0;
+}
+
+.custom-dropdown {
+    right: 0;
+    left: auto;
+}
+
+.navbar-nav {
+    font-family: 'roboRegular';
+    font-size: 18px;
+}
+
+=======
+}
+>>>>>>> b7108c2382ae9d6d15112058f2ad7994b848e6b5
