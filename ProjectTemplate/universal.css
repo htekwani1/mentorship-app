@@ -113,3 +113,13 @@ form {
 body {
     accent-color: #219ebc;
 }
+
+.navbar-nav .dropdown-menu {
+    position: absolute;
+    right: 0;
+}
+
+.custom-dropdown {
+    right: 0;
+    left: auto;
+}
