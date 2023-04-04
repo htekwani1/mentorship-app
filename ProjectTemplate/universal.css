@@ -27,7 +27,7 @@ nav {
     font-family: 'roboRegular';
 }
 
-/* SignIn.html */
+/* SignUP.html */
 
 #pageTitle {
     font-family: 'roboBold';
@@ -48,6 +48,12 @@ nav {
 }
 
 #nameinput {
+    font-family: 'roboRegular';
+    font-size: 18px;
+    margin: 30px 400px 20px 37px;
+}
+
+#universityinput {
     font-family: 'roboRegular';
     font-size: 18px;
     margin: 30px 400px 20px 37px;
