@@ -127,6 +127,8 @@
         Account Sign Up
     </div>
 
+    <hr class="new2">
+
     <!-- Sign up for Mentor or Mentee -->
     <form class="was-validated" onsubmit="CreateAccount($('#uname').val(), $('#pwd').val(), $('#email').val(),
     $('#validationServer01').val(), $('#validationServer02').val(), $('.userTypeInputClass:checked').val(), $('#myRange').val(), $('#mentorinput').val()); return false;">
@@ -152,6 +154,14 @@
             <div class="valid-feedback">Valid.</div>
             <div class="invalid-feedback">Please fill out this field.</div>
         </div>
+
+        <div class="col-md-4" id="universityinput">
+            <label for="validationServer02" class="form-label">What University did you attend or currently attending? </label>
+            <input type="text" class="form-control" id="validationServer03" required>
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
+        </div>
+
         <!-- email, username, password inputbox -->
         <div class="form-group" id="inputboxes">
             <label for="email">Email Address:</label>

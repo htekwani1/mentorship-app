@@ -27,12 +27,16 @@ nav {
     font-family: 'roboRegular';
 }
 
-/* SignIn.html */
+/* SignUp.html */
 
 #pageTitle {
-    font-family: 'roboBold';
-    font-size: 30px;
-    margin: 10px 20px 20px 20px;
+    font-family: 'roboBlack';
+    font-size: 42px;
+    margin: 10px 20px 0px 70px;
+}
+
+hr.new2 {
+    border-top: 2px solid #219ebc;
 }
 
 #radio_mentor {
@@ -48,6 +52,12 @@ nav {
 }
 
 #nameinput {
+    font-family: 'roboRegular';
+    font-size: 18px;
+    margin: 30px 400px 20px 37px;
+}
+
+#universityinput {
     font-family: 'roboRegular';
     font-size: 18px;
     margin: 30px 400px 20px 37px;
@@ -112,6 +122,7 @@ form {
 
 body {
     accent-color: #219ebc;
+<<<<<<< HEAD
 }
 
 .navbar-nav .dropdown-menu {
@@ -129,3 +140,6 @@ body {
     font-size: 18px;
 }
 
+=======
+}
+>>>>>>> b7108c2382ae9d6d15112058f2ad7994b848e6b5
