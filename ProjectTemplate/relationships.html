@@ -68,7 +68,7 @@
         // retrieves and displays the total number of points a user has available
         function getPoints() {
             var webMethod = "ProjectServices.asmx/getPoints";
-            var points = document.getElementById('pointsTotal');
+            var points = document.getElementById('pointsDisplay');
 
             $.ajax({
                 type: "POST",
@@ -165,7 +165,7 @@
         </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" id="pointsTotal" href="#">Points: </a>
+                <a class="nav-link" id="pointsDisplay" href="#">Points: </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Logout</a>
