@@ -122,7 +122,6 @@ form {
 
 body {
     accent-color: #219ebc;
-<<<<<<< HEAD
 }
 
 .navbar-nav .dropdown-menu {
@@ -140,6 +139,7 @@ body {
     font-size: 18px;
 }
 
-=======
+.carousel-indicators li {
+    background-color: #0d6efd;
 }
->>>>>>> b7108c2382ae9d6d15112058f2ad7994b848e6b5
+
