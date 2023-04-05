@@ -8,6 +8,42 @@
     <link rel="stylesheet" href="universal.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Dashboard</title>
+    <style>
+        .carousel {
+            padding: 20px;
+        }
+
+        .full-height {
+            height: 100%;
+        }
+        
+        .flex-row {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 0;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .img-100x100 {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .card-image-container {
+            display: flex;
+            justify-content: center;
+            padding: 15px;
+        }
+
+    </style>
 </head>
 <body>
     <!--Navbar-->
@@ -49,30 +85,55 @@
         </ul>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <div class="container" id="chart-container">
-                    <div class="row">
-                        <!--Points Goal Completion Dashboard-->
-                        <div class="col-md-6">
-                            <canvas id="pointsCompleted"></canvas>
+                <!--Begin Grid/Carousel Item-->
+                <div class="container full-height">
+                    <div class="row full-height flex-row">
+                        <div class="col-md-4">
+                            <!-- Bootstrap Card -->
+                            <div class="card h-100">
+                                <div class="card-image-container">
+                                    <img src="haiheadshot.jpg" class="card-img-top rounded-circle img-100x100" alt="Headshot">
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Mentee: Hai</h5>
+                                    <p class="card-text">
+                                        Summary of information:<br><br>
+                                        300 Points Earned <br>
+                                        70% Satisfaction <br>
+                                        7 Hours Attended <br>
+                                        60% Growth in Learning <br> 
+                                        40% Growth in Effective <br> 
+                                        45% Growth in Beneficial <br> 
+                                    </p>
+                                    <a href="#" class="btn btn-primary">Details</a>
+                                </div>
+                            </div>
                         </div>
-                        <!--Total meeting minutes-->
-                        <div class="col-md-6">
-                            <canvas id="meetingHours"></canvas>
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <!-- Points Goal Completion Dashboard -->
+                                    <canvas id="pointsCompleted"></canvas>
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- Total meeting minutes -->
+                                    <canvas id="meetingHours"></canvas>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <!-- Average Meeting Satisfaction 1-10 -->
+                                    <canvas id="meetingSatisfaction"></canvas>
+                                </div>
+                                <div class="col-md-6">
+                                    <!-- Average (1 or 0) meeting is effective, learning anything new, mentoring relaitonship mutually beneficial -->
+                                    <canvas id="growthChart"></canvas>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="container" id="chart-container">
-                    <div class="row">
-                        <!--Average Meeting Satisfaction 1-10-->
-                        <div class="col-md-6">
-                            <canvas id="meetingSatisfaction"></canvas>
-                        </div>
-                        <!--Radar of effective, learning, and beneficial-->
-                        <div class="col-md-6">
-                            <canvas id="growthChart"></canvas>
-                        </div>
-                    </div>
-                </div>
+            <!--End of Carousel Item-->                 
             </div>
             <div class="carousel-item">
 
