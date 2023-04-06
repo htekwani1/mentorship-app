@@ -55,7 +55,17 @@
                         content.innerHTML += `<div id=${json_objs[i].username}><p>${json_objs[i].firstName} ${json_objs[i].lastName}<p>` +
                             `<label for="dateInputID">Add meeting date</label><br>` +
                             `<input type = "date" id="dateInputID">` +
-                            `<button type="button" onclick = "scheduleMeeting($(this).closest('div').attr('id'), $(this).siblings('#dateInputID')[0].value)">Schedule</button></div><br><br>`;
+                            `<button type="button" onclick = "scheduleMeeting($(this).closest('div').attr('id'), $(this).siblings('#dateInputID')[0].value)">Schedule</button><br><br>` +
+                            `<select id="${json_objs[i].username}SelectID"></select></div>`;
+
+                        selectElement = document.getElementById(`${json_objs[i].username}SelectID`)
+                        for (let j = 0; j < json_objs[i].meetingResponses.length; j++) {
+                            optionElement = document.createElement('option');
+                            optionElement.value = json_objs[i].meetingResponses[j].responseID;
+                            optionElement.innerText = json_objs[i].meetingResponses[j].date;
+                            selectElement.appendChild(optionElement);
+
+                        }
                     }
 
                 },
