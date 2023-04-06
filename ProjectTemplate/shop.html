@@ -22,17 +22,22 @@
 
         function redeemItem() {
             // deduct user points from database
-            enoughPoints = checkPoints();
-            if (enoughPoints){
+            if (checkPoints()){
                 document.getElementById("confirmation").innerHTML = "You have redeemed " + item + " for " + price + " points.";
+                points -= price;
             }
             else{
                 document.getElementById("confirmation").innerHTML = "You do not have enough points to redeem " + item + " for " + price + " points.";
             }
+            
+            updatePoints(points);
+
             console.log(price)
         }
 
-   
+        function updatePoints(itemPrice){
+
+        }
         function getPoints() {
             var webMethod = "ProjectServices.asmx/getPoints";
             var points = document.getElementById('pointsTotal');
@@ -52,13 +57,12 @@
         }
 
         function checkPoints(){
-            if (price < points){
+            if (price > points){
                 return false;
             }
             else{
                 return true;
             }
-            
         }
 
     </script>
