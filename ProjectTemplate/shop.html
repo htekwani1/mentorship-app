@@ -11,6 +11,7 @@
     <script>
         var price = 0
         var item = "None"
+        var points = 0; 
         function getPrice(itemName, itemPrice) {
             price = 0;
             item = "None";
@@ -21,10 +22,22 @@
 
         function redeemItem() {
             // deduct user points from database
-            document.getElementById("confirmation").innerHTML = "You have redeemed " + item + " for " + price + " points.";
+            if (checkPoints()){
+                document.getElementById("confirmation").innerHTML = "You have redeemed " + item + " for " + price + " points.";
+                points -= price;
+            }
+            else{
+                document.getElementById("confirmation").innerHTML = "You do not have enough points to redeem " + item + " for " + price + " points.";
+            }
+            
+            updatePoints(points);
+
             console.log(price)
         }
 
+        function updatePoints(itemPrice){
+
+        }
         function getPoints() {
             var webMethod = "ProjectServices.asmx/getPoints";
             var points = document.getElementById('pointsTotal');
@@ -41,6 +54,15 @@
                     alert("Issue!...");
                 }
             });
+        }
+
+        function checkPoints(){
+            if (price > points){
+                return false;
+            }
+            else{
+                return true;
+            }
         }
 
     </script>

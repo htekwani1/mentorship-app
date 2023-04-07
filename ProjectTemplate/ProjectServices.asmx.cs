@@ -328,7 +328,10 @@ namespace ProjectTemplate
             for (int i = 0; i < sqlDt.Rows.Count; i++)
             {
                 output += "{" + "\"username\":\"" + sqlDt.Rows[i]["username"] + "\", \"firstName\":\"" + sqlDt.Rows[i]["first_name"] + 
-                    "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] + "\"}";
+                    "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] + "\", \"meetingResponses\":";
+
+                output += getSurveyResponseDateID(Convert.ToString(sqlDt.Rows[i]["username"]));
+                output+= "}";
 
                 if (i != sqlDt.Rows.Count - 1)
                 {
@@ -508,6 +511,67 @@ namespace ProjectTemplate
             }
             output += "]";
             return output;
+
+        }
+
+        [WebMethod(EnableSession = true)]
+        public string getSurveyResponseDateID(string connectionUsername)
+        {
+            string sqlSelect;
+
+            if (isMentorCheck())
+            {
+                sqlSelect = "SELECT r.response_id, m.date " +
+                    "FROM survey_responses r INNER JOIN meetings m " +
+                    "ON r.meeting_id = m.meeting_id " +
+                    "WHERE r.respondent_username = @usernameValue AND m.mentee_username = @menteeUsernameValue";
+            }
+            else
+            {
+                sqlSelect = "SELECT r.response_id, m.date " +
+                    "survey_responses r INNER JOIN meetings m " +
+                    "ON r.meeting_id = m.meeting_id " +
+                    "WHERE r.respondent_username = @usernameValue AND m.mentor_username = @menteeUsernameValue";
+            }
+
+            MySqlConnection sqlConnection = new MySqlConnection(getConString());
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@usernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
+            sqlCommand.Parameters.AddWithValue("@menteeUsernameValue", HttpUtility.UrlDecode(connectionUsername));
+            sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(connectionUsername));
+
+            MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+            DataTable sqlDt = new DataTable("surveyResponseDateID");
+            sqlDa.Fill(sqlDt);
+
+            string output = "[";
+
+            for (int i = 0; i < sqlDt.Rows.Count; i++)
+            {
+                output += "{" + "\"responseID\":\"" + sqlDt.Rows[i]["response_id"] + 
+                    "\",\"date\":\"" + Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() + "\"}";
+
+                if (i != sqlDt.Rows.Count - 1)
+                {
+                    output += ",";
+                }
+            }
+
+            output += "]";
+            return output;
+
+        }
+
+        [WebMethod(EnableSession = true)]
+        public string getSurveyResponse(int surveyResponseID)
+        {
+            string sqlSelect = "SELECT meeting_summary FROM survey_responses WHERE response_id = @surveyResponseIDValue";
+            MySqlConnection sqlConnection = new MySqlConnection(getConString());
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@surveyResponseIDValue", surveyResponseID);
+
+            sqlConnection.Open();
+            return Convert.ToString(sqlCommand.ExecuteScalar());
 
         }
 
