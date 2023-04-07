@@ -518,6 +518,8 @@ namespace ProjectTemplate
         public string getSurveyResponseDateID(string connectionUsername)
         {
             string sqlSelect;
+            MySqlConnection sqlConnection;
+            MySqlCommand sqlCommand;
 
             if (isMentorCheck())
             {
@@ -525,20 +527,28 @@ namespace ProjectTemplate
                     "FROM survey_responses r INNER JOIN meetings m " +
                     "ON r.meeting_id = m.meeting_id " +
                     "WHERE r.respondent_username = @usernameValue AND m.mentee_username = @menteeUsernameValue";
+
+                sqlConnection = new MySqlConnection(getConString());
+                sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+                sqlCommand.Parameters.AddWithValue("@usernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
+                sqlCommand.Parameters.AddWithValue("@menteeUsernameValue", HttpUtility.UrlDecode(connectionUsername));
+
+
             }
             else
             {
                 sqlSelect = "SELECT r.response_id, m.date " +
-                    "survey_responses r INNER JOIN meetings m " +
+                    "FROM survey_responses r INNER JOIN meetings m " +
                     "ON r.meeting_id = m.meeting_id " +
-                    "WHERE r.respondent_username = @usernameValue AND m.mentor_username = @menteeUsernameValue";
+                    "WHERE r.respondent_username = @usernameValue AND m.mentor_username = @mentorUsernameValue";
+                
+                sqlConnection = new MySqlConnection(getConString());
+                sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+                sqlCommand.Parameters.AddWithValue("@usernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
+                sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(connectionUsername));
+
             }
 
-            MySqlConnection sqlConnection = new MySqlConnection(getConString());
-            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
-            sqlCommand.Parameters.AddWithValue("@usernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
-            sqlCommand.Parameters.AddWithValue("@menteeUsernameValue", HttpUtility.UrlDecode(connectionUsername));
-            sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(connectionUsername));
 
             MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
             DataTable sqlDt = new DataTable("surveyResponseDateID");

@@ -56,7 +56,8 @@
                             `<label for="dateInputID">Add meeting date</label><br>` +
                             `<input type = "date" id="dateInputID">` +
                             `<button type="button" onclick = "scheduleMeeting($(this).closest('div').attr('id'), $(this).siblings('#dateInputID')[0].value)">Schedule</button><br><br>` +
-                            `<select id="${json_objs[i].username}SelectID"></select></div>`;
+                            `<select id="${json_objs[i].username}SelectID" onchange="getSurveyResponse($(this).val(), '${json_objs[i].username}')"></select></div><br>` +
+                            `<div id="${json_objs[i].username}ResponseDivID"></div>`
 
                         selectElement = document.getElementById(`${json_objs[i].username}SelectID`)
                         for (let j = 0; j < json_objs[i].meetingResponses.length; j++) {
@@ -64,7 +65,6 @@
                             optionElement.value = json_objs[i].meetingResponses[j].responseID;
                             optionElement.innerText = json_objs[i].meetingResponses[j].date;
                             selectElement.appendChild(optionElement);
-
                         }
                     }
 
@@ -73,6 +73,28 @@
                     alert("Issue!...");
                 }
             });
+        }
+
+
+        function getSurveyResponse(responseID, userID) {
+            var webMethod = "ProjectServices.asmx/getSurveyResponse"
+            var parameters = "{\"surveyResponseID\":\"" + encodeURI(responseID) + "\"}";
+            console.log(`${userID}ResponseDivID`)
+
+            let surveyResponseDiv = document.getElementById(`${userID}ResponseDivID`);
+            //Reset div
+            surveyResponseDiv.innerText = "";
+
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                data: parameters,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    surveyResponseDiv.innerText = msg.d
+                }
+                })
         }
 
         // retrieves and displays the total number of points a user has available
