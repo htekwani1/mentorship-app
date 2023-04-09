@@ -35,12 +35,12 @@
             console.log(price)
         }
 
-        function updatePoints(itemPrice){
+        //function updatePoints(itemPrice){
 
-        }
+        //}
+
         function getPoints() {
             var webMethod = "ProjectServices.asmx/getPoints";
-            var points = document.getElementById('pointsTotal');
 
             $.ajax({
                 type: "POST",
@@ -48,13 +48,19 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (msg) {
-                    points.textContent += msg.d;
+                    return msg.d
                 },
                 error: function (e) {
                     alert("Issue!...");
                 }
             });
         }
+
+        function initializePage() {
+            var points = document.getElementById('pointsTotal');
+            points.innerText += getPoints();
+        }
+
 
         function checkPoints(){
             if (price > points){
@@ -67,7 +73,7 @@
 
     </script>
 </head>
-<body onload="getPoints()">
+<body onload="initializePage()">
     <!--Navbar-->
     <nav class="navbar navbar-expand-sm bg-light">
         <a class="navbar-brand" href="#">
