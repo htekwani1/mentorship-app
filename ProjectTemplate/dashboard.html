@@ -9,10 +9,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Dashboard</title>
     <style>
-        .carousel {
-            padding: 20px;
-        }
-
         .full-height {
             height: 100%;
         }
@@ -41,6 +37,11 @@
             display: flex;
             justify-content: center;
             padding: 15px;
+        }
+        
+        .dropdown {
+            padding: 30px;
+
         }
 
     </style>
@@ -76,56 +77,66 @@
         </ul>
     </nav>
 
-    <!--Carousel-->
-                <!--Begin Grid/Carousel Item-->
-                <div class="container full-height">
-                    <div class="row full-height flex-row">
-                        <div class="col-md-4">
-                            <!-- Bootstrap Card -->
-                            <div class="card h-100">
-                                <div class="card-image-container">
-                                    <img src="haiheadshot.jpg" class="card-img-top rounded-circle img-100x100" alt="Headshot">
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">Mentee: Hai</h5>
-                                    <p class="card-text">
-                                        Summary of information:<br><br>
-                                        300 Points Earned <br>
-                                        70% Satisfaction <br>
-                                        7 Hours Attended <br>
-                                        60% Growth in Learning <br> 
-                                        40% Growth in Effective <br> 
-                                        45% Growth in Beneficial <br> 
-                                    </p>
-                                    <a href="#" class="btn btn-primary">Details</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <!-- Points Goal Completion Dashboard -->
-                                    <canvas id="pointsCompleted"></canvas>
-                                </div>
-                                <div class="col-md-6">
-                                    <!-- Total meeting minutes -->
-                                    <canvas id="meetingHours"></canvas>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <!-- Average Meeting Satisfaction 1-10 -->
-                                    <canvas id="meetingSatisfaction"></canvas>
-                                </div>
-                                <div class="col-md-6">
-                                    <!-- Average (1 or 0) meeting is effective, learning anything new, mentoring relaitonship mutually beneficial -->
-                                    <canvas id="growthChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
+    <!--Dropdown-->
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+            Select Mentor/Mentee
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Mentee 1</a>
+            <a class="dropdown-item" href="#">Mentee 2</a>
+            <a class="dropdown-item" href="#"></a>
+        </div>
+    </div>
+
+    <!--Begin Grid/Carousel Item-->
+    <div class="container full-height">
+        <div class="row full-height flex-row">
+            <div class="col-md-4">
+                <!-- Bootstrap Card -->
+                <div class="card h-100">
+                    <div class="card-image-container">
+                        <img src="haiheadshot.jpg" class="card-img-top rounded-circle img-100x100" alt="Headshot">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Mentee: Hai</h5>
+                        <p class="card-text">
+                            <span> Summary of information:<br><br></span>
+                            <span>300 Points Earned <br></span>
+                            <span>70% Satisfaction <br></span>
+                            <span>7 Hours Attended <br></span>
+                            <span>60% Growth in Learning <br></span> 
+                            <span>40% Growth in Effective <br></span>
+                            <span>45% Growth in Beneficial <br></span>
+                        </p>
+                        <a href="#" class="btn btn-primary">Details</a>
                     </div>
                 </div>
-            <!--End of Carousel Item-->                 
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Points Goal Completion Dashboard -->
+                        <canvas id="pointsCompleted"></canvas>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Total meeting minutes -->
+                        <canvas id="meetingHours"></canvas>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Average Meeting Satisfaction 1-10 -->
+                        <canvas id="meetingSatisfaction"></canvas>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Average (1 or 0) meeting is effective, learning anything new, mentoring relaitonship mutually beneficial -->
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         //Points Goal Completion Dashboard
