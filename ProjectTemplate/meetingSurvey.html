@@ -96,13 +96,13 @@
            console.log('triggered')
            var initialPoints = 10;
 
-           ratingSelection = $("#myRange").val();
-           effectiveness = $(".radioButtons2:checked").val();
+           ratingSelection = $("#meetingRateScale").val();
+           effectiveness = $("#EffectiveScale").val();
            learn = $(".radioButtons3:checked").val();
-           benefit = $(".radioButtons4:checked").val();
+           benefit = $("#RelationshipScale").val();
            time = $(".radioButtons5:checked").val();
 
-           var surveyPointsDict = {
+           var meetingRateDict = {
                "1": 1,
                "2": 1,
                "3": 1.5,
@@ -117,8 +117,16 @@
            };
 
            var effectivenessDict = {
-               "1": 5,
-               "0": 0,
+               "1": 10,
+               "2": 10,
+               "3": 15,
+               "4": 15,
+               "5": 20,
+               "6": 20,
+               "7": 25,
+               "8": 25,
+               "9": 25,
+               "10": 30,
            };
 
            var learnDict = {
@@ -127,8 +135,16 @@
            };
 
            var benefitDict = {
-               "1": 5,
-               "0": 0,
+               "1": 10,
+               "2": 10,
+               "3": 15,
+               "4": 15,
+               "5": 20,
+               "6": 20,
+               "7": 25,
+               "8": 25,
+               "9": 25,
+               "10": 30,
            };
 
            var timeDict = {
@@ -146,7 +162,7 @@
            console.log('time:' + time);
            console.log('benefit:' + benefit);
 
-           finalPoints = Math.round((initialPoints * surveyPointsDict[ratingSelection]) + effectivenessDict[effectiveness] + learnDict[learn] + benefitDict[benefit] + timeDict[time]);         
+           finalPoints = Math.round((initialPoints * meetingRateDict[ratingSelection]) + effectivenessDict[effectiveness] + benefitDict[benefit]  + learnDict[learn] +  timeDict[time]);         
            console.log('final points:' + finalPoints);
        }
 
@@ -284,7 +300,7 @@
                 <div id="calculator" style="text-align: right;">
 
                 </div>
-                <form onsubmit="parseMeetingSurvey($('#meetingSelectID').find('option:selected').attr('id'), $('#meetingSelectID').val(), $('#meetingNotes').val(), $('#myRange').val(), $('.radioButtons2:checked').val(), $('.radioButtons3:checked').val(), $('.radioButtons4:checked').val(), $('.radioButtons5:checked').val()); return false;">
+                <form onsubmit="parseMeetingSurvey($('#meetingSelectID').find('option:selected').attr('id'), $('#meetingSelectID').val(), $('#meetingNotes').val(), $('#meetingRateScale').val(), $('#RelationshipScale').val(), $('.radioButtons3:checked').val(), $('#EffectiveScale').val(), $('.radioButtons5:checked').val()); return false;">
                         <label for="meetingSelectID" class="questions">Select the meeting you are filling out the survey for.</label><br>
                         <select id="meetingSelectID" class="form-select" type="button" data-toggle="dropdown" aria-label="Default select example" required>
                         <option value="" disabled selected>Select a Meeting</option>
