@@ -81,7 +81,7 @@ namespace ProjectTemplate
 
         [WebMethod(EnableSession = true)]
         public string CreateAccount(string username, string password, string email, string firstName, string lastName, 
-            string isMentor, string pointsGoal, string mentorUsername)
+            string isMentor, string pointsGoal, string hsImgURL, string amImgURL, string mentorUsername)
         {
             string sqlSelect;
 
@@ -90,15 +90,15 @@ namespace ProjectTemplate
             //An initial point value of 0 is inserted into relationship_count column of mentors table because they do not need to enter a mentee's username to make an account while mentees table's relationship_count column will begin with a value of 1 because mentees need to enter a mentor username to create a mentee account, meaning they have a connection
             if (isMentor == "Mentor")
             {
-                sqlSelect = "insert into mentorship_users (username, password, email, first_name, last_name, points_goal, is_mentor) " +
-                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, @pointsGoalValue, 1);" +
+                sqlSelect = "insert into mentorship_users (username, password, email, first_name, last_name, points_goal, headshot_img_url, alma_mater_img_url, is_mentor) " +
+                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, @pointsGoalValue, @hsImgURLValue, @amImgURLValue, 1);" + // hs stands for headshot, am stands for alma mater
                 "insert into mentors " +
                 "values(@usernameValue)";
             }
             else
             {
-                sqlSelect = "insert into mentorship_users (username, password, email, first_name, last_name, points_goal, is_mentor) " +
-                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, @pointsGoalValue, 0);" +
+                sqlSelect = "insert into mentorship_users (username, password, email, first_name, last_name, points_goal, headshot_img_url, alma_mater_img_url, is_mentor) " +
+                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, @pointsGoalValue, @hsImgURLValue, @amImgURLValue, 0);" + // hs stands for headshot, am stands for alma mater
                 "insert into mentees " +
                 "values(@usernameValue);";
             }
@@ -113,6 +113,8 @@ namespace ProjectTemplate
             sqlCommand.Parameters.AddWithValue("@lastNameValue", HttpUtility.UrlDecode(lastName));
 
             sqlCommand.Parameters.AddWithValue("@pointsGoalValue", HttpUtility.UrlDecode(pointsGoal));
+            sqlCommand.Parameters.AddWithValue("@hsImgURLValue", HttpUtility.UrlDecode(hsImgURL));
+            sqlCommand.Parameters.AddWithValue("@amImgURLValue", HttpUtility.UrlDecode(amImgURL));
             sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(mentorUsername));
 
             // sqlCommand.Parameters.AddWithValue("@availabilityValue", HttpUtility.UrlDecode(availability));
