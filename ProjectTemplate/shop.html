@@ -9,9 +9,9 @@
     <title>Shop</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-        var price = 0
-        var item = "None"
-        var points = 0; 
+        var price = 0;
+        var item = "None";
+        var points = 0;
         function getPrice(itemName, itemPrice) {
             price = 0;
             item = "None";
@@ -25,30 +25,31 @@
             if (checkPoints()){
                 document.getElementById("confirmation").innerHTML = "You have redeemed " + item + " for " + price + " points.";
                 points -= price;
+                console.log(points);
+                updatePoints(points);
             }
             else{
                 document.getElementById("confirmation").innerHTML = "You do not have enough points to redeem " + item + " for " + price + " points.";
             }
-            
-            updatePoints(points);
+          
 
             console.log(price)
         }
 
-        //function updatePoints(itemPrice){
-
-        //}
-
-        function getPoints() {
-            var webMethod = "ProjectServices.asmx/getPoints";
+        function updatePoints(newPointsTotal) {
+            var webMethod = "ProjectServices.asmx/updatePoints";
+            var parameters = "{\"points\":\"" + encodeURI(newPointsTotal) + "\"}";
 
             $.ajax({
                 type: "POST",
                 url: webMethod,
+                data: parameters,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (msg) {
-                    return msg.d
+                    if (msg.d == true) {
+                        window.location.reload();
+                    }
                 },
                 error: function (e) {
                     alert("Issue!...");
@@ -56,9 +57,27 @@
             });
         }
 
-        function initializePage() {
-            var points = document.getElementById('pointsTotal');
-            points.innerText += getPoints();
+        function getPoints() {
+            var webMethod = "ProjectServices.asmx/getPoints";
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    initializePage(msg.d)
+                },
+                error: function (e) {
+                    alert("Issue!...");
+                }
+            });
+
+        }
+
+        function initializePage(pointsVal) {
+            var pointsTotalID = document.getElementById('pointsTotal');
+            points = pointsVal
+            pointsTotalID.innerText += points;
         }
 
 
@@ -73,7 +92,7 @@
 
     </script>
 </head>
-<body onload="initializePage()">
+<body onload="getPoints()">
     <!--Navbar-->
     <nav class="navbar navbar-expand-sm bg-light">
         <a class="navbar-brand" href="#">

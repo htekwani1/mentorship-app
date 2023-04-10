@@ -601,7 +601,7 @@ namespace ProjectTemplate
         [WebMethod(EnableSession = true)]
         public int getPoints()
         {
-            string sqlSelect = "SELECT points FROM mentorship_users WHERE username = @usernameValue";
+            string sqlSelect = "SELECT redeemable_points FROM mentorship_users WHERE username = @usernameValue";
 
             MySqlConnection sqlConnection = new MySqlConnection(getConString());
             MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
@@ -623,6 +623,32 @@ namespace ProjectTemplate
                 return e.Message;
             }
             
+        }
+
+        [WebMethod(EnableSession = true)]
+        public bool updatePoints(int points)
+        {
+            string sqlUpdate = "UPDATE mentorship_users set redeemable_points = @pointsValue where username = @usernameValue";
+
+            MySqlConnection sqlConnection = new MySqlConnection(getConString());
+            MySqlCommand sqlCommand = new MySqlCommand(sqlUpdate, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@usernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
+            sqlCommand.Parameters.AddWithValue("@pointsValue", points);
+
+            sqlConnection.Open();
+
+            try
+            {
+                sqlCommand.ExecuteNonQuery();
+                sqlConnection.Close();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                sqlConnection.Close();
+                return false;
+            }
         }
     }
 }
