@@ -149,6 +149,27 @@
            finalPoints = Math.round((initialPoints * surveyPointsDict[ratingSelection]) + effectivenessDict[effectiveness] + learnDict[learn] + benefitDict[benefit] + timeDict[time]);         
            console.log('final points:' + finalPoints);
        }
+
+       function logout() {
+           var webMethod = "ProjectServices.asmx/LogOff";
+           $.ajax({
+               type: "POST",
+               url: webMethod,
+               contentType: "application/json; charset=utf-8",
+               dataType: "json",
+               success: function (msg) {
+                   if (msg.d) {
+                       return true;
+                   }
+                   else {
+                       alert("Log off failed!");
+                   }
+               },
+               error: function (e) {
+                   alert("Issue!");
+               }
+           });
+       }
 	</script> 
 
     <style>
@@ -242,7 +263,7 @@
                 </a>
                 <div class="dropdown-menu custom-dropdown" aria-labelledby="profileDropdown">
                         <a class="dropdown-item" id="pointsTotal" href="#">Points: </a>
-                        <a class="dropdown-item" href="#">Logout</a>
+                        <a class="dropdown-item" onclick="logout()" href="index.html">Logout</a>
                 </div>
             </li>
         </ul>
