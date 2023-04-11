@@ -56,7 +56,8 @@
                             `<label for="dateInputID">Add meeting date</label><br>` +
                             `<input type = "date" id="dateInputID">` +
                             `<button type="button" onclick = "scheduleMeeting($(this).closest('div').attr('id'), $(this).siblings('#dateInputID')[0].value)">Schedule</button><br><br>` +
-                            `<select id="${json_objs[i].username}SelectID" onchange="getSurveyResponse($(this).val(), '${json_objs[i].username}')"></select></div><br>` +
+                            `<select id="${json_objs[i].username}SelectID" onchange="getSurveyResponse($(this).val(), '${json_objs[i].username}')">` +
+                            `<option value="" disabled selected>Select a Meeting</option></select></div><br>` +
                             `<div id="${json_objs[i].username}ResponseDivID"></div>`
 
                         selectElement = document.getElementById(`${json_objs[i].username}SelectID`)
@@ -129,6 +130,7 @@
                 success: function (msg) {
                     if (msg.d) {
                         alert("Meeting added");
+                        window.location.reload();
                     }
                     else {
                         alert("Meeting exists");
