@@ -18,15 +18,6 @@
             flex-direction: row;
         }
 
-        .carousel-indicators {
-            position: absolute;
-            bottom: 0;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            width: 100%;
-        }
-
         .img-100x100 {
             width: 100px;
             height: 100px;
@@ -37,11 +28,6 @@
             display: flex;
             justify-content: center;
             padding: 15px;
-        }
-        
-        .dropdown {
-            padding: 30px;
-
         }
     </style>
 </head>
@@ -76,8 +62,10 @@
         </ul>
     </nav>
 
+    <!--Add a new mentor-->
+
     <!--Dropdown-->
-    <div class="dropdown">
+    <div class="dropdown" style="padding:30px;">
         <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
             Select Mentor/Mentee
         </button>
@@ -109,7 +97,7 @@
                             <span>40% Growth in Effective <br></span>
                             <span>45% Growth in Beneficial <br></span>
                         </p>
-                        <a href="#" class="btn btn-primary">Schedule</a>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#scheduleModal">Schedule</button>
                     </div>
                 </div>
             </div>
@@ -138,16 +126,36 @@
         </div>
     </div>
 
+    <!--Modal for Schedule-->
+    <div class="modal fade" id="scheduleModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <!--Modal Header-->
+                <div class="modal-header">
+                    <h4 class="modal-title">Schedule a meeting:</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>    
+                <!--Form-->
+                <form>
+                    <label>Add meeting date </label>
+                    <input class="form-control" type="date">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" data-dismiss="modal">Schedule</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!--Notes Retrieval Section-->
     <div class="jumbotron jumbotron-fluid">
         <!--Dropdown and Notes Retrieval-->
-        <div class="dropdown">
+        <div class="dropdown" style="padding:30px;">
             <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                 Select Meeting Notes
             </button>
             <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Meeting Notes 1: 03/10/2023</a>
-                <a class="dropdown-item" href="#">Meeting Notes 2: 01/02/2023</a>
+                <button class="dropdown-item" href="#">Meeting Notes 1: 03/10/2023</button>
+                <button class="dropdown-item" href="#">Meeting Notes 2: 01/02/2023</button>
             </div>
         </div>
 
@@ -156,7 +164,6 @@
             <div class="card-body text-black">Notes selected</div>
         </div>
     </div>
-
 
     <script>
         //Points Goal Completion Dashboard
