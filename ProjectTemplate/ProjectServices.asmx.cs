@@ -81,7 +81,7 @@ namespace ProjectTemplate
 
         [WebMethod(EnableSession = true)]
         public string CreateAccount(string username, string password, string email, string firstName, string lastName, 
-            string isMentor, string pointsGoal, string hsImgURL, string amImgURL, string mentorUsername)
+            string isMentor, string pointsGoal, string college, string hsImgURL, string amImgURL, string mentorUsername)
         {
             string sqlSelect;
 
@@ -90,15 +90,15 @@ namespace ProjectTemplate
             //An initial point value of 0 is inserted into relationship_count column of mentors table because they do not need to enter a mentee's username to make an account while mentees table's relationship_count column will begin with a value of 1 because mentees need to enter a mentor username to create a mentee account, meaning they have a connection
             if (isMentor == "Mentor")
             {
-                sqlSelect = "insert into mentorship_users (username, password, email, first_name, last_name, points_goal, headshot_img_url, alma_mater_img_url, is_mentor) " +
-                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, @pointsGoalValue, @hsImgURLValue, @amImgURLValue, 1);" + // hs stands for headshot, am stands for alma mater
+                sqlSelect = "insert into mentorship_users (username, password, email, first_name, last_name, points_goal, headshot_img_url, alma_mater_img_url, is_mentor, college) " +
+                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, @pointsGoalValue, @hsImgURLValue, @amImgURLValue, 1, @collegeValue);" + // hs stands for headshot, am stands for alma mater
                 "insert into mentors " +
                 "values(@usernameValue)";
             }
             else
             {
-                sqlSelect = "insert into mentorship_users (username, password, email, first_name, last_name, points_goal, headshot_img_url, alma_mater_img_url, is_mentor) " +
-                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, @pointsGoalValue, @hsImgURLValue, @amImgURLValue, 0);" + // hs stands for headshot, am stands for alma mater
+                sqlSelect = "insert into mentorship_users (username, password, email, first_name, last_name, points_goal, headshot_img_url, alma_mater_img_url, is_mentor, college) " +
+                "values(@usernameValue, @passwordValue, @emailValue, @firstNameValue, @lastNameValue, @pointsGoalValue, @hsImgURLValue, @amImgURLValue, 0, @collegeValue);" + // hs stands for headshot, am stands for alma mater
                 "insert into mentees " +
                 "values(@usernameValue);";
             }
@@ -113,19 +113,10 @@ namespace ProjectTemplate
             sqlCommand.Parameters.AddWithValue("@lastNameValue", HttpUtility.UrlDecode(lastName));
 
             sqlCommand.Parameters.AddWithValue("@pointsGoalValue", HttpUtility.UrlDecode(pointsGoal));
+            sqlCommand.Parameters.AddWithValue("@collegeValue", HttpUtility.UrlDecode(college));
             sqlCommand.Parameters.AddWithValue("@hsImgURLValue", HttpUtility.UrlDecode(hsImgURL));
             sqlCommand.Parameters.AddWithValue("@amImgURLValue", HttpUtility.UrlDecode(amImgURL));
             sqlCommand.Parameters.AddWithValue("@mentorUsernameValue", HttpUtility.UrlDecode(mentorUsername));
-
-            // sqlCommand.Parameters.AddWithValue("@availabilityValue", HttpUtility.UrlDecode(availability));
-            // sqlCommand.Parameters.AddWithValue("@styleValue", HttpUtility.UrlDecode(style));
-            // sqlCommand.Parameters.AddWithValue("@typeValue", HttpUtility.UrlDecode(type));
-            // sqlCommand.Parameters.AddWithValue("@rangeValue", HttpUtility.UrlDecode(range));
-            // sqlCommand.Parameters.AddWithValue("@experienceValue", HttpUtility.UrlDecode(experience));
-            // sqlCommand.Parameters.AddWithValue("@sessionLengthValue", HttpUtility.UrlDecode(sessionLength));
-            // sqlCommand.Parameters.AddWithValue("@numOutfitsValue", HttpUtility.UrlDecode(numOutfits));
-            // sqlCommand.Parameters.AddWithValue("@imageURLValue", HttpUtility.UrlDecode(imageURL));
-
 
             sqlConnection.Open();
 
@@ -332,6 +323,7 @@ namespace ProjectTemplate
                 output += "{" + "\"username\":\"" + sqlDt.Rows[i]["username"] + "\", \"firstName\":\"" + sqlDt.Rows[i]["first_name"] + 
                     "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] + "\", \"meetingResponses\":";
 
+                // Add in key:value pairs of responseID and date of meeting
                 output += getSurveyResponseDateID(Convert.ToString(sqlDt.Rows[i]["username"]));
                 output+= "}";
 
@@ -528,7 +520,8 @@ namespace ProjectTemplate
                 sqlSelect = "SELECT r.response_id, m.date " +
                     "FROM survey_responses r INNER JOIN meetings m " +
                     "ON r.meeting_id = m.meeting_id " +
-                    "WHERE r.respondent_username = @usernameValue AND m.mentee_username = @menteeUsernameValue";
+                    "WHERE r.respondent_username = @usernameValue AND m.mentee_username = @menteeUsernameValue " +
+                    "ORDER BY m.date";
 
                 sqlConnection = new MySqlConnection(getConString());
                 sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
@@ -542,7 +535,8 @@ namespace ProjectTemplate
                 sqlSelect = "SELECT r.response_id, m.date " +
                     "FROM survey_responses r INNER JOIN meetings m " +
                     "ON r.meeting_id = m.meeting_id " +
-                    "WHERE r.respondent_username = @usernameValue AND m.mentor_username = @mentorUsernameValue";
+                    "WHERE r.respondent_username = @usernameValue AND m.mentor_username = @mentorUsernameValue " +
+                    "ORDER BY m.date;";
                 
                 sqlConnection = new MySqlConnection(getConString());
                 sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
