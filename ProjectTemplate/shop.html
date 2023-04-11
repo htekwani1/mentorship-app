@@ -9,9 +9,9 @@
     <title>Shop</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-        var price = 0
-        var item = "None"
-        var points = 0; 
+        var price = 0;
+        var item = "None";
+        var points = 0;
         function getPrice(itemName, itemPrice) {
             price = 0;
             item = "None";
@@ -25,30 +25,31 @@
             if (checkPoints()){
                 document.getElementById("confirmation").innerHTML = "You have redeemed " + item + " for " + price + " points.";
                 points -= price;
+                console.log(points);
+                updatePoints(points);
             }
             else{
                 document.getElementById("confirmation").innerHTML = "You do not have enough points to redeem " + item + " for " + price + " points.";
             }
-            
-            updatePoints(points);
+          
 
             console.log(price)
         }
 
-        //function updatePoints(itemPrice){
-
-        //}
-
-        function getPoints() {
-            var webMethod = "ProjectServices.asmx/getPoints";
+        function updatePoints(newPointsTotal) {
+            var webMethod = "ProjectServices.asmx/updatePoints";
+            var parameters = "{\"points\":\"" + encodeURI(newPointsTotal) + "\"}";
 
             $.ajax({
                 type: "POST",
                 url: webMethod,
+                data: parameters,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (msg) {
-                    return msg.d
+                    if (msg.d == true) {
+                        window.location.reload();
+                    }
                 },
                 error: function (e) {
                     alert("Issue!...");
@@ -56,9 +57,27 @@
             });
         }
 
-        function initializePage() {
-            var points = document.getElementById('pointsTotal');
-            points.innerText += getPoints();
+        function getPoints() {
+            var webMethod = "ProjectServices.asmx/getPoints";
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    initializePage(msg.d)
+                },
+                error: function (e) {
+                    alert("Issue!...");
+                }
+            });
+
+        }
+
+        function initializePage(pointsVal) {
+            var pointsTotalID = document.getElementById('pointsTotal');
+            points = pointsVal
+            pointsTotalID.innerText += points;
         }
 
 
@@ -71,9 +90,30 @@
             }
         }
 
+        function logout() {
+            var webMethod = "ProjectServices.asmx/LogOff";
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.d) {
+                        return true;
+                    }
+                    else {
+                        alert("Log off failed!");
+                    }
+                },
+                error: function (e) {
+                    alert("Issue!");
+                }
+            });
+        }
+
     </script>
 </head>
-<body onload="initializePage()">
+<body onload="getPoints()">
     <!--Navbar-->
     <nav class="navbar navbar-expand-sm bg-light">
         <a class="navbar-brand" href="#">
@@ -97,8 +137,8 @@
                     <img class="rounded" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Logo" style="width:40px;">
                 </a>
                 <div class="dropdown-menu custom-dropdown" aria-labelledby="profileDropdown">
-                        <a class="dropdown-item" id="pointsTotal" href="#">Points: </a>
-                        <a class="dropdown-item" href="#">Logout</a>
+                    <a class="dropdown-item" id="pointsTotal" href="#">Points: </a>
+                    <a class="dropdown-item" onclick="logout()" href="index.html">Logout</a>
                 </div>
             </li>
         </ul>
@@ -130,78 +170,78 @@
             </div>
             <div class="col-auto mb-3">
                 <div class="card" style="width: 18rem; height: 32em;">
-                    <img class="card-img-top" src="file:///Users/seohyunlee/Desktop/Screen%20Shot%202023-04-06%20at%201.47.48%20PM.png" alt="Card image" style="width:100%">
+                    <img class="card-img-top" src="Shop Images/Laptop pouch.png" alt="Card image" style="width:100%">
                     <div class="card-body">
                         <h4 class="card-title">Laptop Pouch</h4>
                         <p class="card-text">Sleeve is fully padded and fleece lined with minimal design. </p>
                         <p class="card-text">900 Points</p>
-                        <button type="modal" onclick="getPrice('32 oz Hydroflask',900)" class="btn btn-primary" data-toggle="modal" data-target="#redeemModal">Redeem</button>
+                        <button type="modal" onclick="getPrice('Laptop Pouch',900)" class="btn btn-primary" data-toggle="modal" data-target="#redeemModal">Redeem</button>
                     </div>
                 </div>
             </div>
             <div class="col-auto mb-3">
                 <div class="card" style="width: 18rem; height: 32em;">
-                    <img class="card-img-top" src="file:///Users/seohyunlee/Desktop/Screen%20Shot%202023-04-06%20at%209.58.01%20PM.png" alt="Card image" style="width:100%">
+                    <img class="card-img-top" src="Shop Images/notebook.png" alt="Card image" style="width:100%">
                     <div class="card-body">
                         <h4 class="card-title">Hard Cover Notebook</h4>
                         <p class="card-text">Rounded corners and elastic closure. Ivory-colored paper. </p>
                         <p class="card-text">400 Points</p>
-                        <button type="modal" onclick="getPrice('32 oz Hydroflask',400)" class="btn btn-primary" data-toggle="modal" data-target="#redeemModal">Redeem</button>
+                        <button type="modal" onclick="getPrice('Hardcover Notebook',400)" class="btn btn-primary" data-toggle="modal" data-target="#redeemModal">Redeem</button>
                     </div>
                 </div>
             </div>
             <div class="col-auto mb-3">
                 <div class="card" style="width: 18rem; height: 32em;">
-                    <img class="card-img-top" src="file:///Users/seohyunlee/Desktop/Screen%20Shot%202023-04-06%20at%2010.16.00%20PM.png" alt="Card image" style="width:100%">
+                    <img class="card-img-top" src="Shop Images/fountain pen.png" alt="Card image" style="width:100%">
                     <div class="card-body">
                         <h4 class="card-title">Fountain Pen</h4>
                         <p class="card-text">Talentum. big fountain pen with solid gold nib. </p>
                         <p class="card-text">1000 Points</p>
-                        <button type="modal" onclick="getPrice('32 oz Hydroflask',1000)" class="btn btn-primary" data-toggle="modal" data-target="#redeemModal">Redeem</button>
+                        <button type="modal" onclick="getPrice('Fountain Pen',1000)" class="btn btn-primary" data-toggle="modal" data-target="#redeemModal">Redeem</button>
                     </div>
                 </div>
             </div>
             <div class="col-auto mb-3">
                 <div class="card" style="width: 18rem; height: 32em;">
-                    <img class="card-img-top" src="file:///Users/seohyunlee/Desktop/Screen%20Shot%202023-04-06%20at%2010.22.33%20PM.png" alt="Card image" style="width:100%">
+                    <img class="card-img-top" src="Shop Images/desk pad.png" alt="Card image" style="width:100%">
                     <div class="card-body">
                         <h4 class="card-title">Desk Mat</h4>
                         <p class="card-text">A two-sided, built-in wireless charger desk mat. </p>
                         <p class="card-text">2000 Points</p>
-                        <button type="modal" onclick="getPrice('32 oz Hydroflask',2000)" class="btn btn-primary" data-toggle="modal" data-target="#redeemModal">Redeem</button>
+                        <button type="modal" onclick="getPrice('Large Desk Pad',2000)" class="btn btn-primary" data-toggle="modal" data-target="#redeemModal">Redeem</button>
                     </div>
                 </div>
             </div>
             <div class="col-auto mb-3">
                 <div class="card" style="width: 18rem; height: 32em;">
-                    <img class="card-img-top" src="file:///Users/seohyunlee/Desktop/Screen%20Shot%202023-04-06%20at%2010.27.33%20PM.png" alt="Card image" style="width:100%">
+                    <img class="card-img-top" src="Shop Images/card wallet.png" alt="Card image" style="width:100%">
                     <div class="card-body">
                         <h4 class="card-title">Business Card Holder</h4>
                         <p class="card-text">Business card case made of premium stainless steel. </p>
                         <p class="card-text">850 Points</p>
-                        <button type="modal" onclick="getPrice('32 oz Hydroflask',850)" class="btn btn-primary" data-toggle="modal" data-target="#redeemModal">Redeem</button>
+                        <button type="modal" onclick="getPrice('Business Card Wallet',850)" class="btn btn-primary" data-toggle="modal" data-target="#redeemModal">Redeem</button>
                     </div>
                 </div>
             </div>
             <div class="col-auto mb-3">
                 <div class="card" style="width: 18rem; height: 32em;">
-                    <img class="card-img-top" src="file:///var/folders/5w/g3_gpjbd7d58206s3kx7kbhr0000gn/T/TemporaryItems/NSIRD_screencaptureui_MImoOE/Screen%20Shot%202023-04-06%20at%2010.30.33%20PM.png" alt="Card image" style="width:100%">
+                    <img class="card-img-top" src="Shop Images/organizer.png" alt="Card image" style="width:100%">
                     <div class="card-body">
                         <h4 class="card-title">Compartment Storage</h4>
                         <p class="card-text">10 compartments with sleeker design aesthetic. </p>
                         <p class="card-text">700 Points</p>
-                        <button type="modal" onclick="getPrice('32 oz Hydroflask',700)" class="btn btn-primary" data-toggle="modal" data-target="#redeemModal">Redeem</button>
+                        <button type="modal" onclick="getPrice('Desk Organizer',700)" class="btn btn-primary" data-toggle="modal" data-target="#redeemModal">Redeem</button>
                     </div>
                 </div>
             </div>
             <div class="col-auto mb-3">
                 <div class="card" style="width: 18rem; height: 32em;">
-                    <img class="card-img-top" src="file:///var/folders/5w/g3_gpjbd7d58206s3kx7kbhr0000gn/T/TemporaryItems/NSIRD_screencaptureui_JrNc4s/Screen%20Shot%202023-04-06%20at%2010.38.42%20PM.png" alt="Card image" style="width:100%">
+                    <img class="card-img-top" src="Shop Images/watch strap.png" alt="Card image" style="width:100%">
                     <div class="card-body">
                         <h4 class="card-title">Apple Watch Strap</h4>
                         <p class="card-text">Classy leather strap that doesn't bradk the bank. </p>
                         <p class="card-text">1400 Points</p>
-                        <button type="modal" onclick="getPrice('32 oz Hydroflask',1400)" class="btn btn-primary" data-toggle="modal" data-target="#redeemModal">Redeem</button>
+                        <button type="modal" onclick="getPrice('Apple Watch Strap',1400)" class="btn btn-primary" data-toggle="modal" data-target="#redeemModal">Redeem</button>
                     </div>
                 </div>
             </div>

@@ -10,13 +10,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript">
-        function CreateAccount(username, password, email, firstName, lastName, isMentor, pointsGoal, mentorUsername) {
+        function CreateAccount(username, password, email, firstName, lastName, isMentor, pointsGoal, hsImgURL, amImgURL, mentorUsername) {
             var webMethod = "ProjectServices.asmx/CreateAccount";
             var parameters = "{\"username\":\"" + encodeURI(username) + "\",\"password\":\"" + encodeURI(password) +
                 "\",\"email\":\"" + encodeURI(email) + "\",\"firstName\":\"" + encodeURI(firstName) + "\",\"lastName\":\"" + 
                 encodeURI(lastName)  + "\",\"isMentor\":\"" + 
                 encodeURI(isMentor)  + "\",\"pointsGoal\":\"" + 
-                encodeURI(pointsGoal)  + "\",\"mentorUsername\":\"" + 
+                encodeURI(pointsGoal)  + "\",\"hsImgURL\":\"" + // hs stands for headshot
+                encodeURI(hsImgURL)  + "\",\"amImgURL\":\"" +   // am stands for alma mater
+                encodeURI(amImgURL)  + "\",\"mentorUsername\":\"" + 
                 encodeURI(mentorUsername)  + "\"}";
             $.ajax({
                 type: "POST",
@@ -131,7 +133,7 @@
 
     <!-- Sign up for Mentor or Mentee -->
     <form class="was-validated" onsubmit="CreateAccount($('#uname').val(), $('#pwd').val(), $('#email').val(),
-    $('#validationServer01').val(), $('#validationServer02').val(), $('.userTypeInputClass:checked').val(), $('#myRange').val(), $('#mentorinput').val()); return false;">
+    $('#validationServer01').val(), $('#validationServer02').val(), $('.userTypeInputClass:checked').val(), $('#myRange').val(), $('#headshotImgURL').val(), $('#almaMaterImgURL').val(), $('#mentorinput').val()); return false;">
         <div id="radio_mentor" class="form-check">
             <input onchange="showMentorUsernameInput()" type="radio" class="form-check-input userTypeInputClass" id="validationFormCheck2" name="radio-stacked" value="Mentor" required>
             <label class="form-check-label" for="validationFormCheck2">Sign up for Mentor</label>
@@ -180,6 +182,14 @@
             <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd" required>
             <div class="valid-feedback">Valid.</div>
             <div class="invalid-feedback">Please fill out this field.</div>
+        </div>
+        <div class="form-group" id="inputboxes">
+            <label for="headshotImgURL">Headshot Image URL:</label>
+            <input type="text" class="form-control" id="headshotImgURL" placeholder="Enter headshot image URL" name="headshotImgURL">
+        </div>
+        <div class="form-group" id="inputboxes">
+            <label for="almaMaterImgURL">Alma Mater Image URL:</label>
+            <input type="text" class="form-control" id="almaMaterImgURL" placeholder="Enter alma mater image URL" name="almaMaterImgURL">
         </div>
         <!-- inputbox-->
         <div class="form-group mentorUsernameDiv" id="inputboxes">
