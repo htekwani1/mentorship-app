@@ -178,6 +178,27 @@
                 }, 2000);
             });
         } 
+
+        function logout() {
+            var webMethod = "ProjectServices.asmx/LogOff";
+            $.ajax({
+                type: "POST",
+                url: webMethod,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.d) {
+                        return true;
+                    }
+                    else {
+                        alert("Log off failed!");
+                    }
+                },
+                error: function (e) {
+                    alert("Issue!");
+                }
+            });
+        }
     </script>
 
 </head>
@@ -202,7 +223,7 @@
                 <a class="nav-link" id="pointsDisplay" href="#">Points: </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Logout</a>
+                <a class="nav-link" onclick="logout()" href="index.html">Logout</a>
             </li>
         </ul>
     </nav>
