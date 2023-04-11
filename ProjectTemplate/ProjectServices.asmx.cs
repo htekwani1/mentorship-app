@@ -332,6 +332,7 @@ namespace ProjectTemplate
                 output += "{" + "\"username\":\"" + sqlDt.Rows[i]["username"] + "\", \"firstName\":\"" + sqlDt.Rows[i]["first_name"] + 
                     "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] + "\", \"meetingResponses\":";
 
+                // Add in key:value pairs of responseID and date of meeting
                 output += getSurveyResponseDateID(Convert.ToString(sqlDt.Rows[i]["username"]));
                 output+= "}";
 
@@ -528,7 +529,8 @@ namespace ProjectTemplate
                 sqlSelect = "SELECT r.response_id, m.date " +
                     "FROM survey_responses r INNER JOIN meetings m " +
                     "ON r.meeting_id = m.meeting_id " +
-                    "WHERE r.respondent_username = @usernameValue AND m.mentee_username = @menteeUsernameValue";
+                    "WHERE r.respondent_username = @usernameValue AND m.mentee_username = @menteeUsernameValue " +
+                    "ORDER BY m.date";
 
                 sqlConnection = new MySqlConnection(getConString());
                 sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
@@ -542,7 +544,8 @@ namespace ProjectTemplate
                 sqlSelect = "SELECT r.response_id, m.date " +
                     "FROM survey_responses r INNER JOIN meetings m " +
                     "ON r.meeting_id = m.meeting_id " +
-                    "WHERE r.respondent_username = @usernameValue AND m.mentor_username = @mentorUsernameValue";
+                    "WHERE r.respondent_username = @usernameValue AND m.mentor_username = @mentorUsernameValue " +
+                    "ORDER BY m.date;";
                 
                 sqlConnection = new MySqlConnection(getConString());
                 sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
