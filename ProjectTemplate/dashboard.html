@@ -65,11 +65,11 @@
     <!--Hello-->
     <div>
         <img>
-        <h2>Welcome {name}!</h2>
+        <h2 id="greetingID">Welcome {name}!</h2>
     </div>
 
     <!--Add a new mentor-->
-    <div class="container card">
+    <div id="addMentorID" class="container card">
         <form>
             <div class="card-body text-black">Would you like to add a new mentor? </div>
             <input type="text" class="form-control">
@@ -82,7 +82,7 @@
         <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
             Select Mentor/Mentee
         </button>
-        <div class="dropdown-menu">
+        <div id="connectionsDropdownID" class="dropdown-menu">
             <a class="dropdown-item" href="#">Mentee 1</a>
             <a class="dropdown-item" href="#">Mentee 2</a>
             <a class="dropdown-item" href="#"></a>
@@ -166,7 +166,7 @@
             <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                 Select Meeting Notes
             </button>
-            <div class="dropdown-menu">
+            <div id="meetingNotesDropdownID" class="dropdown-menu">
                 <button class="dropdown-item" href="#">Meeting Notes 1: 03/10/2023</button>
                 <button class="dropdown-item" href="#">Meeting Notes 2: 01/02/2023</button>
             </div>
