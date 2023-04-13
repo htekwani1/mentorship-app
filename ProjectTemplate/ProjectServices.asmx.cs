@@ -628,6 +628,28 @@ namespace ProjectTemplate
             
         }
 
+        // function that queries for a connection's data and returns it as a JSON output
+        [WebMethod(EnableSession = true)]
+        public string pullConnectionData(string connectionUsername)
+        {
+            string sqlSelect = "SELECT first_name, last_name, college, headshot_img_url, alma_mater_img_url FROM mentorship_users WHERE username = @connectionUsernameValue";
+            
+            MySqlConnection sqlConnection = new MySqlConnection(getConString());
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@connectionUsernameValue", HttpUtility.UrlDecode(connectionUsername));
+
+            MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+            DataTable sqlDt = new DataTable("connectionData");
+            sqlDa.Fill(sqlDt);
+
+            string output = "{" + "\"first_name\":\"" + sqlDt.Rows[0]["first_name"] + 
+                "\",\"last_name\":\"" + sqlDt.Rows[0]["last_name"] + "\",\"college\":\"" + sqlDt.Rows[0]["college"] + 
+                "\",\"headshot_img_url\":\"" + sqlDt.Rows[0]["headshot_img_url"] +
+                "\",\"alma_mater_img_url\":\"" + sqlDt.Rows[0]["alma_mater_img_url"] + "\"}";
+
+            return output;
+        }
+
         // takes updated points value for user
         [WebMethod(EnableSession = true)]
         public bool updatePoints(int points)
@@ -674,7 +696,7 @@ namespace ProjectTemplate
                 for (int i = 0; i < sqlDt.Rows.Count; i++)
                 {
                     output += "{" + "\"firstName\":\"" + sqlDt.Rows[i]["first_name"] + "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] +
-                        "\",\"points_goal\":\"" + sqlDt.Rows[i]["pointsGoal"] + "\", \"points\":\"" + sqlDt.Rows[i]["points"] + 
+                        "\",\"points_goal\":\"" + sqlDt.Rows[i]["points_goal"] + "\", \"points\":\"" + sqlDt.Rows[i]["points"] + 
                         "\",\"redeemablePoints\":\"" + sqlDt.Rows[i]["redeemable_points"] + 
                         "\", \"headshotURL\":\"" + sqlDt.Rows[i]["headshot_img_url"] + "\", \"almaMaterURL\":\"" + sqlDt.Rows[i]["alma_mater_img_url"] 
                         + "\", \"connection\":" + returnPairings() + "}";
@@ -682,19 +704,6 @@ namespace ProjectTemplate
                 }
 
             return output;
-        }
-
-        [WebMethod(EnableSession = true)]
-        public string addMentor(string mentorUsername)
-        {
-            try {
-                addConnection(Convert.ToString(Session["username"]), mentorUsername);
-                return "Success";
-            }
-            catch (Exception e) {
-                return e.Message;
-            }
-            
         }
     }
 }
