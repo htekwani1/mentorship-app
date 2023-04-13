@@ -62,23 +62,46 @@
         </ul>
     </nav>
 
-    <!--Hello-->
-    <div>
-        <img>
-        <h2>Welcome {name}!</h2>
+    <div class="container" style="padding-top: 30px; padding-bottom: 30px;">
+        <div class="row">
+            <!--Hello-->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-image-container">
+                        <img src="haiheadshot.jpg" class="card-img-top rounded-circle img-100x100" alt="Headshot">
+                        <img src="https://seeklogo.com/images/A/asu-logo-4B38E9D815-seeklogo.com.png" class="card-img-top rounded-circle img-100x100" style="padding:10px;" alt="College/University">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Welcome {name} </h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+            <!--Points Completed-->
+            <div class="col-md-6" style="justify-content: center;">
+                <!-- Points Goal Completion Dashboard -->
+                <canvas id="pointsCompleted"></canvas>
+            </div>
+        </div>
     </div>
 
     <!--Add a new mentor-->
     <div class="container card">
-        <form>
-            <div class="card-body text-black">Would you like to add a new mentor? </div>
-            <input type="text" class="form-control">
-            <button type="submit" class="btn btn-primary">Add </button>
+        <form class="d-flex align-items-center" style="margin: 0; padding: 5px;">
+            <div class="card-body text-black" style="padding: 0;">
+                Would you like to add a new mentor?
+            </div>
+            <div style="flex-grow: 1; margin-left: 10px;">
+                <input type="text" class="form-control">
+            </div>
+            <div style="flex-grow: 0; margin-left: 10px;">
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
         </form>
     </div>
 
     <!--Dropdown-->
-    <div class="dropdown" style="padding:30px;">
+    <div class="dropdown" style="padding:30px; padding-left: 75px;">
         <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
             Select Mentor/Mentee
         </button>
@@ -89,7 +112,7 @@
         </div>
     </div>
 
-    <!--Begin Grid/Carousel Item-->
+    <!--Begin Grid Item-->
     <div class="container full-height">
         <div class="row full-height flex-row">
             <div class="col-md-4">
@@ -117,10 +140,6 @@
             <div class="col-md-8">
                 <div class="row">
                     <div class="col-md-6">
-                        <!-- Points Goal Completion Dashboard -->
-                        <canvas id="pointsCompleted"></canvas>
-                    </div>
-                    <div class="col-md-6">
                         <!-- Total meeting minutes -->
                         <canvas id="meetingHours"></canvas>
                     </div>
@@ -140,7 +159,7 @@
     </div>
 
     <!--Modal for Schedule-->
-    <div class="modal fade" id="scheduleModal">
+    <div class="modal fade" id="scheduleModal" style="padding-bottom:">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <!--Modal Header-->
@@ -160,9 +179,9 @@
     </div>
 
     <!--Notes Retrieval Section-->
-    <div class="jumbotron jumbotron-fluid">
+    <div class="jumbotron jumbotron-fluid d-flex align-items-center" style="">
         <!--Dropdown and Notes Retrieval-->
-        <div class="dropdown" style="padding:30px;">
+        <div class="dropdown" style="">
             <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                 Select Meeting Notes
             </button>
@@ -173,7 +192,7 @@
         </div>
 
         <!--Notes Selected-->
-        <div class="container card">
+        <div class="container card" style="padding-left: 30px;">
             <div class="card-body text-black">Notes selected</div>
         </div>
     </div>
