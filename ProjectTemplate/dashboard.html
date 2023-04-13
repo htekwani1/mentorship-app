@@ -30,6 +30,16 @@
             justify-content: center;
             padding: 15px;
         }
+
+        .btn.custom-active-color:active,
+        .btn.custom-active-color:focus {
+            background-color: #557522 !important; /* Change this to your desired clicked color */
+            border-color: #557522 !important; /* Change this to your desired border color when clicked */
+            color: #FFFFFF !important; /* Change this to your desired text color when clicked */
+            box-shadow: none !important; /* Remove the default box-shadow when focused */
+        }
+
+    </style>
     </style>
      <script>
         function getLoggedInUserInfo() {
@@ -122,13 +132,13 @@
 
     <!--Dropdown-->
     <div class="dropdown d-flex align-items-center" style="margin: 0; padding: 30px;">
-        <button class="btn btn-primary dropdown-toggle mx-auto" style="width: 100vw; max-width: 100%;" data-toggle="dropdown">
+        <button class="btn btn-primary dropdown-toggle mx-auto custom-active-color" style="width: 70vw; max-width: 100%;" data-toggle="dropdown">
             Select Mentor/Mentee
         </button>
         <div id="connectionsDropdownID" class="dropdown-menu">
-            <a class="dropdown-item" href="#">Mentee 1</a>
-            <a class="dropdown-item" href="#">Mentee 2</a>
-            <a class="dropdown-item" href="#"></a>
+            <a class="dropdown-item custom-active-color" href="#">Mentee 1</a>
+            <a class="dropdown-item custom-active-color" href="#">Mentee 2</a>
+            <a class="dropdown-item custom-active-color" href="#"></a>
         </div>
     </div>
 
@@ -188,30 +198,31 @@
                 <!--Form-->
                 <form>
                     <label>Add meeting date </label>
-                    <input class="form-control" type="date">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary" data-dismiss="modal">Schedule</button>
+                    <input class="form-control" type="date" style="margin:10px; max-width: 90%;">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="margin:10px;">Cancel</button>
+                    <button type="submit" class="btn btn-primary" data-dismiss="modal" style="margin:10px;">Schedule</button>
                 </form>
             </div>
         </div>
     </div>
 
-    <!--Notes Retrieval Section-->
-    <div class="jumbotron jumbotron-fluid d-flex align-items-center" style="margin-top: 30px;">
-        <!--Dropdown and Notes Retrieval-->
-        <div class="dropdown" style="margin-left: 30px; margin-right: 30px;">
-            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                Select Meeting Notes
-            </button>
-            <div id="meetingNotesDropdownID" class="dropdown-menu">
-                <button class="dropdown-item" href="#">Meeting Notes 1: 03/10/2023</button>
-                <button class="dropdown-item" href="#">Meeting Notes 2: 01/02/2023</button>
+    <div class="jumbotron jumbotron-fluid" style="margin-top: 30px;">
+        <div class="container">
+            <!--Dropdown and Notes Retrieval-->
+            <div class="dropdown" style="margin-left: 30px; margin-right: 30px;">
+                <button class="btn btn-primary dropdown-toggle custom-active-color" data-toggle="dropdown">
+                    Select Meeting Notes
+                </button>
+                <div id="meetingNotesDropdownID" class="dropdown-menu" style="margin-top: -5px;">
+                    <button class="dropdown-item custom-active-color" href="#">Meeting Notes 1: 03/10/2023</button>
+                    <button class="dropdown-item custom-active-color" href="#">Meeting Notes 2: 01/02/2023</button>
+                </div>
             </div>
-        </div>
-
-        <!--Notes Selected-->
-        <div class="container card" style="margin-right: 30px;">
-            <div class="card-body text-black">Notes selected</div>
+    
+            <!--Notes Selected-->
+            <div class="container card" style="margin-top:30px; margin-right: 30px;">
+                <div class="card-body text-black" style="width: 70vw; max-width: 100%; margin-right: 30px;">Notes selected</div>
+            </div>
         </div>
     </div>
 

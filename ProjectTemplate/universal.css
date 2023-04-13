@@ -162,3 +162,8 @@ body {
     background-color: #74A12E;
 }
 
+.btn.custom-active-color:active {
+    background-color: #74A12E !important; /* Change this to your desired clicked color */
+    border-color: #74A12E !important; /* Change this to your desired border color when clicked */
+    color: #FFFFFF !important; /* Change this to your desired text color when clicked */
+}
