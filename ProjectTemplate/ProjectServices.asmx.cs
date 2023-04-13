@@ -292,6 +292,7 @@ namespace ProjectTemplate
             }
         }
 
+        // returns information about all of the user's connections, including the survey response IDs: dates they have left on each of them.
         [WebMethod(EnableSession =true)]
         public string returnPairings()
         {
@@ -420,6 +421,7 @@ namespace ProjectTemplate
             }
         }
 
+        // check if a meeting between a mentor and mentee already exists, used as a check for scheduling new meetings
         [WebMethod(EnableSession = true)]
         public bool checkExistingMeeting(string mentorUsername, string menteeUsername, string date)
         {
@@ -444,7 +446,7 @@ namespace ProjectTemplate
 
         }
 
-
+        // find the meetings a user has had with their connection but have not submitted a survey for
         [WebMethod(EnableSession =true)]
         public string getMeetingsNoResponse()
         {
@@ -508,6 +510,7 @@ namespace ProjectTemplate
 
         }
 
+        // return array of JSON objects, where responseID is the key and meeting date is the value
         [WebMethod(EnableSession = true)]
         public string getSurveyResponseDateID(string connectionUsername)
         {
@@ -568,6 +571,7 @@ namespace ProjectTemplate
 
         }
 
+        // get the meeting survey notes based off responseID
         [WebMethod(EnableSession = true)]
         public string getSurveyResponse(int surveyResponseID)
         {
@@ -581,6 +585,8 @@ namespace ProjectTemplate
 
         }
 
+
+        // helper function to check if logged in user is a mentor or not
         [WebMethod(EnableSession = true)]
         public bool isMentorCheck()
         {
@@ -594,6 +600,7 @@ namespace ProjectTemplate
             }
         }
 
+    
         [WebMethod(EnableSession = true)]
         public int getPoints()
         {
@@ -621,6 +628,7 @@ namespace ProjectTemplate
             
         }
 
+        // takes updated points value for user
         [WebMethod(EnableSession = true)]
         public bool updatePoints(int points)
         {
