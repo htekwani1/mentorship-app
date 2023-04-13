@@ -674,7 +674,7 @@ namespace ProjectTemplate
                 for (int i = 0; i < sqlDt.Rows.Count; i++)
                 {
                     output += "{" + "\"firstName\":\"" + sqlDt.Rows[i]["first_name"] + "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] +
-                        "\",\"points_goal\":\"" + sqlDt.Rows[i]["pointsGoal"] + "\", \"points\":\"" + sqlDt.Rows[i]["points"] + 
+                        "\",\"points_goal\":\"" + sqlDt.Rows[i]["points_goal"] + "\", \"points\":\"" + sqlDt.Rows[i]["points"] + 
                         "\",\"redeemablePoints\":\"" + sqlDt.Rows[i]["redeemable_points"] + 
                         "\", \"headshotURL\":\"" + sqlDt.Rows[i]["headshot_img_url"] + "\", \"almaMaterURL\":\"" + sqlDt.Rows[i]["alma_mater_img_url"] 
                         + "\", \"connection\":" + returnPairings() + "}";
@@ -682,19 +682,6 @@ namespace ProjectTemplate
                 }
 
             return output;
-        }
-
-        [WebMethod(EnableSession = true)]
-        public string addMentor(string mentorUsername)
-        {
-            try {
-                addConnection(Convert.ToString(Session["username"]), mentorUsername);
-                return "Success";
-            }
-            catch (Exception e) {
-                return e.Message;
-            }
-            
         }
     }
 }
