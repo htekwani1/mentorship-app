@@ -654,5 +654,47 @@ namespace ProjectTemplate
                 return false;
             }
         }
+
+        [WebMethod(EnableSession = true)]
+        public string getLoggedInUserInfo()
+        {
+            string output = "";
+            string sqlSelect = "SELECT first_name, last_name, points_goal, points, redeemable_points, headshot_img_url, alma_mater_img_url FROM mentorship_users WHERE username = @usernameValue";
+
+            MySqlConnection sqlConnection = new MySqlConnection(getConString());
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@usernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
+
+            sqlConnection.Open();
+
+            MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+            DataTable sqlDt = new DataTable("dashboardLoggedInUser");
+            sqlDa.Fill(sqlDt);
+
+                for (int i = 0; i < sqlDt.Rows.Count; i++)
+                {
+                    output += "{" + "\"firstName\":\"" + sqlDt.Rows[i]["first_name"] + "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] +
+                        "\",\"points_goal\":\"" + sqlDt.Rows[i]["pointsGoal"] + "\", \"points\":\"" + sqlDt.Rows[i]["points"] + 
+                        "\",\"redeemablePoints\":\"" + sqlDt.Rows[i]["redeemable_points"] + 
+                        "\", \"headshotURL\":\"" + sqlDt.Rows[i]["headshot_img_url"] + "\", \"almaMaterURL\":\"" + sqlDt.Rows[i]["alma_mater_img_url"] 
+                        + "\", \"connection\":" + returnPairings() + "}";
+
+                }
+
+            return output;
+        }
+
+        [WebMethod(EnableSession = true)]
+        public string addMentor(string mentorUsername)
+        {
+            try {
+                addConnection(Convert.ToString(Session["username"]), mentorUsername);
+                return "Success";
+            }
+            catch (Exception e) {
+                return e.Message;
+            }
+            
+        }
     }
 }
