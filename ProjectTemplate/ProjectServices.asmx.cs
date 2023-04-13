@@ -628,6 +628,28 @@ namespace ProjectTemplate
             
         }
 
+        // function that queries for a connection's data and returns it as a JSON output
+        [WebMethod(EnableSession = true)]
+        public string pullConnectionData(string connectionUsername)
+        {
+            string sqlSelect = "SELECT first_name, last_name, college, headshot_img_url, alma_mater_img_url FROM mentorship_users WHERE username = @connectionUsernameValue";
+            
+            MySqlConnection sqlConnection = new MySqlConnection(getConString());
+            MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@connectionUsernameValue", HttpUtility.UrlDecode(connectionUsername));
+
+            MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+            DataTable sqlDt = new DataTable("connectionData");
+            sqlDa.Fill(sqlDt);
+
+            string output = "{" + "\"first_name\":\"" + sqlDt.Rows[0]["first_name"] + 
+                "\",\"last_name\":\"" + sqlDt.Rows[0]["last_name"] + "\",\"college\":\"" + sqlDt.Rows[0]["college"] + 
+                "\",\"headshot_img_url\":\"" + sqlDt.Rows[0]["headshot_img_url"] +
+                "\",\"alma_mater_img_url\":\"" + sqlDt.Rows[0]["alma_mater_img_url"] + "\"}";
+
+            return output;
+        }
+
         // takes updated points value for user
         [WebMethod(EnableSession = true)]
         public bool updatePoints(int points)
