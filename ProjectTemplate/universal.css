@@ -27,6 +27,25 @@ nav {
     font-family: 'roboRegular';
 }
 
+.custom-navbar {
+    background-color: #74A12E;
+}
+
+.custom-navbar .navbar-nav .nav-link {
+    color: white;
+}
+
+.btn {
+    background-color: #74A12E;
+    color: white;
+    border-color: #74A12E;
+}
+
+.btn:hover {
+    color: #74A12E;
+    background-color: white;
+    border-color: white;
+}
 /* SignUp.html */
 
 #pageTitle {
@@ -36,7 +55,7 @@ nav {
 }
 
 hr.new2 {
-    border-top: 2px solid #219ebc;
+    border-top: 2px solid #74A12E;
 }
 
 #radio_mentor {
@@ -98,7 +117,7 @@ hr.new2 {
 }
 
 hr.new1 {
-    border-top: 2px solid #219ebc;
+    border-top: 2px solid #74A12E;
 }
 
 select {
@@ -121,7 +140,7 @@ form {
 }
 
 body {
-    accent-color: #219ebc;
+    accent-color: #74A12E;
 }
 
 .navbar-nav .dropdown-menu {
@@ -140,6 +159,6 @@ body {
 }
 
 .carousel-indicators li {
-    background-color: #0d6efd;
+    background-color: #74A12E;
 }
 
