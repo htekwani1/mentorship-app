@@ -40,28 +40,8 @@
         }
 
     </style>
-    </style>
-     <script>
-        function getLoggedInUserInfo() {
-          var webMethod = "ProjectServices.asmx/getLoggedInUserInfo";
-          $.ajax({
-              type: "POST",
-              url: webMethod,
-              contentType: "application/json; charset=utf-8",
-              dataType: "json",
-              success: function (msg) {
-                  console.log(msg.d)
-              },
-              error: function (e) {
-                  alert("Issue!...");
-              }
-          });
-
-      }
-
-  </script>
 </head>
-<body>
+<body onload="getLoggedInUserInfo()">
     <!--Navbar-->
     <nav class="navbar navbar-expand-sm custom-navbar">
         <a class="navbar-brand" href="#">
@@ -69,24 +49,24 @@
         </a>
         <ul class="navbar-nav">
             <li class="nav-item">
-            <a class="nav-link" href="dashboard.html">Dashboard</a>
+                <a class="nav-link" href="dashboard.html">Dashboard</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="meetingSurvey.html">Survey</a>
+                <a class="nav-link" href="meetingSurvey.html">Survey</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="shop.html">Shop</a>
+                <a class="nav-link" href="shop.html">Shop</a>
             </li>
         </ul>
 
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="rounded" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Logo" style="width:40px;">
+                    <img id="navHeadshotID" class="rounded" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Logo" style="width:40px;">
                 </a>
                 <div class="dropdown-menu custom-dropdown" aria-labelledby="profileDropdown">
-                        <a class="dropdown-item" id="pointsTotal" href="#">Points: </a>
-                        <a class="dropdown-item" href="#">Logout</a>
+                    <a class="dropdown-item" id="pointsTotal">Points: </a>
+                    <a class="dropdown-item" href="#">Logout</a>
                 </div>
             </li>
         </ul>
@@ -98,11 +78,11 @@
             <div class="col-md-6">
                 <div class="card h-100">
                     <div class="card-image-container">
-                        <img src="haiheadshot.jpg" class="card-img-top rounded-circle img-100x100" alt="Headshot">
-                        <img src="https://seeklogo.com/images/A/asu-logo-4B38E9D815-seeklogo.com.png" class="card-img-top rounded-circle img-100x100" style="padding:10px;" alt="College/University">
+                        <img id="loggedUserHeadshotID" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="card-img-top rounded-circle img-100x100" alt="Headshot">
+                        <img id="loggedUserAlmaMaterID" src="https://seeklogo.com/images/A/asu-logo-4B38E9D815-seeklogo.com.png" class="card-img-top rounded-circle img-100x100" style="padding:10px;" alt="College/University">
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Welcome {name} </h5>
+                        <h5 class="card-title">Welcome <span id="nameSpanID"></span> </h5>
                         <p class="card-text"></p>
                     </div>
                 </div>
@@ -116,13 +96,13 @@
     </div>
 
     <!--Add a new mentor-->
-    <div class="container card">
-        <form class="d-flex align-items-center" style="margin: 0; padding: 5px;">
+    <div id="addMentorDivID" style="visibility:hidden;" class="container card">
+        <form onsubmit = "addMentor($('#mentorInputID').val()); return false;" class="d-flex align-items-center" style="margin: 0; padding: 5px;">
             <div class="card-body text-black" style="padding: 0;">
                 Would you like to add a new mentor?
             </div>
             <div style="flex-grow: 1; margin-left: 10px;">
-                <input type="text" class="form-control">
+                <input id="mentorInputID" type="text" class="form-control">
             </div>
             <div style="flex-grow: 0; margin-left: 10px;">
                 <button type="submit" class="btn btn-primary">Add</button>
@@ -159,7 +139,7 @@
                             <span>300 Points Earned <br></span>
                             <span>70% Satisfaction <br></span>
                             <span>7 Hours Attended <br></span>
-                            <span>60% Growth in Learning <br></span> 
+                            <span>60% Growth in Learning <br></span>
                             <span>40% Growth in Effective <br></span>
                             <span>45% Growth in Beneficial <br></span>
                         </p>
@@ -169,8 +149,8 @@
             </div>
             <div class="col-md-8">
                 <div class="row" style="height: 220px;">
-                        <!-- Total meeting minutes -->
-                        <canvas id="meetingHours"></canvas>
+                    <!-- Total meeting minutes -->
+                    <canvas id="meetingHours"></canvas>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
@@ -194,7 +174,7 @@
                 <div class="modal-header">
                     <h4 class="modal-title">Schedule a meeting:</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>    
+                </div>
                 <!--Form-->
                 <form>
                     <label>Add meeting date </label>
@@ -218,7 +198,7 @@
                     <button class="dropdown-item custom-active-color" href="#">Meeting Notes 2: 01/02/2023</button>
                 </div>
             </div>
-    
+
             <!--Notes Selected-->
             <div class="container card" style="margin-top:30px; margin-right: 30px;">
                 <div class="card-body text-black" style="width: 70vw; max-width: 100%; margin-right: 30px;">Notes selected</div>
@@ -226,157 +206,7 @@
         </div>
     </div>
 
-    <script>
-        //Points Goal Completion Dashboard
-        var doughnutChart = document.getElementById('pointsCompleted').getContext('2d');
-        var myDoughnutChart = new Chart(doughnutChart, {
-            type: 'doughnut',
-            data: {
-                datasets: [{
-                    // INSERT POINTS EARNED AND POINTS GOAL 
-                    data: [700, 300],
-                    backgroundColor: ['grey', '#74A12E']
-                }],
-
-                labels: [
-                'Points Goal',
-                'Points Earned'
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                legend : {
-                    position: 'bottom'
-                },
-                layout: {
-                    padding: {
-                        left: 20,
-                        right: 20,
-                        top: 20,
-                        bottom: 20
-                    }
-                }
-            }
-        });
-        
-        //Total meeting minutes
-        var lineChart = document.getElementById('meetingHours').getContext('2d');
-        var myLineChart = new Chart(lineChart, {
-            type: 'line',
-            data: {
-                labels: ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6", "Week 7",  "Week 8"],
-                datasets: [{
-                    label: "Meeting Hours",
-                    borderColor: "#74A12E",
-                    pointBorderColor: "#FFF",
-                    pointBackgroundColor: "#74A12E",
-                    pointBorderWidth: 2,
-                    pointHoverRadius: 4,
-                    pointHoverBorderWidth: 1,
-                    pointRadius: 4,
-                    backgroundColor: 'transparent',
-                    fill: true,
-                    borderWidth: 2,
-                    // INSERT AGGREGATED DATA OF (real or fake) WEEKLY (minutes to hour) DATA
-                    data: [1.5, 1.25, 1.75, 2, .75, .5, .25]
-                }]
-            },
-            options : {
-                responsive: true,
-                maintainAspectRatio: false,
-                legend: {
-                    position: 'bottom',
-                    labels : {
-                        padding: 10,
-                        fontColor: '#1d7af3',
-                    }
-                },
-                tooltips: {
-                    bodySpacing: 4,
-                    mode:"nearest",
-                    intersect: 0,
-                    position:"nearest",
-                    xPadding:10,
-                    yPadding:10,
-                    caretPadding:10
-                },
-                layout:{
-                    padding:{left:15,right:15,top:2.5,bottom:2.5}
-                }
-            }
-        }); 
-
-        //Average Meeting Satisfaction 1-10
-        var doughnutChart = document.getElementById('meetingSatisfaction').getContext('2d');
-        var myDoughnutChart = new Chart(doughnutChart, {
-            type: 'doughnut',
-            data: {
-                datasets: [{
-                    // INSERT TOTAL 1s (TRUE) out of TOTAL 0s (FALSE)  
-                    data: [6, 7],
-                    backgroundColor: ['grey', '#74A12E']
-                }],
-
-                labels: [
-                'Unsatisfied',
-                'Satisfied',
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                legend : {
-                    position: 'bottom'
-                },
-                layout: {
-                    padding: {
-                        left: 20,
-                        right: 20,
-                        top: 20,
-                        bottom: 20
-                    }
-                }
-            }
-        });
-
-        //Radar of effective, learning, and beneficial
-        var radarChart = document.getElementById('growthChart').getContext('2d');
-        var myRadarChart = new Chart(radarChart, {
-            type: 'radar',
-            data: {
-                labels: ['Effective', 'Learning', 'Beneficial'],
-                datasets: [{
-                    // COUNT of all TRUE in each respective category
-                    data: [6,3,7],
-                    borderColor: '#74A12E',
-                    backgroundColor : 'rgba(116, 161, 46, 0.25)',
-                    pointBackgroundColor: "#74A12E",
-                    pointHoverRadius: 4,
-                    pointRadius: 3,
-                    label: 'Current'
-                }, {
-                    // Design a pre-mentorship section to benchmark growth on radar
-                    data: [2, 1, 3],
-                    borderColor: '#716aca',
-                    backgroundColor: 'rgba(113, 106, 202, 0.25)',
-                    pointBackgroundColor: "#716aca",
-                    pointHoverRadius: 4,
-                    pointRadius: 3,
-                    label: 'Beginning'
-                },
-                ]
-            },
-            options : {
-                responsive: true,
-                maintainAspectRatio: false,
-                legend : {
-                    position: 'bottom'
-                }
-            }
-        });
-    </script>
-
+    <script src="dashboardScript.js"></script>
     <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

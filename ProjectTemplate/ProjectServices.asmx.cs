@@ -681,7 +681,7 @@ namespace ProjectTemplate
         public string getLoggedInUserInfo()
         {
             string output = "";
-            string sqlSelect = "SELECT first_name, last_name, points_goal, points, redeemable_points, headshot_img_url, alma_mater_img_url FROM mentorship_users WHERE username = @usernameValue";
+            string sqlSelect = "SELECT first_name, last_name, points_goal, points, redeemable_points, headshot_img_url, alma_mater_img_url, is_mentor FROM mentorship_users WHERE username = @usernameValue";
 
             MySqlConnection sqlConnection = new MySqlConnection(getConString());
             MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
@@ -698,8 +698,9 @@ namespace ProjectTemplate
                     output += "{" + "\"firstName\":\"" + sqlDt.Rows[i]["first_name"] + "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] +
                         "\",\"points_goal\":\"" + sqlDt.Rows[i]["points_goal"] + "\", \"points\":\"" + sqlDt.Rows[i]["points"] + 
                         "\",\"redeemablePoints\":\"" + sqlDt.Rows[i]["redeemable_points"] + 
-                        "\", \"headshotURL\":\"" + sqlDt.Rows[i]["headshot_img_url"] + "\", \"almaMaterURL\":\"" + sqlDt.Rows[i]["alma_mater_img_url"] 
-                        + "\", \"connection\":" + returnPairings() + "}";
+                        "\", \"headshotURL\":\"" + sqlDt.Rows[i]["headshot_img_url"] + "\", \"almaMaterURL\":\"" + sqlDt.Rows[i]["alma_mater_img_url"] +
+                        "\", \"isMentor\":\"" + sqlDt.Rows[i]["is_mentor"] +
+                        "\", \"connection\":" + returnPairings() + "}";
 
                 }
 
