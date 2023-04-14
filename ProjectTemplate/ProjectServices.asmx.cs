@@ -696,7 +696,7 @@ namespace ProjectTemplate
                 for (int i = 0; i < sqlDt.Rows.Count; i++)
                 {
                     output += "{" + "\"firstName\":\"" + sqlDt.Rows[i]["first_name"] + "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] +
-                        "\",\"points_goal\":\"" + sqlDt.Rows[i]["points_goal"] + "\", \"points\":\"" + sqlDt.Rows[i]["points"] + 
+                        "\",\"pointsGoal\":\"" + sqlDt.Rows[i]["points_goal"] + "\", \"points\":\"" + sqlDt.Rows[i]["points"] + 
                         "\",\"redeemablePoints\":\"" + sqlDt.Rows[i]["redeemable_points"] + 
                         "\", \"headshotURL\":\"" + sqlDt.Rows[i]["headshot_img_url"] + "\", \"almaMaterURL\":\"" + sqlDt.Rows[i]["alma_mater_img_url"] +
                         "\", \"isMentor\":\"" + sqlDt.Rows[i]["is_mentor"] +
