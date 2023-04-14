@@ -188,6 +188,7 @@ function getLoggedInUserInfo() {
             }
 
             initializePointsGoalChart(parseInt(userInfo.points), parseInt(userInfo.pointsGoal));
+            initializeConnectionsDropdown(userInfo.connections)
         },
         error: function (e) {
             alert("Issue!...");
@@ -209,6 +210,26 @@ function initializePointsGoalChart(points, pointsGoal) {
     pointsDoughnut.data.datasets[0].data = [points, pointsRemaining]
     pointsDoughnut.update();
 
+}
+
+function initializeConnectionsDropdown(connections) {
+    let connectionsDropdown = document.getElementById('connectionsDropdownID');
+
+    for (let i = 0; i < connections.length; i++) {
+        let connectionButton = document.createElement('button');
+        connectionButton.value = connections[i].username
+        connectionButton.innerText = `${connections[i].firstName} ${connections[i].lastName}`
+        connectionButton.className = 'dropdown-item custom-active-color';
+        connectionButton.addEventListener('click', function () {
+            getConnectionInfo(connections[i].username);
+        },
+        false)
+        connectionsDropdown.appendChild(connectionButton);
+    }
+}
+
+function getConnectionInfo(connectionUsername) {
+    console.log(connectionUsername)
 }
 
 // takes mentor username and adds it to the mentee's list of mentors upon a button being clicked

@@ -700,7 +700,7 @@ namespace ProjectTemplate
                         "\",\"redeemablePoints\":\"" + sqlDt.Rows[i]["redeemable_points"] + 
                         "\", \"headshotURL\":\"" + sqlDt.Rows[i]["headshot_img_url"] + "\", \"almaMaterURL\":\"" + sqlDt.Rows[i]["alma_mater_img_url"] +
                         "\", \"isMentor\":\"" + sqlDt.Rows[i]["is_mentor"] +
-                        "\", \"connection\":" + returnPairings() + "}";
+                        "\", \"connections\":" + returnPairings() + "}";
 
                 }
 
