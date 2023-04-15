@@ -229,7 +229,11 @@ function initializeConnectionsDropdown(connections) {
 }
 
 function getConnectionInfo(connectionUsername) {
-    console.log(connectionUsername)
+    let chartsGrid = document.getElementById('chartsGridID');
+    chartsGrid.style.visibility = 'visible';
+
+    let notesDiv = document.getElementById('notesDivID');
+    notesDiv.style.visibility = 'visible'
 }
 
 // takes mentor username and adds it to the mentee's list of mentors upon a button being clicked
