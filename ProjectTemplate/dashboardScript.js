@@ -173,7 +173,6 @@ function getLoggedInUserInfo() {
         dataType: "json",
         success: function (msg) {
             userInfo = JSON.parse(msg.d)
-            console.log(userInfo)
             $("#nameSpanID").append(`${userInfo.firstName} ${userInfo.lastName}`)
             $('#pointsTotal').append(`${userInfo.redeemablePoints}`)
             if (userInfo.headshotURL != "") {
@@ -186,7 +185,7 @@ function getLoggedInUserInfo() {
             }
 
             if (userInfo.isMentor == 0) {
-                $('#addMentorDivID').css("visibility", "visible");
+                $('#addMentorDivID').css("display", "block");
                 $('#connectionsDropdownButtonID').text("Select Mentor")
             }
             else {
@@ -267,10 +266,10 @@ function addMentor(mentorUsername) {
 
 function getConnectionInfo(connectionUsername) {
     let chartsGrid = document.getElementById('chartsGridID');
-    chartsGrid.style.visibility = 'visible';
+    chartsGrid.style.display = 'block';
 
     let notesDiv = document.getElementById('notesDivID');
-    notesDiv.style.visibility = 'visible'
+    notesDiv.style.display = 'block'
 
     var webMethod = "ProjectServices.asmx/getConnectionData";
     var parameters = "{\"connectionUsername\":\"" + encodeURI(connectionUsername) + "\"}";
@@ -282,7 +281,6 @@ function getConnectionInfo(connectionUsername) {
         dataType: "json",
         success: function (msg) {
            let connectionInfo = JSON.parse(msg.d)
-            console.log(connectionInfo)
             if (connectionInfo.isMentor === 0) {
                 $('#connectionInfoID').text(`Mentee: ${connectionInfo.firstName} ${connectionInfo.lastName}`);
             }
@@ -292,20 +290,44 @@ function getConnectionInfo(connectionUsername) {
 
             if (connectionInfo.headshotURL != "") {
                 $('#connectionHeadshotID').attr('src', connectionInfo.headshotURL);
-
             }
+            else {
+                $('#connectionHeadshotID').attr('src', "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
+            }
+
             if (userInfo.almaMaterURL != "") {
                 $('#connectionAlmaMaterID').attr('src', connectionInfo.almaMaterURL);
             }
+            else {
+                $('#connectionAlmaMaterID').attr('src', "https://seeklogo.com/images/A/asu-logo-4B38E9D815-seeklogo.com.png");
+            }
 
+            updateMeetingScheduler(connectionUsername)
             updateMeetingNotesDropdown(connectionUsername);
-        //    updateConnectionCharts(connectionInfo.surveyResponses);
+            updateConnectionCharts(connectionInfo.surveyResponses);
         },
         error: function (e) {
             alert("Issue!...");
         }
     });
 
+}
+
+// this function controls what is passed in when user schedules new meeting
+function updateMeetingScheduler(connectionUsername) {
+    let scheduleMeetingButton = document.getElementById('scheduleMeetingButtonID');
+    // we will clone the button as a quick way to remove any existing event listeners
+    // because one of the event listener arguments is the connection username, we want to ensure 
+    // the correct username is passed in when the user chooses a different connection
+    let newButton = scheduleMeetingButton.cloneNode(true);
+    scheduleMeetingButton.parentNode.replaceChild(newButton, scheduleMeetingButton)
+
+    // here we add the event listener for the schedule meeting button, passing in the connection username
+    // the last argument will remove the event listener once triggered as well
+    // technically we don't need it given the node cloning
+    newButton.addEventListener("click", function () {
+        scheduleMeeting(connectionUsername, $('#meetingDateInputID').val());
+    }, { once: true })
 }
 
 
@@ -343,6 +365,29 @@ function updateMeetingNotesDropdown(connectionUsername) {
             alert("Issue!...");
         }
     });
+}
+
+function scheduleMeeting(otherUsername, date) {
+    var webMethod = "ProjectServices.asmx/scheduleMeeting";
+    var parameters = "{\"otherUsername\":\"" + encodeURI(otherUsername) + "\",\"date\":\"" + encodeURI(date) + "\"}";
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        data: parameters,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            if (msg.d) {
+                alert("Meeting added");
+            }
+            else {
+                alert("Meeting exists");
+            }
+        },
+        error: function (e) {
+            alert("Error!");
+        }
+    })
 }
 
 function getSurveyMeetingNotes(responseID) {

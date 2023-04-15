@@ -96,7 +96,7 @@
     </div>
 
     <!--Add a new mentor-->
-    <div id="addMentorDivID" style="visibility:hidden;" class="container card">
+    <div id="addMentorDivID" style="display:none;" class="container card">
         <form onsubmit = "addMentor($('#mentorInputID').val()); return false;" class="d-flex align-items-center" style="margin: 0; padding: 5px;">
             <div class="card-body text-black" style="padding: 0;">
                 Would you like to add a new mentor?
@@ -120,7 +120,7 @@
     </div>
 
     <!--Begin Grid Item-->
-    <div id="chartsGridID" class="container full-height" style="visibility: hidden;">
+    <div id="chartsGridID" class="container full-height" style="display: none;">
         <div class="row full-height flex-row">
             <div class="col-md-4">
                 <!-- Bootstrap Card -->
@@ -172,17 +172,17 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <!--Form-->
-                <form>
+                <div id="scheduleMeetingFormID">
                     <label>Add meeting date </label>
-                    <input class="form-control" type="date" style="margin:10px; max-width: 90%;">
+                    <input id="meetingDateInputID" class="form-control" type="date" style="margin:10px; max-width: 90%;">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" style="margin:10px;">Cancel</button>
-                    <button type="submit" class="btn btn-primary" data-dismiss="modal" style="margin:10px;">Schedule</button>
-                </form>
+                    <button id="scheduleMeetingButtonID" type="button" data-dismiss="modal" class="btn btn-primary" style="margin:10px;">Submit</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="notesDivID" class="jumbotron jumbotron-fluid" style="margin-top: 30px; visibility: hidden;">
+    <div id="notesDivID" class="jumbotron jumbotron-fluid" style="margin-top: 30px; display: none;">
         <div class="container">
             <!--Dropdown and Notes Retrieval-->
             <div class="dropdown" style="margin-left: 30px; margin-right: 30px;">
