@@ -41,7 +41,7 @@
 
     </style>
 </head>
-<body onload="initialize()">
+<body onload="initializeDashboard()">
     <!--Navbar-->
     <nav class="navbar navbar-expand-sm custom-navbar">
         <a class="navbar-brand" href="#">
@@ -112,8 +112,8 @@
 
     <!--Dropdown-->
     <div class="dropdown d-flex align-items-center" style="margin: 0; padding: 30px;">
-        <button class="btn btn-primary dropdown-toggle mx-auto custom-active-color" style="width: 70vw; max-width: 100%;" data-toggle="dropdown">
-            Select Mentor/Mentee
+        <button id="connectionsDropdownButtonID" class="btn btn-primary dropdown-toggle mx-auto custom-active-color" style="width: 70vw; max-width: 100%;" data-toggle="dropdown">
+            Select
         </button>
         <div id="connectionsDropdownID" class="dropdown-menu">
         </div>
@@ -126,19 +126,18 @@
                 <!-- Bootstrap Card -->
                 <div class="card h-100">
                     <div class="card-image-container" style="margin-left: 10px;">
-                        <img src="haiheadshot.jpg" class="card-img-top rounded-circle img-100x100" alt="Headshot">
-                        <img src="https://seeklogo.com/images/A/asu-logo-4B38E9D815-seeklogo.com.png" class="card-img-top rounded-circle img-100x100" style="padding:10px;" alt="College/University">
+                        <img id="connectionHeadshotID" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" class="card-img-top rounded-circle img-100x100" alt="Headshot">
+                        <img id="connectionAlmaMaterID" src="https://seeklogo.com/images/A/asu-logo-4B38E9D815-seeklogo.com.png" class="card-img-top rounded-circle img-100x100" style="padding:10px;" alt="College/University">
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Mentee: Hai</h5>
+                        <h5 id="connectionInfoID" class="card-title"></h5>
                         <p class="card-text">
-                            <span> Summary of information:<br><br></span>
-                            <span>300 Points Earned <br></span>
-                            <span>70% Satisfaction <br></span>
-                            <span>7 Hours Attended <br></span>
-                            <span>60% Growth in Learning <br></span>
-                            <span>40% Growth in Effective <br></span>
-                            <span>45% Growth in Beneficial <br></span>
+                            <span>Summary of information:<br><br></span>
+                            <span>Average Meeting Satisfaction <span id="satisfactionSpanID"></span><br></span>
+                            <span>Average Meeting Length <span id="avgLengthSpanID"></span><br></span>
+                            <span>Frequency of Learning <span id="learningSpanID"></span><br></span>
+                            <span>Average Meeting Effectiveness Score <span id="avgEffectivenessSpanID"></span><br></span>
+                            <span>Average Mutually Beneficial Rating <span id="avgBeneficialSpanID"></span><br></span>
                         </p>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#scheduleModal">Schedule</button>
                     </div>
@@ -188,17 +187,15 @@
             <!--Dropdown and Notes Retrieval-->
             <div class="dropdown" style="margin-left: 30px; margin-right: 30px;">
                 <button class="btn btn-primary dropdown-toggle custom-active-color" data-toggle="dropdown">
-                    Select Meeting Notes
+                    Select a Meeting Date to See Notes
                 </button>
-                <div id="meetingNotesDropdownID" class="dropdown-menu" style="margin-top: -5px;">
-                    <button class="dropdown-item custom-active-color" href="#">Meeting Notes 1: 03/10/2023</button>
-                    <button class="dropdown-item custom-active-color" href="#">Meeting Notes 2: 01/02/2023</button>
+                <div id="meetingNotesDropdownMenuID" class="dropdown-menu" style="margin-top: -5px;">
                 </div>
             </div>
 
             <!--Notes Selected-->
             <div class="container card" style="margin-top:30px; margin-right: 30px;">
-                <div class="card-body text-black" style="width: 70vw; max-width: 100%; margin-right: 30px;">Notes selected</div>
+                <div id="meetingNotesDivID" class="card-body text-black" style="width: 70vw; max-width: 100%; margin-right: 30px;">No date selected.</div>
             </div>
         </div>
     </div>

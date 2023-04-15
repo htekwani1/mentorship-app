@@ -8,7 +8,7 @@ let satisfactionDoughnut;
 let radarChartContext;
 let radarChart;
 
-function initialize() {
+function initializeDashboard() {
     //Points Goal Completion Dashboard
     pointsDoughnutContext = document.getElementById('pointsCompleted').getContext('2d');
     pointsDoughnut = new Chart(pointsDoughnutContext, {
@@ -159,9 +159,11 @@ function initialize() {
     });
 
     getLoggedInUserInfo();
-
 }
 
+
+// make the ajax call to get data regarding the logged in user, and change some HTML elements using that data
+// however, to update the data in the charts, we will need to have a callback function that executes after AJAX call finishes.
 function getLoggedInUserInfo() {
     var webMethod = "ProjectServices.asmx/getLoggedInUserInfo";
     $.ajax({
@@ -185,9 +187,14 @@ function getLoggedInUserInfo() {
 
             if (userInfo.isMentor == 0) {
                 $('#addMentorDivID').css("visibility", "visible");
+                $('#connectionsDropdownButtonID').text("Select Mentor")
+            }
+            else {
+                $('#connectionsDropdownButtonID').text("Select Mentee")
+
             }
 
-            initializePointsGoalChart(parseInt(userInfo.points), parseInt(userInfo.pointsGoal));
+            updatePointsGoalChart(parseInt(userInfo.points), parseInt(userInfo.pointsGoal));
             initializeConnectionsDropdown(userInfo.connections)
         },
         error: function (e) {
@@ -197,7 +204,7 @@ function getLoggedInUserInfo() {
 
 }
 
-function initializePointsGoalChart(points, pointsGoal) {
+function updatePointsGoalChart(points, pointsGoal) {
     let pointsRemaining;
 
     if (points > pointsGoal) {
@@ -212,6 +219,9 @@ function initializePointsGoalChart(points, pointsGoal) {
 
 }
 
+
+// Add the connections logged in user has as button in dropdown
+// once clicked they will trigger a callback that calls AJAX to get data on that connection
 function initializeConnectionsDropdown(connections) {
     let connectionsDropdown = document.getElementById('connectionsDropdownID');
 
@@ -228,13 +238,6 @@ function initializeConnectionsDropdown(connections) {
     }
 }
 
-function getConnectionInfo(connectionUsername) {
-    let chartsGrid = document.getElementById('chartsGridID');
-    chartsGrid.style.visibility = 'visible';
-
-    let notesDiv = document.getElementById('notesDivID');
-    notesDiv.style.visibility = 'visible'
-}
 
 // takes mentor username and adds it to the mentee's list of mentors upon a button being clicked
 function addMentor(mentorUsername) {
@@ -259,6 +262,111 @@ function addMentor(mentorUsername) {
             alert("Error!");
         }
     })
+}
+
+
+function getConnectionInfo(connectionUsername) {
+    let chartsGrid = document.getElementById('chartsGridID');
+    chartsGrid.style.visibility = 'visible';
+
+    let notesDiv = document.getElementById('notesDivID');
+    notesDiv.style.visibility = 'visible'
+
+    var webMethod = "ProjectServices.asmx/getConnectionData";
+    var parameters = "{\"connectionUsername\":\"" + encodeURI(connectionUsername) + "\"}";
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        data: parameters,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+           let connectionInfo = JSON.parse(msg.d)
+            console.log(connectionInfo)
+            if (connectionInfo.isMentor === 0) {
+                $('#connectionInfoID').text(`Mentee: ${connectionInfo.firstName} ${connectionInfo.lastName}`);
+            }
+            else {
+                $('#connectionInfoID').text(`Mentor: ${connectionInfo.firstName} ${connectionInfo.lastName}`);
+            }
+
+            if (connectionInfo.headshotURL != "") {
+                $('#connectionHeadshotID').attr('src', connectionInfo.headshotURL);
+
+            }
+            if (userInfo.almaMaterURL != "") {
+                $('#connectionAlmaMaterID').attr('src', connectionInfo.almaMaterURL);
+            }
+
+            updateMeetingNotesDropdown(connectionUsername);
+        //    updateConnectionCharts(connectionInfo.surveyResponses);
+        },
+        error: function (e) {
+            alert("Issue!...");
+        }
+    });
+
+}
+
+
+function updateMeetingNotesDropdown(connectionUsername) {
+    var webMethod = "ProjectServices.asmx/getSurveyResponseDateID";
+    var parameters = "{\"connectionUsername\":\"" + encodeURI(connectionUsername) + "\"}";
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        data: parameters,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            let surveyDateResponseIDs = JSON.parse(msg.d);
+            let meetingNotesDropdownMenu = document.getElementById('meetingNotesDropdownMenuID')
+
+            // clear all existing buttons in the dropdown for when user switches the chosen connection
+            while (meetingNotesDropdownMenu.firstChild) {
+                meetingNotesDropdownMenu.removeChild(meetingNotesDropdownMenu.lastChild);
+            }
+
+            for (let i = 0; i < surveyDateResponseIDs.length; i++) {
+                buttonElement = document.createElement('button');
+                buttonElement.className = 'dropdown-item custom-active-color';
+                buttonElement.value = surveyDateResponseIDs[i].responseID;
+                buttonElement.innerText = surveyDateResponseIDs[i].date;
+                buttonElement.addEventListener('click', function () {
+                    getSurveyMeetingNotes(surveyDateResponseIDs[i].responseID)
+                })
+                meetingNotesDropdownMenu.appendChild(buttonElement);
+            }
+
+        },
+        error: function (e) {
+            alert("Issue!...");
+        }
+    });
+}
+
+function getSurveyMeetingNotes(responseID) {
+    var webMethod = "ProjectServices.asmx/getSurveyMeetingNotes"
+    var parameters = "{\"surveyResponseID\":\"" + encodeURI(responseID) + "\"}";
+
+    let meetingNotesDiv = document.getElementById('meetingNotesDivID');
+    //Reset div for when user chooses a different meeting
+    meetingNotesDiv.innerText = "";
+
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        data: parameters,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            meetingNotesDiv.innerText = msg.d
+        }
+    })
+}
+
+function updateConnectionCharts(surveyResponses) {
+    console.log(surveyResponses);
 }
 
 

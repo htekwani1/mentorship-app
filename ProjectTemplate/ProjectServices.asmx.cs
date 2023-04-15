@@ -504,7 +504,7 @@ namespace ProjectTemplate
                 output += "{" + "\"username\":\"" + sqlDt.Rows[i]["username"] + "\", \"firstName\":\"" + sqlDt.Rows[i]["first_name"] +
                     "\",\"lastName\":\"" + sqlDt.Rows[i]["last_name"] + "\", \"meetingResponses\":";
 
-                // Add in key:value pairs of responseID and date of meeting
+                // Add in array of key:value pairs of responseID and date of meeting
                 output += getSurveyResponseDateID(Convert.ToString(sqlDt.Rows[i]["username"]));
                 output += "}";
 
@@ -582,7 +582,7 @@ namespace ProjectTemplate
 
         // get the meeting survey notes based off responseID
         [WebMethod(EnableSession = true)]
-        public string getSurveySummary(int surveyResponseID)
+        public string getSurveyMeetingNotes(int surveyResponseID)
         {
             string sqlSelect = "SELECT meeting_summary FROM survey_responses WHERE response_id = @surveyResponseIDValue";
             MySqlConnection sqlConnection = new MySqlConnection(getConString());
@@ -701,7 +701,7 @@ namespace ProjectTemplate
         [WebMethod(EnableSession = true)]
         public string getConnectionData(string connectionUsername)
         {
-            string sqlSelect = "SELECT first_name, last_name, college, headshot_img_url, alma_mater_img_url " +
+            string sqlSelect = "SELECT first_name, last_name, college, headshot_img_url, alma_mater_img_url, is_mentor " +
                 "FROM mentorship_users WHERE username = @connectionUsernameValue";
 
             MySqlConnection sqlConnection = new MySqlConnection(getConString());
@@ -712,10 +712,12 @@ namespace ProjectTemplate
             DataTable sqlDt = new DataTable("connectionData");
             sqlDa.Fill(sqlDt);
 
-            string output = "{" + "\"first_name\":\"" + sqlDt.Rows[0]["first_name"] +
-                "\",\"last_name\":\"" + sqlDt.Rows[0]["last_name"] + "\",\"college\":\"" + sqlDt.Rows[0]["college"] +
-                "\",\"headshot_img_url\":\"" + sqlDt.Rows[0]["headshot_img_url"] +
-                "\",\"alma_mater_img_url\":\"" + sqlDt.Rows[0]["alma_mater_img_url"] + "\"}";
+            string output = "{" + "\"firstName\":\"" + sqlDt.Rows[0]["first_name"] +
+                "\",\"lastName\":\"" + sqlDt.Rows[0]["last_name"] + "\",\"college\":\"" + sqlDt.Rows[0]["college"] +
+                "\",\"headshotURL\":\"" + sqlDt.Rows[0]["headshot_img_url"] +
+                "\",\"almaMaterURL\":\"" + sqlDt.Rows[0]["alma_mater_img_url"] +
+                "\",\"isMentor\":" + sqlDt.Rows[0]["is_mentor"] +
+                ",\"surveyResponses\":" + getSurveyResponses(connectionUsername) + "}";
 
             return output;
         }
