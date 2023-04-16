@@ -47,9 +47,8 @@ function initializeDashboard() {
     lineChart = new Chart(lineChartContext, {
         type: 'line',
         data: {
-            labels: ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6", "Week 7", "Week 8"],
             datasets: [{
-                label: "Meeting Hours",
+                label: "Meeting Minutes",
                 borderColor: "#74A12E",
                 pointBorderColor: "#FFF",
                 pointBackgroundColor: "#74A12E",
@@ -61,7 +60,7 @@ function initializeDashboard() {
                 fill: true,
                 borderWidth: 2,
                 // INSERT AGGREGATED DATA OF (real or fake) WEEKLY (minutes to hour) DATA
-                data: [1.5, 1.25, 1.75, 2, .75, .5, .25]
+                data: []
             }]
         },
         options: {
@@ -85,6 +84,22 @@ function initializeDashboard() {
             },
             layout: {
                 padding: { left: 15, right: 15, top: 2.5, bottom: 2.5 }
+            },
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'month',
+                        stepSize: 1,
+                        tooltipFormat: "MMM d, yyyy"
+                    },
+                    suggestedMin: "2023-04-01",
+                    suggestedMax: "2023-05-01"
+                },
+                y: {
+                    beginAtZero: true,
+                    max: 60
+                }
             }
         }
     });
@@ -411,7 +426,32 @@ function getSurveyMeetingNotes(responseID) {
 }
 
 function updateConnectionCharts(surveyResponses) {
-    console.log(surveyResponses);
+    let dateArray = [];
+    let ratingArray = [];
+    let effectivenessArray = [];
+    let learningArray = [];
+    let beneficialArray = [];
+    let meetingLengthsArray = [];
+
+    let dateLengthsObjArray = [];
+
+    for (let i = 0; i < surveyResponses.length; i++) {
+        dateArray.push(surveyResponses[i].date);
+        ratingArray.push(surveyResponses[i].overallRating);
+        effectivenessArray.push(surveyResponses[i].effectiveness);
+        learningArray.push(surveyResponses[i].didLearn);
+        beneficialArray.push(surveyResponses[i].beneficial);
+        meetingLengthsArray.push(surveyResponses[i].meetingLength);
+
+        dateLengthsObjArray.push({ "x": surveyResponses[i].date, "y": surveyResponses[i].meetingLength})
+    }
+
+    lineChart.data.datasets[0].data = dateLengthsObjArray
+    lineChart.update()
+
+    $('#avgLengthSpanID').text(`${(meetingLengthsArray.reduce((sum, item) => sum + item)) / (meetingLengthsArray.length)}`)
+
+
 }
 
 

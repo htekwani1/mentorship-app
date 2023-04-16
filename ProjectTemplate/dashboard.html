@@ -7,13 +7,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="universal.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <title>Dashboard</title>
     <style>
         .full-height {
             height: 100%;
         }
-        
+
         .flex-row {
             display: flex;
             flex-direction: row;
@@ -38,7 +39,6 @@
             color: #FFFFFF !important; /* Change this to your desired text color when clicked */
             box-shadow: none !important; /* Remove the default box-shadow when focused */
         }
-
     </style>
 </head>
 <body onload="initializeDashboard()">
@@ -134,7 +134,7 @@
                         <p class="card-text">
                             <span>Summary of information:<br><br></span>
                             <span>Average Meeting Satisfaction <span id="satisfactionSpanID"></span><br></span>
-                            <span>Average Meeting Length <span id="avgLengthSpanID"></span><br></span>
+                            <span>Average Meeting Length: <span id="avgLengthSpanID"></span> min<br></span>
                             <span>Frequency of Learning <span id="learningSpanID"></span><br></span>
                             <span>Average Meeting Effectiveness Score <span id="avgEffectivenessSpanID"></span><br></span>
                             <span>Average Mutually Beneficial Rating <span id="avgBeneficialSpanID"></span><br></span>

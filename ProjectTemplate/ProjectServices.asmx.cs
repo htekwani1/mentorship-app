@@ -758,11 +758,11 @@ namespace ProjectTemplate
 
             for (int i = 0; i < sqlDt.Rows.Count; i++)
             {
-                output += "{\"date\":\"" + Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToShortDateString() +
-                "\",\"overallRating\":\"" + sqlDt.Rows[i]["overall_rating"] + "\",\"effectiveness\":\"" + sqlDt.Rows[i]["effectiveness"] +
-                "\",\"didLearn\":\"" + sqlDt.Rows[i]["didLearn"] +
-                "\",\"beneficial\":\"" + sqlDt.Rows[i]["didBenefit"] +
-                "\",\"length\":\"" + sqlDt.Rows[i]["meetingLength"] + "\"}";
+                output += "{\"date\":\"" + Convert.ToDateTime(sqlDt.Rows[i]["date"]).ToString("yyyy-MM-dd") +
+                "\",\"overallRating\":" + sqlDt.Rows[i]["overall_rating"] + ",\"effectiveness\":" + sqlDt.Rows[i]["effectiveness"] +
+                ",\"didLearn\":" + sqlDt.Rows[i]["didLearn"] +
+                ",\"beneficial\":" + sqlDt.Rows[i]["didBenefit"] +
+                ",\"meetingLength\":" + sqlDt.Rows[i]["meetingLength"] + "}";
 
                 if (i != sqlDt.Rows.Count - 1)
                 {
