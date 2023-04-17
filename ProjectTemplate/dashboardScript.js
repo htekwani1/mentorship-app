@@ -426,6 +426,8 @@ function getSurveyMeetingNotes(responseID) {
 }
 
 function updateConnectionCharts(surveyResponses) {
+    console.log(surveyResponses)
+    // initialize the arrays
     let dateArray = [];
     let ratingArray = [];
     let effectivenessArray = [];
@@ -434,7 +436,7 @@ function updateConnectionCharts(surveyResponses) {
     let meetingLengthsArray = [];
 
     let dateLengthsObjArray = [];
-
+    
     for (let i = 0; i < surveyResponses.length; i++) {
         dateArray.push(surveyResponses[i].date);
         ratingArray.push(surveyResponses[i].overallRating);
@@ -442,13 +444,14 @@ function updateConnectionCharts(surveyResponses) {
         learningArray.push(surveyResponses[i].didLearn);
         beneficialArray.push(surveyResponses[i].beneficial);
         meetingLengthsArray.push(surveyResponses[i].meetingLength);
-
+        // we need our data for the timeline chart to be formatted this way
         dateLengthsObjArray.push({ "x": surveyResponses[i].date, "y": surveyResponses[i].meetingLength})
     }
 
+    /// adding data for the timeline chart
     lineChart.data.datasets[0].data = dateLengthsObjArray
     lineChart.update()
-
+    // update the side card with the avg. meeting length
     $('#avgLengthSpanID').text(`${(meetingLengthsArray.reduce((sum, item) => sum + item)) / (meetingLengthsArray.length)}`)
 
     let sumOfRatings = 0;
@@ -467,9 +470,10 @@ function updateConnectionCharts(surveyResponses) {
         sumOfBeneficial += beneficialArray[i];
     }
 
+    // overall rating (satisfaction)
     let avgRating = sumOfRatings / ratingArray.length;
-    let unsatisfiedValue = avgRating;
-    let satisfiedValue = 10 - unsatisfiedValue;
+    let unsatisfiedValue = 10 - avgRating;
+    let satisfiedValue = avgRating; 
     let avgEffectiveness = sumOfEffectiveness / ratingArray.length;
     let avgLearning = sumOfLearning / ratingArray.length;
     let avgBeneficial = sumOfBeneficial / ratingArray.length;
@@ -479,9 +483,11 @@ function updateConnectionCharts(surveyResponses) {
     satisfactionDoughnut.data.datasets[0].data = satisfactionDoughnutObjArray;
     satisfactionDoughnut.update();
 
+    // radar chart
     radarChartObjArrayOne.push(avgEffectiveness);
     radarChartObjArrayOne.push(avgLearning);
     radarChartObjArrayOne.push(avgBeneficial);
+    // we will get the initial values to show the trend has changed
     radarChartObjArrayTwo.push(effectivenessArray[0]);
     radarChartObjArrayTwo.push(learningArray[0]);
     radarChartObjArrayTwo.push(beneficialArray[0]);
