@@ -494,6 +494,11 @@ function updateConnectionCharts(surveyResponses) {
     radarChart.data.datasets[0].data = radarChartObjArrayOne;
     radarChart.data.datasets[1].data = radarChartObjArrayTwo;
     radarChart.update();
+
+    $('#satisfactionSpanID').text(`${satisfiedValue}`)
+    $('#learningSpanID').text(`${avgLearning}`)
+    $('#avgEffectivenessSpanID').text(`${avgEffectiveness}`)
+    $('#avgBeneficialSpanID').text(`${avgBeneficial}`)
 }
 
 
