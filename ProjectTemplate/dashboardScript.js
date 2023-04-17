@@ -111,7 +111,7 @@ function initializeDashboard() {
         data: {
             datasets: [{
                 // INSERT TOTAL 1s (TRUE) out of TOTAL 0s (FALSE)  
-                data: [6, 7],
+                data: [],
                 backgroundColor: ['grey', '#74A12E']
             }],
 
@@ -145,7 +145,7 @@ function initializeDashboard() {
             labels: ['Effective', 'Learning', 'Beneficial'],
             datasets: [{
                 // COUNT of all TRUE in each respective category
-                data: [6, 3, 7],
+                data: [],
                 borderColor: '#74A12E',
                 backgroundColor: 'rgba(116, 161, 46, 0.25)',
                 pointBackgroundColor: "#74A12E",
@@ -154,7 +154,7 @@ function initializeDashboard() {
                 label: 'Current'
             }, {
                 // Design a pre-mentorship section to benchmark growth on radar
-                data: [2, 1, 3],
+                data: [],
                 borderColor: '#716aca',
                 backgroundColor: 'rgba(113, 106, 202, 0.25)',
                 pointBackgroundColor: "#716aca",
@@ -451,7 +451,43 @@ function updateConnectionCharts(surveyResponses) {
 
     $('#avgLengthSpanID').text(`${(meetingLengthsArray.reduce((sum, item) => sum + item)) / (meetingLengthsArray.length)}`)
 
+    let sumOfRatings = 0;
+    let sumOfEffectiveness = 0;
+    let sumOfLearning = 0;
+    let sumOfBeneficial = 0;
+    
+    let satisfactionDoughnutObjArray = [];
+    let radarChartObjArrayOne = [];
+    let radarChartObjArrayTwo = [];
 
+    for(let i = 0; i < ratingArray.length; i++) {
+        sumOfRatings += ratingArray[i];
+        sumOfEffectiveness += effectivenessArray[i];
+        sumOfLearning += learningArray[i];
+        sumOfBeneficial += beneficialArray[i];
+    }
+
+    let avgRating = sumOfRatings / ratingArray.length;
+    let unsatisfiedValue = avgRating;
+    let satisfiedValue = 10 - unsatisfiedValue;
+    let avgEffectiveness = sumOfEffectiveness / ratingArray.length;
+    let avgLearning = sumOfLearning / ratingArray.length;
+    let avgBeneficial = sumOfBeneficial / ratingArray.length;
+
+    satisfactionDoughnutObjArray.push(unsatisfiedValue);
+    satisfactionDoughnutObjArray.push(satisfiedValue);
+    satisfactionDoughnut.data.datasets[0].data = satisfactionDoughnutObjArray;
+    satisfactionDoughnut.update();
+
+    radarChartObjArrayOne.push(avgEffectiveness);
+    radarChartObjArrayOne.push(avgLearning);
+    radarChartObjArrayOne.push(avgBeneficial);
+    radarChartObjArrayTwo.push(effectivenessArray[0]);
+    radarChartObjArrayTwo.push(learningArray[0]);
+    radarChartObjArrayTwo.push(beneficialArray[0]);
+    radarChart.data.datasets[0].data = radarChartObjArrayOne;
+    radarChart.data.datasets[1].data = radarChartObjArrayTwo;
+    radarChart.update();
 }
 
 
