@@ -502,4 +502,23 @@ function updateConnectionCharts(surveyResponses) {
 }
 
 
-
+function logout() {
+    var webMethod = "ProjectServices.asmx/LogOff";
+    $.ajax({
+        type: "POST",
+        url: webMethod,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            if (msg.d) {
+                return true;
+            }
+            else {
+                alert("Log off failed!");
+            }
+        },
+        error: function (e) {
+            alert("Issue!");
+        }
+    });
+}
