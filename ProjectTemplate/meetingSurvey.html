@@ -13,7 +13,7 @@
 
        function initialize() {
            initialzeConnections();
-           getPoints();
+           getNavInfo();
        }
 
 
@@ -43,22 +43,32 @@
 
        }
 
-       function getPoints() {
-           var webMethod = "ProjectServices.asmx/getPoints";
-           var points = document.getElementById('pointsTotal');
-
+       function getNavInfo() {
+           var webMethod = "ProjectServices.asmx/getNavInfo";
            $.ajax({
                type: "POST",
                url: webMethod,
                contentType: "application/json; charset=utf-8",
                dataType: "json",
                success: function (msg) {
-                   points.textContent += msg.d;
+                   navInfo = JSON.parse(msg.d)
+                   initializeNav(navInfo)
                },
                error: function (e) {
                    alert("Issue!...");
                }
            });
+       }
+
+       function initializeNav(navInfo) {
+
+           var pointsTotalID = document.getElementById('pointsTotal');
+           points = navInfo.redeemablePoints
+           pointsTotalID.innerText += points;
+
+           if (navInfo.headshotURL != "") {
+               $('#navHeadshotID').attr('src', navInfo.headshotURL);
+           }
        }
 
        function parseMeetingSurvey(meeting_id, subject_username, meetingNotes, rating, effectiveness, learn, didBenefit, time) {
@@ -287,7 +297,7 @@
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="rounded" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Logo" style="width:40px;">
+                    <img id="navHeadshotID" class="rounded" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Logo" style="width:40px;">
                 </a>
                 <div class="dropdown-menu custom-dropdown" aria-labelledby="profileDropdown">
                         <a class="dropdown-item" id="pointsTotal" href="#">Points: </a>

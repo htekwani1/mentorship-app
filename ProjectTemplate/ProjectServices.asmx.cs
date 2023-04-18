@@ -611,17 +611,22 @@ namespace ProjectTemplate
 
     
         [WebMethod(EnableSession = true)]
-        public int getPoints()
+        public string getNavInfo()
         {
-            string sqlSelect = "SELECT redeemable_points FROM mentorship_users WHERE username = @usernameValue";
+            string sqlSelect = "SELECT headshot_img_url, redeemable_points FROM mentorship_users WHERE username = @usernameValue";
 
             MySqlConnection sqlConnection = new MySqlConnection(getConString());
             MySqlCommand sqlCommand = new MySqlCommand(sqlSelect, sqlConnection);
             sqlCommand.Parameters.AddWithValue("@usernameValue", HttpUtility.UrlDecode(Convert.ToString(Session["username"])));
 
-            sqlConnection.Open();
+            MySqlDataAdapter sqlDa = new MySqlDataAdapter(sqlCommand);
+            DataTable sqlDt = new DataTable("navInfo");
+            sqlDa.Fill(sqlDt);
 
-            return Convert.ToInt32(sqlCommand.ExecuteScalar());
+            string output = "{" + "\"headshotURL\":\"" + sqlDt.Rows[0]["headshot_img_url"] +
+                "\",\"redeemablePoints\":" + sqlDt.Rows[0]["redeemable_points"] + "}";
+
+            return output;
         }
 
         [WebMethod(EnableSession = true)]

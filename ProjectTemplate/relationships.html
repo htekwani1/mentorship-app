@@ -99,7 +99,8 @@
 
         // retrieves and displays the total number of points a user has available
         function getPoints() {
-            var webMethod = "ProjectServices.asmx/getPoints";
+            var webMethod = "ProjectServices.asmx/getNavInfo";
+            //var webMethod = "ProjectServices.asmx/getPoints";
             var points = document.getElementById('pointsDisplay');
 
             $.ajax({
@@ -108,7 +109,8 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (msg) {
-                    points.textContent += msg.d;
+                    navInfo = JSON.parse(msg.d)
+                    points.textContent += navInfo.redeemablePoints;
                 },
                 error: function (e) {
                     alert("Issue!...");
