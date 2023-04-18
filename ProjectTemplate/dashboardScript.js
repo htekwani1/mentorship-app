@@ -317,6 +317,8 @@ function getConnectionInfo(connectionUsername) {
                 $('#connectionAlmaMaterID').attr('src', "https://seeklogo.com/images/A/asu-logo-4B38E9D815-seeklogo.com.png");
             }
 
+            $('#collegeSpanID').text(`${connectionInfo.college}`);
+
             updateMeetingScheduler(connectionUsername)
             updateMeetingNotesDropdown(connectionUsername);
             updateConnectionCharts(connectionInfo.surveyResponses);
@@ -475,7 +477,7 @@ function updateConnectionCharts(surveyResponses) {
     let unsatisfiedValue = 10 - avgRating;
     let satisfiedValue = avgRating; 
     let avgEffectiveness = sumOfEffectiveness / ratingArray.length;
-    let avgLearning = sumOfLearning / ratingArray.length;
+    let avgLearning = (sumOfLearning / ratingArray.length) * 10;
     let avgBeneficial = sumOfBeneficial / ratingArray.length;
 
     satisfactionDoughnutObjArray.push(unsatisfiedValue);
@@ -483,13 +485,16 @@ function updateConnectionCharts(surveyResponses) {
     satisfactionDoughnut.data.datasets[0].data = satisfactionDoughnutObjArray;
     satisfactionDoughnut.update();
 
+    console.log(avgLearning);
+   
+
     // radar chart
     radarChartObjArrayOne.push(avgEffectiveness);
     radarChartObjArrayOne.push(avgLearning);
     radarChartObjArrayOne.push(avgBeneficial);
     // we will get the initial values to show the trend has changed
     radarChartObjArrayTwo.push(effectivenessArray[0]);
-    radarChartObjArrayTwo.push(learningArray[0]);
+    radarChartObjArrayTwo.push(learningArray[0] * 10);
     radarChartObjArrayTwo.push(beneficialArray[0]);
     radarChart.data.datasets[0].data = radarChartObjArrayOne;
     radarChart.data.datasets[1].data = radarChartObjArrayTwo;
