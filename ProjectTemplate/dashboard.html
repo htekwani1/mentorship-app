@@ -145,18 +145,18 @@
                 </div>
             </div>
             <div class="col-md-8">
-                <div class="row" style="height: 220px;">
+                <div class="row">
                     <!-- Total meeting minutes -->
                     <canvas id="meetingHours"></canvas>
                 </div>
                 <div class="row">
-                    <div class="col-md-6" style="height: 240px;">
+                    <div class="col-md-6">
                         <!-- Average Meeting Satisfaction 1-10 -->
-                        <canvas id="meetingSatisfaction" style="height: 240px;"></canvas>
+                        <canvas id="meetingSatisfaction" style="height: 300px;"></canvas>
                     </div>
-                    <div class="col-md-6" style="height: 240px;">
+                    <div class="col-md-6">
                         <!-- Average (1 or 0) meeting is effective, learning anything new, mentoring relaitonship mutually beneficial -->
-                        <canvas id="growthChart" style="height: 240px;"></canvas>
+                        <canvas id="growthChart" style="height: 300px;"></canvas>
                     </div>
                 </div>
             </div>
@@ -164,20 +164,19 @@
     </div>
 
     <!--Modal for Schedule-->
-    <div class="modal fade" id="scheduleModal" style="padding-bottom:">
+    <div class="modal fade" id="scheduleModal" style="">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <!--Modal Header-->
                 <div class="modal-header">
-                    <h4 class="modal-title">Schedule a meeting:</h4>
+                    <h4 class="modal-title">Add meeting date</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <!--Form-->
                 <div id="scheduleMeetingFormID">
-                    <p style="margin-left:15px">Add meeting date </p>
-                    <input id="meetingDateInputID" class="form-control" type="date" style="margin:15px; max-width: 90%;">
+                    <input id="meetingDateInputID" class="form-control" type="date" style="margin-left:15px; max-width: 90%; margin-top: 15px;">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" style="margin:15px;">Cancel</button>
-                    <button id="scheduleMeetingButtonID" type="button" data-dismiss="modal" class="btn btn-primary" style="margin:15px;">Submit</button>
+                    <button id="scheduleMeetingButtonID" type="button" data-dismiss="modal" class="btn btn-primary" style="margin-left:0px;">Submit</button>
                 </div>
             </div>
         </div>
