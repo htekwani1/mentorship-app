@@ -112,12 +112,12 @@ function initializeDashboard() {
             datasets: [{
                 // INSERT TOTAL 1s (TRUE) out of TOTAL 0s (FALSE)  
                 data: [],
-                backgroundColor: ['grey', '#74A12E']
+                backgroundColor: ['#74A12E', 'grey']
             }],
 
             labels: [
-                'Unsatisfied',
                 'Satisfied',
+                'Unsatisfied',
             ]
         },
         options: {
@@ -169,6 +169,11 @@ function initializeDashboard() {
             maintainAspectRatio: false,
             legend: {
                 position: 'bottom'
+            },
+            scales: {
+                r: {
+                    max: 10
+                }
             }
         }
     });
@@ -480,8 +485,8 @@ function updateConnectionCharts(surveyResponses) {
     let avgLearning = (sumOfLearning / ratingArray.length) * 10;
     let avgBeneficial = sumOfBeneficial / ratingArray.length;
 
-    satisfactionDoughnutObjArray.push(unsatisfiedValue);
     satisfactionDoughnutObjArray.push(satisfiedValue);
+    satisfactionDoughnutObjArray.push(unsatisfiedValue);
     satisfactionDoughnut.data.datasets[0].data = satisfactionDoughnutObjArray;
     satisfactionDoughnut.update();
 
