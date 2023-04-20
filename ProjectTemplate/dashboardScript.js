@@ -291,6 +291,10 @@ function getConnectionInfo(connectionUsername) {
     let notesDiv = document.getElementById('notesDivID');
     notesDiv.style.display = 'block'
 
+    $('#meetingSatisfaction').css('height', "300px")
+    $('#growthChart').css('height', "300px")
+
+
     var webMethod = "ProjectServices.asmx/getConnectionData";
     var parameters = "{\"connectionUsername\":\"" + encodeURI(connectionUsername) + "\"}";
     $.ajax({
@@ -322,6 +326,7 @@ function getConnectionInfo(connectionUsername) {
                 $('#connectionAlmaMaterID').attr('src', "https://seeklogo.com/images/A/asu-logo-4B38E9D815-seeklogo.com.png");
             }
 
+            console.log(connectionInfo.college)
             $('#collegeSpanID').text(`${connectionInfo.college}`);
 
             updateMeetingScheduler(connectionUsername)

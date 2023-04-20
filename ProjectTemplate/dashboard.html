@@ -120,7 +120,7 @@
     </div>
 
     <!--Begin Grid Item-->
-    <div id="chartsGridID" class="container full-height">
+    <div id="chartsGridID" class="container full-height" style="display: none;">
         <div class="row full-height flex-row">
             <div class="col-md-4">
                 <!-- Bootstrap Card -->
@@ -131,9 +131,9 @@
                     </div>
                     <div class="card-body">
                         <h5 id="connectionInfoID" class="card-title"></h5>
+                        <h6>Alma Mater: <span id="collegeSpanID"></span><br></h6>
                         <p class="card-text">
-                            <span>Summary of information:<br><br></span>
-                            <span>College: <span id="collegeID"></span><br></span>
+                            <span style="text-decoration: underline;">Mentorship Metrics:<br></span>
                             <span>Average Meeting Satisfaction: <span id="satisfactionSpanID"></span>/10<br></span>
                             <span>Average Meeting Length: <span id="avgLengthSpanID"></span> min<br></span>
                             <span>Learning Score: <span id="learningSpanID"></span><br></span>
@@ -164,7 +164,7 @@
     </div>
 
     <!--Modal for Schedule-->
-    <div class="modal fade" id="scheduleModal" style="">
+    <div class="modal fade" id="scheduleModal">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <!--Modal Header-->
@@ -182,7 +182,7 @@
         </div>
     </div>
 
-    <div id="notesDivID" class="jumbotron jumbotron-fluid" style="margin-top: 30px;">
+    <div id="notesDivID" class="jumbotron jumbotron-fluid" style="margin-top: 30px; display:none;">
         <div class="container">
             <!--Dropdown and Notes Retrieval-->
             <div class="dropdown" style="margin-left: 30px; margin-right: 30px;">
